@@ -14,10 +14,9 @@ use App\Http\Controllers\Web\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function() {
+
+Route::group(['middleware' => 'auth'], function() {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 });
+
