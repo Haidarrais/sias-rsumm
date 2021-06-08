@@ -24,11 +24,16 @@
         @php
             $paths = explode('/', Request::path());
             $len = count($paths)-1;
+            if (Request::path() != '/') {
+                $path = ucfirst($paths[$len]);
+            }else {
+                $path = 'Dashboard';
+            }
         @endphp
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>{{ucfirst($paths[$len])}} Page</h1>
+            <h1>{{$path}} Page</h1>
             <div class="section-header-breadcrumb">
               {{-- @if (url()->full()=='http://127.0.0.1:8000')
                   <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
