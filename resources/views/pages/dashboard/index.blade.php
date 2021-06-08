@@ -1,10 +1,22 @@
 @extends('layouts.dashboard')
+@section('title')
+
+@if (Request::path() != '/')
+@php
+    $paths = explode('/', Request::path());
+    $len = count($paths)-1;
+    echo ucfirst($paths[$len]);
+@endphp
+@else
+Dashboard
+@endif
+@endsection
 @section('content')
 <!-- Main Content -->
 
 
     <div class="section-body">
-      <h2 class="section-title">@foreach ($user as $usr ) {{$usr->getRoleNames()}} @endforeach</h2>
+      <h2 class="section-title">Lorem ipsum</h2>
       <p class="section-lead">This page is just an example for you to create your own page.</p>
       <div class="card">
         <div class="card-header">
