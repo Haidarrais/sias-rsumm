@@ -21,7 +21,29 @@
     <div class="main-wrapper">
       @include('partials.navbar')
       @include('partials.sidebar')
-      @yield('content')
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <h1>Default Layout</h1>
+            <div class="section-header-breadcrumb">
+              {{-- @if (url()->full()=='http://127.0.0.1:8000')
+                  <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+              @else --}}
+              <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+              @if (Request::path() != "/")
+                @php
+                    $paths = explode('/', Request::path());
+                @endphp
+                    @foreach ($paths as $key => $path )
+                     <div class="breadcrumb-item">{{ucfirst($path)}}</div>
+                    @endforeach
+              @endif
+              {{-- @endif --}}
+            </div>
+          </div>
+            @yield('content')
+        </section>
+    </div>
       @include('partials.footer')
     </div>
   </div>

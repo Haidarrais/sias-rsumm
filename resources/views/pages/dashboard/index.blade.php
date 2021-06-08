@@ -1,21 +1,7 @@
 @extends('layouts.dashboard')
 @section('content')
 <!-- Main Content -->
-<div class="main-content">
-  <section class="section">
-    <div class="section-header">
-      <h1>Default Layout</h1>
-      <div class="section-header-breadcrumb">
-        {{-- @if (url()->full()=='http://127.0.0.1:8000')
-            <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-        @else --}}
-        {{url()->full()}}
-        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-        <div class="breadcrumb-item"><a href="#">Layout</a></div>
-        <div class="breadcrumb-item">Default Layout</div>
-        {{-- @endif --}}
-      </div>
-    </div>
+
 
     <div class="section-body">
       <h2 class="section-title">This is Example Page</h2>
@@ -37,6 +23,4 @@
         </div>
       </div>
     </div>
-  </section>
-</div>
 @endsection

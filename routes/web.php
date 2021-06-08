@@ -18,5 +18,6 @@ use App\Http\Controllers\Web\DashboardController;
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/item', [DashboardController::class, 'index'])->name('dashboarddot');
 });
 
