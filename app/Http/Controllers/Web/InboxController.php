@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class InboxController extends Controller
 {
+    private $pathImage = "upload/product/";
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +39,20 @@ class InboxController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $imageName = $request->file($this->pathImage, time().'.'.$request->file);
+        Inbox::create([
+            'user_id' => $request->user_id,
+            'journal_id' => $request->journal_id,
+            'inbox_number' => $request->inbox_number,
+            'sender' => $request->sender,
+            'regarding' => $request->regarding,
+            'entry_date' => $request->entry_date,
+            'inbox_origin' => $request->inbox_origin,
+            'notes' => $request->notes,
+            'status' => 0,
+            'file' => $imageName
+        ]);
+        return redirect('/inbox');
     }
 
     /**
@@ -83,6 +97,8 @@ class InboxController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $inbox = Inbox::where('id', $id)->first();
+        $inbox->delete();
+        return redirect('/inbox');
     }
 }

@@ -33,7 +33,7 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>{{$path}} Page</h1>
+            <h1>@yield('header')</h1>
             <div class="section-header-breadcrumb">
               {{-- @if (url()->full()=='http://127.0.0.1:8000')
                   <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -53,7 +53,7 @@
       @include('partials.footer')
     </div>
   </div>
-
+  @yield('modal')
   <!-- General JS Scripts -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
