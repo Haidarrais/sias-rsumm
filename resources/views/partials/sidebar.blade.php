@@ -7,7 +7,7 @@
       <a href="index.html">St</a>
     </div>
     <ul class="sidebar-menu">
-      <li class="active"><a class="nav-link" href="blank.html"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
+      <li class="active"><a class="nav-link" href="/"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
       <li class="nav-item dropdown">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Layout</span></a>
         <ul class="dropdown-menu">
@@ -16,13 +16,7 @@
           <li><a class="nav-link" href="layout-top-navigation.html">Top Navigation</a></li>
         </ul>
       </li>
-      <li class="nav-item dropdown">
-        <a href="#" class="nav-link has-dropdown"><i class="fas fa-inbox"></i> <span>Surat Masuk</span></a>
-        <ul class="dropdown-menu">
-          <li><a class="nav-link" href="components-article.html">Entri Baru</a></li>
-          <li><a class="nav-link beep beep-sidebar" href="/inbox">Data Surat Masuk</a></li>
-        </ul>
-      </li>
+      <li ><a class="nav-link" href="/inbox"><i class="fas fa-fire"></i> <span>Surat Masuk</span></a></li>
       <li class="nav-item dropdown">
         <a href="#" class="nav-link has-dropdown"><i class="fas fa-paper-plane"></i> <span>Surat Keluar</span></a>
         <ul class="dropdown-menu">

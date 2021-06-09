@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Inbox;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class InboxController extends Controller
 {
-    private $pathImage = "upload/product/";
+    private $pathImage = "upload/surat-masuk";
     /**
      * Display a listing of the resource.
      *
@@ -39,7 +41,13 @@ class InboxController extends Controller
      */
     public function store(Request $request)
     {
-        $imageName = $request->file($this->pathImage, time().'.'.$request->file);
+        $request->validate([
+            'uploadfile' => 'required',
+        ]);
+        $files = $request->file('uploadfile');
+        $fileName = $files->hashName();
+        $files->move($this->pathImage,$fileName);
+        // $store = $fileName->store($this->pathImage.time());
         Inbox::create([
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
@@ -50,7 +58,7 @@ class InboxController extends Controller
             'inbox_origin' => $request->inbox_origin,
             'notes' => $request->notes,
             'status' => 0,
-            'file' => $imageName
+            'file' => $fileName
         ]);
         return redirect('/inbox');
     }
@@ -74,7 +82,7 @@ class InboxController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -86,7 +94,19 @@ class InboxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $inbox = Inbox::where('id', $id)->first();
+        $inbox = [
+            'user_id' => $request->user_id,
+            'journal_id' => $request->journal_id,
+            'inbox_number' => $request->inbox_number,
+            'sender' => $request->sender,
+            'regarding' => $request->regarding,
+            'entry_date' => $request->entry_date,
+            'inbox_origin' => $request->inbox_origin,
+            'notes' => $request->notes,
+            'status' => 0,
+            'file' => '',
+        ];
     }
 
     /**
@@ -98,6 +118,11 @@ class InboxController extends Controller
     public function destroy($id)
     {
         $inbox = Inbox::where('id', $id)->first();
+        $file = $inbox->file;
+        $filename = $this->pathImage.'/' . $file;
+        File::delete($filename);
+
+
         $inbox->delete();
         return redirect('/inbox');
     }
