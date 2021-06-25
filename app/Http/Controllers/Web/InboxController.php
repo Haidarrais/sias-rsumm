@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inbox;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -19,8 +20,9 @@ class InboxController extends Controller
     public function index()
     {
         $inboxes = Inbox::all();
+        $types = Type::all();
 
-        return view('pages.inbox.index', compact('inboxes', $inboxes));
+        return view('pages.inbox.index', compact('inboxes', 'types'));
     }
 
     /**
@@ -56,6 +58,7 @@ class InboxController extends Controller
             'regarding' => $request->regarding,
             'entry_date' => $request->entry_date,
             'inbox_origin' => $request->inbox_origin,
+            'type_id' => $request->type,
             'notes' => $request->notes,
             'status' => 0,
             'file' => $fileName
@@ -82,7 +85,7 @@ class InboxController extends Controller
      */
     public function edit($id)
     {
-        
+
     }
 
     /**
@@ -103,6 +106,7 @@ class InboxController extends Controller
             'regarding' => $request->regarding,
             'entry_date' => $request->entry_date,
             'inbox_origin' => $request->inbox_origin,
+            'type_id' => $request->type,
             'notes' => $request->notes,
             'status' => 0,
             'file' => '',

@@ -17,21 +17,9 @@
         </ul>
       </li>
       <li ><a class="nav-link" href="/inbox"><i class="fas fa-fire"></i> <span>Surat Masuk</span></a></li>
-      <li class="nav-item dropdown">
-        <a href="#" class="nav-link has-dropdown"><i class="fas fa-paper-plane"></i> <span>Surat Keluar</span></a>
-        <ul class="dropdown-menu">
-          <li><a class="nav-link" href="components-article.html">Entri Baru</a></li>
-          <li><a class="nav-link beep beep-sidebar" href="components-avatar.html">Data Surat Keluar</a></li>
-        </ul>
-      </li>
+      <li ><a class="nav-link" href="/outbox"><i class="fas fa-fire"></i> <span>Surat Keluar</span></a></li>
       <li class="menu-header">Pengaturan</li>
-      <li class="nav-item dropdown">
-        <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Auth</span></a>
-        <ul class="dropdown-menu">
-          <li><a href="auth-forgot-password.html">Forgot Password</a></li>
-        </ul>
-      </li>
-      <li><a class="nav-link" href="credits.html"><i class="fas fa-pencil-ruler"></i> <span>Credits</span></a></li>
+      <li ><a class="nav-link" href="/type"><i class="fas fa-folder"></i> <span>Tipe Surat</span></a></li>
     </ul>
 
     <div class="mt-4 mb-4 p-3 hide-sidebar-mini">

@@ -36,10 +36,10 @@ Surat Masuk
               <th>No</th>
               <th>Agenda</th>
               <th>No Surat</th>
-              <th>Pengirim</th>
+              <th>Sumber Surat</th>
               <th>Perihal</th>
               <th>Tgl Terima</th>
-              <th>Sumber Surat</th>
+              <th>Jenis Surat</th>
               <th>Status</th>
               <th style="text-align: center">Action</th>
             </tr>
@@ -62,10 +62,10 @@ Surat Masuk
                   <td>{{$inbox->sender}}</td>
                   <td>{{$inbox->regarding}}</td>
                   <td>{{$inbox->entry_date}}</td>
-                  <td>{{$inbox->inbox_origin}}</td>
+                  <td>{{$inbox->type->name}}</td>
                   <td>{!!$status!!}</td>
                   <td>
-                    <a href="#" class="btn btn-success">Detail</a>
+                    <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
                     <a href="#" onclick="event.preventDefault(); document.getElementById('delete-inbox').submit();"
                       class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
                     <form id="delete-inbox" action="{{ route('inbox.destroy', $inbox->id) }}" method="POST"
@@ -127,7 +127,7 @@ Surat Masuk
             <input type="text" class="form-control" name="inbox_number">
           </div>
           <div class="form-group col-md-6">
-            <label for="">Pengirim</label>
+            <label for="">Sumber Surat</label>
             <input type="text" class="form-control" name="sender">
           </div>
           <div class="form-group col-md-6">
@@ -141,6 +141,15 @@ Surat Masuk
           <div class="form-group col-md-6">
             <label for="">Example file input</label>
             <input type="file" class="form-control-file" name="uploadfile">
+          </div>
+          <div class="form-group col-md-12">
+            <label for="">Jenis Surat</label>
+            <select name="type" id="type_add" class="form-control">
+                <option value="" selected disabled>Pilih Jenis Surat</option>
+                @foreach ($types as $key => $type )
+                    <option value="{{$type->id}}">{{$type->name}}</option>
+                @endforeach
+            </select>
           </div>
           <div class="form-group col-md-12">
             <label for="">Notes</label>
@@ -201,6 +210,14 @@ Surat Masuk
             <span>{{substr($inbox->file, 0, 4). '~.' . $exe  }}</span>
           </div>
           <div class="form-group col-md-12">
+            <label for="">Jenis Surat</label>
+            <select name="type" id="type_add" class="form-control">
+                @foreach ($types as $key => $type )
+                    <option value="{{$type->id}}" @if($type->id == $inbox->type_id) selected @endif>{{$type->name}}</option>
+                @endforeach
+            </select>
+          </div>
+          <div class="form-group col-md-12">
             <label for="">Notes</label>
             <textarea class="form-control" name="notes">{{$inbox->notes}}</textarea>
           </div>
@@ -213,8 +230,29 @@ Surat Masuk
     </div>
   </div>
 </div>
-
 @endforeach
+
+@foreach ($inboxes as $key => $inbox)
+<div class="modal fade" id="modal_detail{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_edit{{$key}}" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
+    <div class="modal-content" style="height: 80%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-set-resiLabel">Detail Surat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body" style="height: calc(100% - 120px);">
+            <div class="container-fluid" style="height:100%;">
+                <div id="pdfview" class="col-md-12" style="height:100%;"></div>
+                <script>PDFObject.embed("{{asset('upload/surat-masuk/' . $inbox->file)}}", "#pdfview");</script>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+@endforeach
+
 @endsection
 @section('script')
 <script>
@@ -224,8 +262,15 @@ Surat Masuk
 </script>
 @foreach ($inboxes as $key => $inbox)
 <script>
-  $('#editInbox'+ <?=$key?>).on('click', () => {
-          $('#modal_edit'+ <?=$key?>).modal('show')
+  $('#editInbox'+ {{$key}}).on('click', () => {
+          $('#modal_edit'+ {{$key}}).modal('show')
+        });
+</script>
+@endforeach
+@foreach ($inboxes as $key => $inbox)
+<script>
+  $('#detailInbox'+ {{$key}}).on('click', () => {
+          $('#modal_detail'+ {{$key}}).modal('show')
         });
 </script>
 @endforeach
