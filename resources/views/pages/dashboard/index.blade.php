@@ -3,9 +3,9 @@
 
 @if (Request::path() != '/')
 @php
-    $paths = explode('/', Request::path());
-    $len = count($paths)-1;
-    echo ucfirst($paths[$len]);
+$paths = explode('/', Request::path());
+$len = count($paths)-1;
+echo ucfirst($paths[$len]);
 @endphp
 @else
 Dashboard
@@ -15,24 +15,51 @@ Dashboard
 <!-- Main Content -->
 
 
-    <div class="section-body">
-      <h2 class="section-title">Lorem ipsum</h2>
-      <p class="section-lead">This page is just an example for you to create your own page.</p>
-      <div class="card">
-        <div class="card-header">
-          <h4>Example Card</h4>
-        </div>
-        <div class="card-body">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </div>
-        <div class="card-footer bg-whitesmoke">
-          This is card footer
+<div class="section-body">
+  <h2 class="section-title">Selamat datang di Aplikasi SIAS RS UMM</h2>
+  <p class="section-lead">Anda login sebagai {{Auth::user()->name}}!</p>
+  <div class="card">
+    <div class="card-header">
+      <h4>Ringkasan Data Surat</h4>
+    </div>
+    <div class="card-body d-flex justify-content-around">
+      <div class="d-flex align-items-center ">
+        <div class="rounded-circle bg-primary  p-2"><i style="font-size: 25px;" class="fas fa-inbox text-white"></i></div>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <!-- <div> -->
+          <p class="lead pb-0 mb-0 font-weight-bold text-primary"><?= $inbox ?></p>
+          <!-- </div> -->
+          <div>Surat Masuk</div>
         </div>
       </div>
+      <div class="d-flex align-items-center ">
+        <div class="rounded-circle bg-primary" style="padding:.5rem .7rem">
+          <i style="font-size: 25px;" class="fab fa-telegram-plane text-white"></i>
+        </div>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <!-- <div> -->
+          <p class="lead pb-0 mb-0 font-weight-bold text-primary"><?= $inbox ?></p>
+          <!-- </div> -->
+          <div>Surat Keluar</div>
+        </div>
+      </div>
+      @hasrole('sekertaris')
+      <div class="d-flex align-items-center ">
+        <div class="rounded-circle bg-primary p-2" >
+          <i style="font-size: 25px;" class="fas fa-comments text-white"></i>
+        </div>
+        <div class="d-flex flex-column justify-content-start ml-2">
+          <!-- <div> -->
+          <p class="lead pb-0 mb-0 font-weight-bold text-primary"><?= $inbox ?></p>
+          <!-- </div> -->
+          <div>Memo</div>
+        </div>
+      </div>
+      @else
+      @endhasrole
+
     </div>
+   
+  </div>
+</div>
 @endsection

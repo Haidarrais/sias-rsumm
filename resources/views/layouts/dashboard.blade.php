@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -19,17 +20,18 @@
 <body>
   <div id="app">
     <div class="main-wrapper">
+      @include('sweetalert::alert')
       @include('partials.navbar')
       @include('partials.sidebar')
-        @php
-            $paths = explode('/', Request::path());
-            $len = count($paths)-1;
-            if (Request::path() != '/') {
-                $path = ucfirst($paths[$len]);
-            }else {
-                $path = 'Dashboard';
-            }
-        @endphp
+      @php
+      $paths = explode('/', Request::path());
+      $len = count($paths)-1;
+      if (Request::path() != '/') {
+      $path = ucfirst($paths[$len]);
+      }else {
+      $path = 'Dashboard';
+      }
+      @endphp
       <div class="main-content">
         <section class="section">
           <div class="section-header">
@@ -40,16 +42,16 @@
               @else --}}
               <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
               @if (Request::path() != "/")
-                    @foreach ($paths as $key => $path )
-                     <div class="breadcrumb-item">{{ucfirst($path)}}</div>
-                    @endforeach
+              @foreach ($paths as $key => $path )
+              <div class="breadcrumb-item">{{ucfirst($path)}}</div>
+              @endforeach
               @endif
               {{-- @endif --}}
             </div>
           </div>
-            @yield('content')
+          @yield('content')
         </section>
-    </div>
+      </div>
       @include('partials.footer')
     </div>
   </div>
@@ -72,4 +74,5 @@
 
   <!-- Page Specific JS File -->
 </body>
+
 </html>
