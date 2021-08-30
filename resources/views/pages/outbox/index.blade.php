@@ -12,7 +12,7 @@ Dashboard
 @endif
 @endsection
 @section('header')
-Surat Masuk
+Surat Keluar
 @endsection
 @section('content')
 <!-- Main Content -->
@@ -20,7 +20,7 @@ Surat Masuk
 
   <div class="card">
     <div class="card-header">
-      <h4>Data Surat Masuk</h4>
+      <h4>Data Surat Keluar</h4>
       <div class="card-header-action">
         <button class="btn btn-primary" id="addInbox">
           <i class="fas fa-plus"></i>
@@ -108,7 +108,7 @@ Surat Masuk
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Masuk</h5>
+        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Keluar</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -174,7 +174,7 @@ Surat Masuk
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Masuk</h5>
+        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Keluar</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

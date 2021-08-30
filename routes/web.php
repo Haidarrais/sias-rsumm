@@ -22,6 +22,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/item', [DashboardController::class, 'index'])->name('dashboarddot');
     Route::resource('inbox', InboxController::class);
+    Route::resource('outbox', InboxController::class);
     Route::resource('type', TypeController::class);
 });
 
