@@ -18,8 +18,10 @@
       </li>
       <li ><a class="nav-link" href="/inbox"><i class="fas fa-fire"></i> <span>Surat Masuk</span></a></li>
       <li ><a class="nav-link" href="/outbox"><i class="fas fa-fire"></i> <span>Surat Keluar</span></a></li>
+      @role('admin')
       <li class="menu-header">Pengaturan</li>
       <li ><a class="nav-link" href="/type"><i class="fas fa-folder"></i> <span>Tipe Surat</span></a></li>
+      @endrole
     </ul>
 
     <div class="mt-4 mb-4 p-3 hide-sidebar-mini">

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Inbox;
+use App\Models\Outbox;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-class InboxController extends Controller
+class OutboxController extends Controller
 {
     private $pathImage = "upload/surat-masuk";
     /**
@@ -19,10 +19,10 @@ class InboxController extends Controller
      */
     public function index()
     {
-        $inboxes = Inbox::all();
+        $outboxes = Outbox::all();
         $types = Type::all();
 
-        return view('pages.inbox.index', compact('inboxes', 'types'));
+        return view('pages.outbox.index', compact('outboxes', 'types'));
     }
 
     /**
@@ -50,21 +50,21 @@ class InboxController extends Controller
         $fileName = $files->hashName();
         $files->move($this->pathImage,$fileName);
         // $store = $fileName->store($this->pathImage.time());
-        Inbox::create([
+        Outbox::create([
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
-            'inbox_number' => $request->inbox_number,
+            'outbox_number' => $request->outbox_number,
             'sender' => $request->sender,
             'destination' => $request->destination,
             'regarding' => $request->regarding,
             'entry_date' => $request->entry_date,
-            'inbox_origin' => $request->inbox_origin,
+            'outbox_origin' => $request->outbox_origin,
             'type_id' => $request->type,
             'notes' => $request->notes,
             'status' => 0,
             'file' => $fileName
         ]);
-        return redirect('/inbox');
+        return redirect('/outbox');
     }
 
     /**
@@ -98,9 +98,9 @@ class InboxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $inbox = Inbox::where('id', $id)->first();
+        $outbox = Outbox::where('id', $id)->first();
         if ($request->file('uploadfile')) {
-            $file = $inbox->file;
+            $file = $outbox->file;
             $filename = $this->pathImage.'/' . $file;
             File::delete($filename);
             
@@ -108,22 +108,22 @@ class InboxController extends Controller
             $fileName = $files->hashName();
             $files->move($this->pathImage , $fileName);
         }
-        $newInbox = [
+        $newoutbox = [
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
-            'inbox_number' => $request->inbox_number,
+            'outbox_number' => $request->outbox_number,
             'sender' => $request->sender,
             'destination' => $request->destination,
             'regarding' => $request->regarding,
             'entry_date' => $request->entry_date,
-            'inbox_origin' => $request->inbox_origin,
+            'outbox_origin' => $request->outbox_origin,
             'type_id' => $request->type,
             'notes' => $request->notes,
             'status' => 0,
-            'file' =>  $request->file('uploadfile')?$fileName:$inbox->file
+            'file' =>  $request->file('uploadfile')?$fileName:$outbox->file
         ];
-        $inbox->update($newInbox);
-        return redirect('/inbox');
+        $outbox->update($newoutbox);
+        return redirect('/outbox');
     }
 
     /**
@@ -134,13 +134,13 @@ class InboxController extends Controller
      */
     public function destroy($id)
     {
-        $inbox = Inbox::where('id', $id)->first();
-        $file = $inbox->file;
+        $outbox = Outbox::where('id', $id)->first();
+        $file = $outbox->file;
         $filename = $this->pathImage.'/' . $file;
         File::delete($filename);
 
 
-        $inbox->delete();
-        return redirect('/inbox');
+        $outbox->delete();
+        return redirect('/outbox');
     }
 }
