@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Type;
+use App\Models\Disposition;
+use App\Models\Inbox;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class TypeController extends Controller
+class DispositionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +17,7 @@ class TypeController extends Controller
      */
     public function index()
     {
-        $types = Type::all();
-        return view('pages.type.index', compact('types', $types));
+        //
     }
 
     /**
@@ -38,11 +38,16 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        Type::create([
-            'name' => $request->name,
+        Disposition::create([
+            'surat_id' => $request->surat_id,
+            'tujuan' => $request->tujuan,
+            'catatan' => $request->catatan,
             'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'updated_at' => Carbon::now(),
         ]);
+        $inbox = Inbox::where('id', '=', $request->surat_id)->first();
+        $inbox->status = 2;
+        $inbox->save();
         return redirect()->back();
     }
 
@@ -86,9 +91,8 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Type $type)
+    public function destroy($id)
     {
-        $type->delete();
-        return redirect()->back();
+        //
     }
 }

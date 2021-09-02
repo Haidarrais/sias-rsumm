@@ -39,13 +39,11 @@ Jenis Surat
                     <td>{{$key+1}}</td>
                     <td>{{$type->name}}</td>
                     <td>
-                      <a href="#" onclick="event.preventDefault(); document.getElementById('delete-inbox').submit();"
-                        class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
-                      <form id="delete-inbox" action="{{ route('type.destroy', $type->id) }}" method="POST"
-                        style="display: none;">
-                        @method('DELETE')
-                        @csrf
-                      </form>
+                        <form action="{{ route('type.destroy', $type->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                        </form>
                     </td>
               </tr>
               @endforeach

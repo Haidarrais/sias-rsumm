@@ -22,10 +22,12 @@ Surat Masuk
     <div class="card-header">
       <h4>Data Surat Masuk</h4>
       <div class="card-header-action">
+        @role('admin')
         <button class="btn btn-primary" id="addInbox">
           <i class="fas fa-plus"></i>
           <span>Tambah Surat</span>
         </button>
+        @endrole
       </div>
     </div>
     <div class="card-body p-0">
@@ -51,9 +53,9 @@ Surat Masuk
               }elseif ($inbox->status == 1) {
               $status = '<div class="badge badge-warning">Dalam Review</div>';
               }elseif ($inbox->status == 2) {
-              $status = '<div class="badge badge-success">Diterima/div>';
+              $status = '<div class="badge badge-success">Diterima</div>';
                 }elseif ($inbox->status == 3) {
-                $status = '<div class="badge badge-danger">Ditolak/div>';
+                $status = '<div class="badge badge-danger">Ditolak</div>';
                   }
                   @endphp
                   <td>{{$key+1}}</td>
@@ -62,19 +64,24 @@ Surat Masuk
                   <td>{{$inbox->sender}}</td>
                   <td>{{$inbox->regarding}}</td>
                   <td>{{$inbox->entry_date}}</td>
-                  <td>{{$inbox->type->name}}</td>
+                  <td>{{$inbox->type->name ?? ''}}</td>
                   <td>{!!$status!!}</td>
                   <td>
-                    <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('delete-inbox').submit();"
-                      class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
-                    <form id="delete-inbox" action="{{ route('inbox.destroy', $inbox->id) }}" method="POST"
-                      style="display: none;">
-                      @method('DELETE')
-                      @csrf
+                    @role('pimpinan')
+                    @if ($inbox->status != 2)
+                        <a href="#" class="btn btn-success" id="dispositionInbox{{$key}}">Disposisi</a>
+                    @endif
+                    @endrole
+                    @role('admin')
+                    <form action="{{ route('inbox.destroy', $inbox->id) }}" method="POST">
+                        <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
+                        <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                     </form>
+                    @endrole
                     {{-- modal_edit{{$key}} --}}
-                    <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
                     {{-- <button onclick="alert('modal_edit{{$key}}');  document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
                   </td>
             </tr>
@@ -164,6 +171,39 @@ Surat Masuk
     </div>
   </div>
 </div>
+
+@foreach ($inboxes as $key => $inbox)
+<div class="modal fade" id="modal_disposition{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_disposition{{$key}}" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-set-resiLabel">Disposisi Surat Masuk</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{route('disposition.store')}}" method="POST" id="form-add-inbox-data" enctype="multipart/form-data">
+        <input type="text" class="form-control" name="surat_id" value="{{$inbox->id}}" hidden>
+        @csrf
+        <div class="modal-body row">
+          <div class="form-group col-md-12">
+            <label for="">Disposisikan ke</label>
+            <input type="text" class="form-control" name="tujuan">
+          </div>
+          <div class="form-group col-md-12">
+            <label for="">Catatan</label>
+            <textarea class="form-control" name="catatan"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endforeach
 
 @foreach ($inboxes as $key => $inbox)
 <div class="modal fade" id="modal_edit{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_edit{{$key}}" aria-hidden="true">
@@ -264,6 +304,13 @@ Surat Masuk
 <script>
   $('#editInbox'+ {{$key}}).on('click', () => {
           $('#modal_edit'+ {{$key}}).modal('show')
+        });
+</script>
+@endforeach
+@foreach ($inboxes as $key => $inbox)
+<script>
+  $('#dispositionInbox'+ {{$key}}).on('click', () => {
+          $('#modal_disposition'+ {{$key}}).modal('show')
         });
 </script>
 @endforeach
