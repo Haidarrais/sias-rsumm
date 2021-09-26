@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -8,6 +9,7 @@
   <!-- General CSS Files -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.5/pdfobject.min.js"></script>
 
   <!-- CSS Libraries -->
 
@@ -19,17 +21,18 @@
 <body>
   <div id="app">
     <div class="main-wrapper">
+      @include('sweetalert::alert')
       @include('partials.navbar')
       @include('partials.sidebar')
-        @php
-            $paths = explode('/', Request::path());
-            $len = count($paths)-1;
-            if (Request::path() != '/') {
-                $path = ucfirst($paths[$len]);
-            }else {
-                $path = 'Dashboard';
-            }
-        @endphp
+      @php
+      $paths = explode('/', Request::path());
+      $len = count($paths)-1;
+      if (Request::path() != '/') {
+      $path = ucfirst($paths[$len]);
+      }else {
+      $path = 'Dashboard';
+      }
+      @endphp
       <div class="main-content">
         <section class="section">
           <div class="section-header">
@@ -40,20 +43,19 @@
               @else --}}
               <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
               @if (Request::path() != "/")
-                    @foreach ($paths as $key => $path )
-                     <div class="breadcrumb-item">{{ucfirst($path)}}</div>
-                    @endforeach
+              @foreach ($paths as $key => $path )
+              <div class="breadcrumb-item">{{ucfirst($path)}}</div>
+              @endforeach
               @endif
               {{-- @endif --}}
             </div>
           </div>
-            @yield('content')
+          @yield('content')
         </section>
-    </div>
+      </div>
       @include('partials.footer')
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.5/pdfobject.min.js"></script>
   @yield('modal')
   <!-- General JS Scripts -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -72,4 +74,5 @@
 
   <!-- Page Specific JS File -->
 </body>
+
 </html>
