@@ -58,12 +58,7 @@ Dashboard
       @endhasrole
 
     </div>
-<<<<<<< HEAD
-  </div>
-@endsection
-=======
 
   </div>
 </div>
 @endsection
->>>>>>> c283be542b2a32daa0e33716d79c08c47751f79a
