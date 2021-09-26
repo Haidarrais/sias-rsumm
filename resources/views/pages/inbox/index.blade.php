@@ -48,15 +48,15 @@ Surat Masuk
             </tr>
             @foreach ($inboxes as $key => $inbox)
             <tr>
-              @php
-              if ($inbox->status == 0) {
-              $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
-              }elseif ($inbox->status == 1) {
-              $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
+                @php
+                if ($inbox->status == 0) {
+                    $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
+                }elseif ($inbox->status == 1) {
+                    $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
                 }elseif ($inbox->status == 2) {
-                $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
-                  }
-                  @endphp
+                    $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
+                }
+                @endphp
                   <td>{{$key+1}}</td>
                   <td>{{$inbox->journal_id}}</td>
                   <td>{{$inbox->inbox_number}}</td>
