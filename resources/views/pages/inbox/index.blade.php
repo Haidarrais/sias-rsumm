@@ -52,17 +52,9 @@ Surat Masuk
               if ($inbox->status == 0) {
               $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
               }elseif ($inbox->status == 1) {
-<<<<<<< HEAD
-              $status = '<div class="badge badge-warning">Dalam Review</div>';
-              }elseif ($inbox->status == 2) {
-              $status = '<div class="badge badge-success">Diterima</div>';
-                }elseif ($inbox->status == 3) {
-                $status = '<div class="badge badge-danger">Ditolak</div>';
-=======
               $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
                 }elseif ($inbox->status == 2) {
                 $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
->>>>>>> c283be542b2a32daa0e33716d79c08c47751f79a
                   }
                   @endphp
                   <td>{{$key+1}}</td>
