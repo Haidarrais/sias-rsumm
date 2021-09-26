@@ -118,6 +118,7 @@ return [
     | will not be safe. Please do this before deploying an application!
     |
     */
+    'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
 
     'key' => env('APP_KEY'),
 
@@ -160,7 +161,7 @@ return [
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
-        Illuminate\View\ViewServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class, RealRashid\SweetAlert\SweetAlertServiceProvider::class,
 
         /*
          * Package Service Providers...

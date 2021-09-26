@@ -6,19 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Inbox extends Model
+class Outbox extends Model
 {
     use HasFactory;
-    protected $table = 'inbox';
+    protected $table = 'outbox';
     protected $fillable = [
         'user_id',
         'journal_id',
-        'inbox_number',
+        'outbox_number',
         'sender',
         'regarding',
         'destination',
         'entry_date',
-        'inbox_origin',
+        'outbox_origin',
         'type_id',
         'notes',
         'status',

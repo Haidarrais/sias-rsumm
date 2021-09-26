@@ -12,7 +12,7 @@ Dashboard
 @endif
 @endsection
 @section('header')
-Surat Masuk
+Surat Keluar
 @endsection
 @section('content')
 <!-- Main Content -->
@@ -20,14 +20,12 @@ Surat Masuk
 
   <div class="card">
     <div class="card-header">
-      <h4>Data Surat Masuk</h4>
+      <h4>Data Surat Keluar</h4>
       <div class="card-header-action">
-        @role('admin')
         <button class="btn btn-primary" id="addInbox">
           <i class="fas fa-plus"></i>
           <span>Tambah Surat</span>
         </button>
-        @endrole
       </div>
     </div>
     <div class="card-body p-0">
@@ -49,14 +47,14 @@ Surat Masuk
             @foreach ($inboxes as $key => $inbox)
             <tr>
               @php
-                if ($inbox->status == 0) {
-                  $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
-                } elseif ($inbox->status == 1) {
-                $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
+              if ($inbox->status == 0) {
+              $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
+              }elseif ($inbox->status == 1) {
+              $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
                 }elseif ($inbox->status == 2) {
-                  $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
-                }
-              @endphp
+                $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
+                  }
+                  @endphp
                   <td>{{$key+1}}</td>
                   <td>{{$inbox->journal_id}}</td>
                   <td>{{$inbox->inbox_number}}</td>
@@ -64,24 +62,19 @@ Surat Masuk
                   <td>{{$inbox->destination}}</td>
                   <td>{{$inbox->regarding}}</td>
                   <td>{{$inbox->entry_date}}</td>
-                  <td>{{$inbox->type->name ?? ''}}</td>
+                  <td>{{$inbox->type->name}}</td>
                   <td>{!!$status!!}</td>
                   <td>
-                    @role('pimpinan')
-                    @if ($inbox->status != 2)
-                        <a href="#" class="btn btn-success" id="dispositionInbox{{$key}}">Disposisi</a>
-                    @endif
-                    @endrole
-                    @role('admin')
-                    <form action="{{ route('inbox.destroy', $inbox->id) }}" method="POST">
-                        <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
-                        <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                    <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('delete-inbox').submit();"
+                      class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                    <form id="delete-inbox" action="{{ route('inbox.destroy', $inbox->id) }}" method="POST"
+                      style="display: none;">
+                      @method('DELETE')
+                      @csrf
                     </form>
-                    @endrole
                     {{-- modal_edit{{$key}} --}}
+                    <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
                     {{-- <button onclick="alert('modal_edit{{$key}}');  document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
                   </td>
             </tr>
@@ -115,7 +108,7 @@ Surat Masuk
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Masuk</h5>
+        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Keluar</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -177,44 +170,11 @@ Surat Masuk
 </div>
 
 @foreach ($inboxes as $key => $inbox)
-<div class="modal fade" id="modal_disposition{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_disposition{{$key}}" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Disposisi Surat Masuk</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="{{route('disposition.store')}}" method="POST" id="form-add-inbox-data" enctype="multipart/form-data">
-        <input type="text" class="form-control" name="surat_id" value="{{$inbox->id}}" hidden>
-        @csrf
-        <div class="modal-body row">
-          <div class="form-group col-md-12">
-            <label for="">Disposisikan ke</label>
-            <input type="text" class="form-control" name="tujuan">
-          </div>
-          <div class="form-group col-md-12">
-            <label for="">Catatan</label>
-            <textarea class="form-control" name="catatan"></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-@endforeach
-
-@foreach ($inboxes as $key => $inbox)
 <div class="modal fade" id="modal_edit{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_edit{{$key}}" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Masuk</h5>
+        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Keluar</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -319,13 +279,6 @@ Surat Masuk
 <script>
   $('#editInbox'+ {{$key}}).on('click', () => {
           $('#modal_edit'+ {{$key}}).modal('show')
-        });
-</script>
-@endforeach
-@foreach ($inboxes as $key => $inbox)
-<script>
-  $('#dispositionInbox'+ {{$key}}).on('click', () => {
-          $('#modal_disposition'+ {{$key}}).modal('show')
         });
 </script>
 @endforeach
