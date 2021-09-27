@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Mail;
 use App\Models\Outbox;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class OutboxController extends Controller
      */
     public function index()
     {
-        $outboxes = Outbox::all();
+        $outboxes = Mail::where('mail_type', 1)->get();
         $types = Type::all();
 
         return view('pages.outbox.index', compact('outboxes', 'types'));
@@ -50,16 +51,17 @@ class OutboxController extends Controller
         $fileName = $files->hashName();
         $files->move($this->pathImage,$fileName);
         // $store = $fileName->store($this->pathImage.time());
-        Outbox::create([
+        Mail::create([
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
-            'outbox_number' => $request->outbox_number,
+            'number' => $request->outbox_number,
             'sender' => $request->sender,
             'destination' => $request->destination,
             'regarding' => $request->regarding,
             'entry_date' => $request->entry_date,
-            'outbox_origin' => $request->outbox_origin,
+            'origin' => $request->outbox_origin,
             'type_id' => $request->type,
+            'mail_type' => 1,
             'notes' => $request->notes,
             'status' => 0,
             'file' => $fileName
@@ -98,12 +100,12 @@ class OutboxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $outbox = Outbox::where('id', $id)->first();
+        $outbox = Mail::where('id', $id)->first();
         if ($request->file('uploadfile')) {
             $file = $outbox->file;
             $filename = $this->pathImage.'/' . $file;
             File::delete($filename);
-            
+
             $files = $request->file('uploadfile');
             $fileName = $files->hashName();
             $files->move($this->pathImage , $fileName);
@@ -111,13 +113,14 @@ class OutboxController extends Controller
         $newoutbox = [
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
-            'outbox_number' => $request->outbox_number,
+            'number' => $request->outbox_number,
             'sender' => $request->sender,
             'destination' => $request->destination,
             'regarding' => $request->regarding,
             'entry_date' => $request->entry_date,
-            'outbox_origin' => $request->outbox_origin,
+            'origin' => $request->outbox_origin,
             'type_id' => $request->type,
+            'mail_type' => 1,
             'notes' => $request->notes,
             'status' => 0,
             'file' =>  $request->file('uploadfile')?$fileName:$outbox->file
@@ -134,7 +137,7 @@ class OutboxController extends Controller
      */
     public function destroy($id)
     {
-        $outbox = Outbox::where('id', $id)->first();
+        $outbox = Mail::where('id', $id)->first();
         $file = $outbox->file;
         $filename = $this->pathImage.'/' . $file;
         File::delete($filename);

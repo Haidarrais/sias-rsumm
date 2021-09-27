@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Inbox;
+use App\Models\Mail;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -19,7 +19,7 @@ class InboxController extends Controller
      */
     public function index()
     {
-        $inboxes = Inbox::all();
+        $inboxes = Mail::where('mail_type', 0)->get();
         $types = Type::all();
 
         return view('pages.inbox.index', compact('inboxes', 'types'));
@@ -50,16 +50,17 @@ class InboxController extends Controller
         $fileName = $files->hashName();
         $files->move($this->pathImage,$fileName);
         // $store = $fileName->store($this->pathImage.time());
-        Inbox::create([
+        Mail::create([
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
-            'inbox_number' => $request->inbox_number,
+            'number' => $request->inbox_number,
             'sender' => $request->sender,
             'destination' => $request->destination,
             'regarding' => $request->regarding,
             'entry_date' => $request->entry_date,
-            'inbox_origin' => $request->inbox_origin,
+            'origin' => $request->inbox_origin,
             'type_id' => $request->type,
+            'mail_type' => 0,
             'notes' => $request->notes,
             'status' => 0,
             'file' => $fileName
@@ -98,12 +99,12 @@ class InboxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $inbox = Inbox::where('id', $id)->first();
+        $inbox = Mail::where('id', $id)->first();
         if ($request->file('uploadfile')) {
             $file = $inbox->file;
             $filename = $this->pathImage.'/' . $file;
             File::delete($filename);
-            
+
             $files = $request->file('uploadfile');
             $fileName = $files->hashName();
             $files->move($this->pathImage , $fileName);
@@ -111,13 +112,14 @@ class InboxController extends Controller
         $newInbox = [
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
-            'inbox_number' => $request->inbox_number,
+            'number' => $request->inbox_number,
             'sender' => $request->sender,
             'destination' => $request->destination,
             'regarding' => $request->regarding,
             'entry_date' => $request->entry_date,
-            'inbox_origin' => $request->inbox_origin,
+            'origin' => $request->inbox_origin,
             'type_id' => $request->type,
+            'mail_type' => 0,
             'notes' => $request->notes,
             'status' => 0,
             'file' =>  $request->file('uploadfile')?$fileName:$inbox->file
@@ -134,7 +136,7 @@ class InboxController extends Controller
      */
     public function destroy($id)
     {
-        $inbox = Inbox::where('id', $id)->first();
+        $inbox = Mail::where('id', $id)->first();
         $file = $inbox->file;
         $filename = $this->pathImage.'/' . $file;
         File::delete($filename);

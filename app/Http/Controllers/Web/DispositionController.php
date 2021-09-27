@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Disposition;
 use App\Models\Inbox;
+use App\Models\Mail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -45,7 +46,7 @@ class DispositionController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
-        $inbox = Inbox::where('id', '=', $request->surat_id)->first();
+        $inbox = Mail::where('id', '=', $request->surat_id)->first();
         $inbox->status = 2;
         $inbox->save();
         return redirect()->back();
