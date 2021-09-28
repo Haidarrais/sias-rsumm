@@ -20,7 +20,7 @@ class OutboxController extends Controller
      */
     public function index()
     {
-        $outboxes = Mail::where('mail_type', 1)->get();
+        $outboxes = Mail::where('mail_type', '=', '1')->get();
         $types = Type::all();
 
         return view('pages.outbox.index', compact('outboxes', 'types'));

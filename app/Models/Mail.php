@@ -8,9 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Mail extends Model
 {
     use HasFactory;
-
+    protected $fillable =
+    [
+        'user_id',
+        'journal_id',
+        'number',
+        'sender',
+        'regarding',
+        'entry_date',
+        'origin',
+        'notes',
+        'type_id',
+        'mail_type',
+        'status',
+        'file',
+    ];
     public function type()
     {
-        $this->hasOne(Type::class, 'type_id');
+        return $this->belongsTo(Type::class);
     }
 }

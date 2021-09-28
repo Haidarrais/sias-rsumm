@@ -11,9 +11,9 @@ class DashboardController extends Controller
 {
     public function index(){
         $user = User::all();
-        $inbox = count(Mail::where('mail_type', 0)->get());
-        $outbox = count(Mail::where('mail_type', 1)->get());
+        $inbox = count(Mail::where('mail_type', '=', '0')->get());
+        $outbox = count(Mail::where('mail_type', '=', '1')->get());
 
-        return view('pages.dashboard.index', compact('user', $user), compact('inbox'), compact('outbox'));
+        return view('pages.dashboard.index', compact('user', 'inbox', 'outbox'));
     }
 }

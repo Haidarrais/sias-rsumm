@@ -19,7 +19,7 @@ class InboxController extends Controller
      */
     public function index()
     {
-        $inboxes = Mail::where('mail_type', 0)->get();
+        $inboxes = Mail::where('mail_type', '=', '0')->get();
         $types = Type::all();
 
         return view('pages.inbox.index', compact('inboxes', 'types'));

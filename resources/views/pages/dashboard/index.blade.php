@@ -38,7 +38,7 @@ Dashboard
         </div>
         <div class="d-flex flex-column justify-content-start ml-2">
           <!-- <div> -->
-          <p class="lead pb-0 mb-0 font-weight-bold text-primary"><?= $inbox ?></p>
+          <p class="lead pb-0 mb-0 font-weight-bold text-primary"><?= $outbox ?></p>
           <!-- </div> -->
           <div>Surat Keluar</div>
         </div>
