@@ -11,7 +11,7 @@
       <li><a class="nav-link" href="/inbox"><i class="fas fa-inbox"></i> <span>Surat Masuk</span></a></li>
       <li><a class="nav-link" href="/outbox"><i class="fas fa-paper-plane"></i> <span>Surat Keluar</span></a></li>
       @hasrole('sekertaris')
-        <li><a class="nav-link" href="/memo"><i class="fas fa-comments"></i> <span>Memo</span></a></li>
+      <li><a class="nav-link" href="/memo"><i class="fas fa-comments"></i> <span>Memo</span></a></li>
       @endhasrole
       <li class="menu-header">Pengaturan</li>
       <li><a class="nav-link" href="/type"><i class="fas fa-folder"></i> <span>Tipe Surat</span></a></li>

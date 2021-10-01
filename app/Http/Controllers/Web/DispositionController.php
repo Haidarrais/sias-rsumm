@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Disposition;
-use App\Models\Inbox;
 use App\Models\Mail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
