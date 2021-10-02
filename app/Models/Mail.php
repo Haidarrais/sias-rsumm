@@ -14,6 +14,7 @@ class Mail extends Model
         'journal_id',
         'number',
         'sender',
+        'destination',
         'regarding',
         'entry_date',
         'origin',

@@ -59,7 +59,7 @@ Surat Masuk
                 @endphp
                   <td>{{$key+1}}</td>
                   <td>{{$inbox->journal_id}}</td>
-                  <td>{{$inbox->inbox_number}}</td>
+                  <td>{{$inbox->number}}</td>
                   <td>{{$inbox->sender}}</td>
                   <td>{{$inbox->destination}}</td>
                   <td>{{$inbox->regarding}}</td>
@@ -231,7 +231,7 @@ Surat Masuk
           </div>
           <div class="form-group col-md-6">
             <label for="">Nomor Surat</label>
-            <input type="text" class="form-control" name="inbox_number" value="{{$inbox->inbox_number}}">
+            <input type="text" class="form-control" name="inbox_number" value="{{$inbox->number}}">
           </div>
           <div class="form-group col-md-6">
             <label for="">Pengirim</label>

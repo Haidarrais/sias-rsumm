@@ -54,7 +54,7 @@ class OutboxController extends Controller
         Mail::create([
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
-            'number' => $request->outbox_number,
+            'number' => $request->number,
             'sender' => $request->sender,
             'destination' => $request->destination,
             'regarding' => $request->regarding,
