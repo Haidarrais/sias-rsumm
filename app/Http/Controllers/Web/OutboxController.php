@@ -48,13 +48,12 @@ class OutboxController extends Controller
             'uploadfile' => 'required',
         ]);
         $files = $request->file('uploadfile');
-        $fileName = $files->hashName();
-        $files->move($this->pathImage,$fileName);
+        $fileName = md5($files . microtime());
         // $store = $fileName->store($this->pathImage.time());
-        Mail::create([
+        $mail = Mail::create([
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
-            'number' => $request->number,
+            'number' => $request->outbox_number,
             'sender' => $request->sender,
             'destination' => $request->destination,
             'regarding' => $request->regarding,
@@ -66,6 +65,7 @@ class OutboxController extends Controller
             'status' => 0,
             'file' => $fileName
         ]);
+        $files->move($this->pathImage,$mail->file);
         return redirect('/outbox');
     }
 
