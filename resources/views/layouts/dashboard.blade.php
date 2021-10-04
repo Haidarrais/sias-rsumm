@@ -12,7 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.5/pdfobject.min.js"></script>
 
   <!-- CSS Libraries -->
-
+  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{asset('/assets/css/style.css')}}">
   <link rel="stylesheet" href="{{asset('/assets/css/components.css')}}">
