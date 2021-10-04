@@ -47,9 +47,10 @@ class InboxController extends Controller
             'uploadfile' => 'required',
         ]);
         $files = $request->file('uploadfile');
-        $fileName = md5($files . microtime());
+        $fileName = $files->hashName();
+        $files->move($this->pathImage,$fileName);
         // $store = $fileName->store($this->pathImage.time());
-        $mail = Mail::create([
+        Mail::create([
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
             'number' => $request->inbox_number,
@@ -59,12 +60,11 @@ class InboxController extends Controller
             'entry_date' => $request->entry_date,
             'origin' => $request->inbox_origin,
             'type_id' => $request->type,
-            'mail_type' => 1,
+            'mail_type' => 0,
             'notes' => $request->notes,
             'status' => 0,
             'file' => $fileName
         ]);
-        $files->move($this->pathImage,$mail->file);
         return redirect('/inbox');
     }
 
