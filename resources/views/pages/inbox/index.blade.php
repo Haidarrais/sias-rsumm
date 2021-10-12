@@ -48,42 +48,42 @@ Surat Masuk
             </tr>
             @foreach ($inboxes as $key => $inbox)
             <tr>
-                @php
-                if ($inbox->status == 0) {
-                    $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
-                }elseif ($inbox->status == 1) {
-                    $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
-                }elseif ($inbox->status == 2) {
-                    $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
-                }
-                @endphp
-                  <td>{{$key+1}}</td>
-                  <td>{{$inbox->journal_id}}</td>
-                  <td>{{$inbox->number}}</td>
-                  <td>{{$inbox->sender}}</td>
-                  <td>{{$inbox->destination}}</td>
-                  <td>{{$inbox->regarding}}</td>
-                  <td>{{$inbox->entry_date}}</td>
-                  <td>{{$inbox->type->name ?? ''}}</td>
-                  <td>{!!$status!!}</td>
-                  <td>
-                    @role('pimpinan')
-                    @if ($inbox->status != 2)
-                        <a href="#" class="btn btn-success" id="dispositionInbox{{$key}}">Disposisi</a>
-                    @endif
-                    @endrole
-                    @role('admin')
-                    <form action="{{ route('inbox.destroy', $inbox->id) }}" method="POST">
-                        <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
-                        <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                    </form>
-                    @endrole
-                    {{-- modal_edit{{$key}} --}}
-                    {{-- <button onclick="alert('modal_edit{{$key}}');  document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
-                  </td>
+              @php
+              if ($inbox->status == 0) {
+              $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
+              }elseif ($inbox->status == 1) {
+              $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
+              }elseif ($inbox->status == 2) {
+              $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
+              }
+              @endphp
+              <td>{{$key+1}}</td>
+              <td>{{$inbox->journal_id}}</td>
+              <td>{{$inbox->number}}</td>
+              <td>{{$inbox->sender}}</td>
+              <td>{{$inbox->destination}}</td>
+              <td>{{$inbox->regarding}}</td>
+              <td>{{$inbox->entry_date}}</td>
+              <td>{{$inbox->type->name ?? ''}}</td>
+              <td>{!!$status!!}</td>
+              <td>
+                @role('pimpinan')
+                @if ($inbox->status != 2)
+                <a href="#" class="btn btn-success" id="dispositionInbox{{$key}}">Disposisi</a>
+                @endif
+                @endrole
+                @role('admin')
+                <form action="{{ route('inbox.destroy', $inbox->id) }}" method="POST">
+                  <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
+                  <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                </form>
+                @endrole
+                {{-- modal_edit{{$key}} --}}
+                {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
+              </td>
             </tr>
             @endforeach
           </tbody>
@@ -156,10 +156,10 @@ Surat Masuk
           <div class="form-group col-md-6">
             <label for="">Jenis Surat</label>
             <select name="type" id="type_add" class="form-control">
-                <option value="" selected disabled>Pilih Jenis Surat</option>
-                @foreach ($types as $key => $type )
-                    <option value="{{$type->id}}">{{$type->name}}</option>
-                @endforeach
+              <option value="" selected disabled>Pilih Jenis Surat</option>
+              @foreach ($types as $key => $type )
+              <option value="{{$type->id}}">{{$type->name}}</option>
+              @endforeach
             </select>
           </div>
           <div class="form-group col-md-12">
@@ -190,10 +190,17 @@ Surat Masuk
         <input type="text" class="form-control" name="surat_id" value="{{$inbox->id}}" hidden>
         @csrf
         <div class="modal-body row">
-          <div class="form-group col-md-12">
-            <label for="">Disposisikan ke</label>
-            <input type="text" class="form-control" name="tujuan">
-          </div>
+            <!-- <input type="text" class="form-control" name="tujuan"> -->
+            <div class="form-group col-md-12">
+              <label for="">Disposisikan ke</label>
+              <!-- <label for="">Jenis Surat</label> -->
+              <select name="tujuan" id="" class="form-control">
+                <option value="" selected disabled>Pilih Divisi / Bagian</option>
+                @foreach ($divisions as $key => $division )
+                <option value="{{$division->id}}">{{$division->name}}</option>
+                @endforeach
+                </select>
+            </div>
           <div class="form-group col-md-12">
             <label for="">Catatan</label>
             <textarea class="form-control" name="catatan"></textarea>
@@ -251,8 +258,8 @@ Surat Masuk
           </div>
           <div class="form-group col-md-6">
             @php
-              $splitName =  explode('.', $inbox->file );
-              $exe = $splitName[count($splitName)-1];
+            $splitName = explode('.', $inbox->file );
+            $exe = $splitName[count($splitName)-1];
             @endphp
             <label for="">Example file input</label>
             <input type="file" class="form-control-file" name="uploadfile" value="{{ url('upload/surat-masuk/', $inbox->file) }}">
@@ -261,9 +268,9 @@ Surat Masuk
           <div class="form-group col-md-6">
             <label for="">Jenis Surat</label>
             <select name="type" id="type_add" class="form-control">
-                @foreach ($types as $key => $type )
-                    <option value="{{$type->id}}" @if($type->id == $inbox->type_id) selected @endif>{{$type->name}}</option>
-                @endforeach
+              @foreach ($types as $key => $type )
+              <option value="{{$type->id}}" @if($type->id == $inbox->type_id) selected @endif>{{$type->name}}</option>
+              @endforeach
             </select>
           </div>
           <div class="form-group col-md-12">
@@ -291,18 +298,25 @@ Surat Masuk
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-        <div class="modal-body" style="height: calc(100% - 120px);">
-            <div class="container-fluid" style="height:100%;">
-                <div id="pdfview" class="col-md-12" style="height:100%;"></div>
-                <script> if(PDFObject.supportsPDFs){
-                   PDFObject.embed("{{asset('upload/surat-masuk/' . $inbox->file)}}", "#pdfview",  {height: "400px",
-    pdfOpenParams: { view: 'FitV', page: '2' }});
-   console.log("Yay, this browser supports inline PDFs.");
-} else {
-   console.log("Boo, inline PDFs are not supported by this browser");
-}</script>
-            </div>
+      <div class="modal-body" style="height: calc(100% - 120px);">
+        <div class="container-fluid" style="height:100%;">
+          <div id="pdfview" class="col-md-12" style="height:100%;"></div>
+          <script>
+            if (PDFObject.supportsPDFs) {
+              PDFObject.embed("{{asset('upload/surat-masuk/' . $inbox->file)}}", "#pdfview", {
+                height: "400px",
+                pdfOpenParams: {
+                  view: 'FitV',
+                  page: '2'
+                }
+              });
+              console.log("Yay, this browser supports inline PDFs.");
+            } else {
+              console.log("Boo, inline PDFs are not supported by this browser");
+            }
+          </script>
         </div>
+      </div>
     </div>
   </div>
 </div>

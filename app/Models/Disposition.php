@@ -10,13 +10,13 @@ class Disposition extends Model
     protected $table = 'disposition';
     use HasFactory;
     protected $fillable = [
-        'surat_id',
-        'tujuan',
+        'mail_id',
+        'division_id',
         'catatan',
         'created_at',
         'updated_at',
     ];
-    public function inbox(){
-        return $this->BelongsTo(Inbox::class, 'surat_id');
+    public function mail(){
+        return $this->BelongsTo(Mail::class, 'mail_id');
     }
 }

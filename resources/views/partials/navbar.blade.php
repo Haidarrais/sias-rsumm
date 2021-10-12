@@ -144,7 +144,15 @@
         </div>
         <div class="dropdown-list-content dropdown-list-icons">
           @forelse ($notifications ?? [] as $item)
-            <a href="#" class="dropdown-item dropdown-item-unread">
+            <a href="@if ($item->type==1)
+              {{route('notif.inbox',$item->id)}}
+                @else
+                    @if ($item->type==2)
+                    {{route('notif.outbox',$item->id)}}
+                    @else
+                    {{route('notif.memo',$item->id)}}
+                    @endif
+                @endif" class="dropdown-item dropdown-item-unread">
               <div class="dropdown-item-icon bg-primary text-white">
                 @if ($item->type==1)
                     <i class="fas fa-inbox"></i>

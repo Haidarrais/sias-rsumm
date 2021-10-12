@@ -41,8 +41,8 @@ class DispositionController extends Controller
     public function store(Request $request)
     {
         Disposition::create([
-            'surat_id' => $request->surat_id,
-            'tujuan' => $request->tujuan,
+            'mail_id' => $request->surat_id,
+            'division_id' => $request->tujuan,
             'catatan' => $request->catatan,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Division;
 use App\Models\Mail;
 use App\Models\Notification;
 use App\Models\Type;
@@ -23,8 +24,9 @@ class InboxController extends Controller
     {
         $inboxes = Mail::where('mail_type', '=', '0')->get();
         $types = Type::all();
+        $divisions = Division::all();
 
-        return view('pages.inbox.index', compact('inboxes', 'types'));
+        return view('pages.inbox.index', compact('inboxes', 'types', 'divisions'));
     }
 
     /**
