@@ -34,7 +34,7 @@ Memo
               <th>Perihal</th>
               <th>Tanggal Disposisi</th>
             </tr>
-            @foreach ($dispositions as $key => $disposition)
+            @forelse ($collection as $key => $disposition)
             <tr>
               <td>{{$key+1}}</td>
               <td>{{$disposition->mail->entry_date}} / {{$disposition->mail->number}}</td>
@@ -44,7 +44,10 @@ Memo
                 {{-- modal_edit{{$key}} --}}
                 {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
             </tr>
-            @endforeach
+                
+            @empty
+                
+            @endforelse
           </tbody>
         </table>
       </div>
