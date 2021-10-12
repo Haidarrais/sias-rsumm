@@ -69,7 +69,7 @@
     </div>
   </form>
   <ul class="navbar-nav navbar-right">
-    <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
+    {{-- <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a> --}}
       <div class="dropdown-menu dropdown-list dropdown-menu-right">
         <div class="dropdown-header">Messages
           <div class="float-right">
@@ -135,24 +135,45 @@
         </div>
       </div>
     </li>
-    <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+    <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg @if(count($notifications)>0)beep @endif"><i class="far fa-bell"></i></a>
       <div class="dropdown-menu dropdown-list dropdown-menu-right">
         <div class="dropdown-header">Notifications
-          <div class="float-right">
+          {{-- <div class="float-right">
             <a href="#">Mark All As Read</a>
-          </div>
+          </div> --}}
         </div>
         <div class="dropdown-list-content dropdown-list-icons">
-          <a href="#" class="dropdown-item dropdown-item-unread">
-            <div class="dropdown-item-icon bg-primary text-white">
-              <i class="fas fa-code"></i>
-            </div>
-            <div class="dropdown-item-desc">
-              Template update is available now!
-              <div class="time text-primary">2 Min Ago</div>
-            </div>
-          </a>
-          <a href="#" class="dropdown-item">
+          @forelse ($notifications ?? [] as $item)
+            <a href="#" class="dropdown-item dropdown-item-unread">
+              <div class="dropdown-item-icon bg-primary text-white">
+                @if ($item->type==1)
+                    <i class="fas fa-inbox"></i>
+                @else
+                    @if ($item->type==2)
+                    <i class="fas fa-paper-plane"></i>
+                    @else
+                   <i class="fas fa-share"></i>
+                    @endif
+                @endif
+                {{-- <i class="fas fa-code"></i> --}}
+              </div>
+              <div class="dropdown-item-desc">
+               {{$item->description}}
+                <div class="time text-primary">{{\Carbon\Carbon::parse($item->created_at)->diffForHumans()}}</div>
+              </div>
+            </a>
+          @empty
+         <a href="#" class="dropdown-item">
+                    <div class="dropdown-item-icon bg-success text-white">
+                      <i class="fas fa-check"></i>
+                    </div>
+                    <div class="dropdown-item-desc">
+                      Belum ada notifikasi
+                      <div class="time">{{\Carbon\Carbon::now()}}</div>
+                    </div>
+                  </a>
+          @endforelse
+          <!-- <a href="#" class="dropdown-item">
             <div class="dropdown-item-icon bg-info text-white">
               <i class="far fa-user"></i>
             </div>
@@ -188,10 +209,10 @@
               <div class="time">Yesterday</div>
             </div>
           </a>
-        </div>
-        <div class="dropdown-footer text-center">
+        </div> -->
+        {{-- <div class="dropdown-footer text-center">
           <a href="#">View All <i class="fas fa-chevron-right"></i></a>
-        </div>
+        </div> --}}
       </div>
     </li>
     <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">

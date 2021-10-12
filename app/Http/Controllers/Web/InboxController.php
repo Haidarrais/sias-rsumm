@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Mail;
+use App\Models\Notification;
 use App\Models\Type;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -50,7 +52,7 @@ class InboxController extends Controller
         $fileName = $files->hashName();
         $files->move($this->pathImage,$fileName);
         // $store = $fileName->store($this->pathImage.time());
-        Mail::create([
+        $mail =  Mail::create([
             'user_id' => $request->user_id,
             'journal_id' => $request->journal_id,
             'number' => $request->inbox_number,
@@ -65,6 +67,17 @@ class InboxController extends Controller
             'status' => 0,
             'file' => $fileName
         ]);
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', '!=', 'admin')->where('name', '!=', 'superadmin');
+        })->get();
+        foreach ($users as $key => $value) {
+            Notification::create([
+                'user_id' => $value->id,
+                'description' => 'Surat Masuk '.$mail->notes,
+                'type' => 1,
+                'status' => 0
+            ]);
+        }
         return redirect('/inbox');
     }
 
