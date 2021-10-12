@@ -34,7 +34,7 @@ Memo
               <th>Perihal</th>
               <th>Tanggal Disposisi</th>
             </tr>
-            @forelse ($collection as $key => $disposition)
+            @forelse ($dispositions as $key => $disposition)
             <tr>
               <td>{{$key+1}}</td>
               <td>{{$disposition->mail->entry_date}} / {{$disposition->mail->number}}</td>
