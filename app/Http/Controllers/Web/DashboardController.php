@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Inbox;
-use App\Models\Outbox;
+use App\Models\Mail;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -12,9 +12,8 @@ class DashboardController extends Controller
 {
     public function index(){
         $user = User::all();
-        $inbox = count(Inbox::all());
-        $outbox = count(Outbox::all());
-
-        return view('pages.dashboard.index', compact('user', $user), compact('inbox'), compact('outbox'));
+        $inbox = count(Mail::where('mail_type', '=', '0')->get());
+        $outbox = count(Mail::where('mail_type', '=', '1')->get());
+        return view('pages.dashboard.index', compact('user', 'inbox', 'outbox',));
     }
 }

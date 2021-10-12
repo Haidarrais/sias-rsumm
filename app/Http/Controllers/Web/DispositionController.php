@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Type;
+use App\Models\Disposition;
+use App\Models\Mail;
+use App\Models\Notification;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class TypeController extends Controller
+class DispositionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +19,7 @@ class TypeController extends Controller
      */
     public function index()
     {
-        $types = Type::all();
-        return view('pages.type.index', compact('types', $types));
+        //
     }
 
     /**
@@ -38,11 +40,27 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        Type::create([
-            'name' => $request->name,
+        Disposition::create([
+            'mail_id' => $request->surat_id,
+            'division_id' => $request->tujuan,
+            'catatan' => $request->catatan,
             'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'updated_at' => Carbon::now(),
         ]);
+        $inbox = Mail::where('id', '=', $request->surat_id)->first();
+        $inbox->status = 2;
+        $inbox->save();
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', '!=', 'superadmin')->where('name','!=', 'pimpinan');
+        })->with('roles')->get();
+        foreach ($users as $key => $value) {
+            Notification::create([
+                'user_id' => $value->id,
+                'description' => 'Disposisi '.$inbox->notes,
+                'type' => 3,
+                'status' => 0
+            ]);
+        }
         return redirect()->back();
     }
 
@@ -86,9 +104,8 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Type $type)
+    public function destroy($id)
     {
-        $type->delete();
-        return redirect()->back();
+        //
     }
 }
