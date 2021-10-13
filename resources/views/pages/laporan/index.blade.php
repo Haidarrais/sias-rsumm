@@ -44,7 +44,7 @@ Laporan
           <div class="form-group col-md-2 mt-auto">
             <button class="btn btn-primary form-control" id="filter">
               <!-- <i class="fas fa-plus"></i> -->
-              <span>Filter</span>
+              <span class="display-1">Filter</span>
             </button>
           </div>
         </div>
