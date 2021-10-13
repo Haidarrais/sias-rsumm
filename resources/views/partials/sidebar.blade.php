@@ -14,8 +14,8 @@
       <li><a class="nav-link" href="{{route('notif.memo')}}"><i class="fas fa-comments"></i> <span>Memo</span>
           @if(count($notifications)>0)<span class="badge badge-light">{{count($notifications)}}</span>@endif</a></li>
       <li class="menu-header">Pengaturan</li>
-      <li><a class="nav-link" href="/type"><i class="fas fa-folder"></i> <span>Tipe Surat</span></a></li>
-      <li><a class="nav-link" href="/division"><i class="fas fa-tag"></i> <span>Bagian</span></a></li>
+      <li><a class="nav-link" href="/type"><i class="fas fa-folder"></i> <span>Jenis Surat</span></a></li>
+      <li><a class="nav-link" href="/division"><i class="fas fa-tag"></i> <span>Unit / Divisi</span></a></li>
       @endhasrole
       <li><a class="nav-link" href="/laporan"><i class="fas fa-chart-bar"></i> <span>Laporan</span></a></li>
     </ul>
