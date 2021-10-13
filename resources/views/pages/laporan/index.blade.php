@@ -23,7 +23,7 @@ Laporan
       <div class="card-header-action">
         <!-- <div class="d-flex"> -->
         <div class="row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-5">
             <label>Tgl Awal</label>
               <!-- <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">
@@ -32,7 +32,7 @@ Laporan
               </div> -->
               <input id="tgl_mulai" placeholder="masukkan tanggal Awal" type="text" class="form-control datepicker" aria-describedby="basic-addon1" name="tgl_awal">
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-5">
             <label>Tgl Akhir</label>
               <!-- <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon2">
@@ -41,8 +41,8 @@ Laporan
               </div> -->
               <input aria-describedby="basic-addon2" id="tgl_akhir" placeholder="masukkan tanggal Akhir" type="text" class="form-control datepicker" name="tgl_akhir">
           </div>
-          <div class="d-flex align-items-center ml-2">
-            <button class="btn btn-primary" id="filter">
+          <div class="form-group col-md-2">
+            <button class="btn btn-primary form-control" id="filter">
               <!-- <i class="fas fa-plus"></i> -->
               <span>Filter</span>
             </button>
