@@ -31,7 +31,7 @@ Laporan
                   <i class="far fa-calendar-alt"></i>
                 </span>
               </div> -->
-              <input id="tgl_mulai" placeholder="masukkan tanggal Awal" type="text" class="form-control datepicker" aria-describedby="basic-addon1" name="tgl_awal">
+              <input id="tgl_mulai" placeholder="masukkan tanggal Awal" type="text" class="form-control datepicker rounded" aria-describedby="basic-addon1" name="tgl_awal">
             </div>
           </div>
           <div class="form-group">
@@ -42,7 +42,7 @@ Laporan
                   <i class="far fa-calendar-alt"></i>
                 </span>
               </div> -->
-              <input aria-describedby="basic-addon2" id="tgl_akhir" placeholder="masukkan tanggal Akhir" type="text" class="form-control datepicker" name="tgl_akhir">
+              <input aria-describedby="basic-addon2" id="tgl_akhir" placeholder="masukkan tanggal Akhir" type="text" class="form-control datepicker rounded" name="tgl_akhir">
             </div>
           </div>
           <div class="d-flex align-items-center ml-2">
