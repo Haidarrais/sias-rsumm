@@ -41,7 +41,7 @@ Laporan
               </div> -->
               <input aria-describedby="basic-addon2" id="tgl_akhir" placeholder="masukkan tanggal Akhir" type="text" class="form-control datepicker" name="tgl_akhir">
           </div>
-          <div class="form-group col-md-2">
+          <div class="form-group col-md-2 mt-auto">
             <button class="btn btn-primary form-control" id="filter">
               <!-- <i class="fas fa-plus"></i> -->
               <span>Filter</span>
