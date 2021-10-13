@@ -24,7 +24,7 @@ Laporan
         <!-- <div class="d-flex"> -->
         <div class="row">
           <div class="form-group col-md-5">
-            <label>Tgl Awal</label>
+            <label class="ml-2">Tgl Awal</label>
               <!-- <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">
                   <i class="far fa-calendar-alt"></i>
@@ -33,7 +33,7 @@ Laporan
               <input id="tgl_mulai" placeholder="masukkan tanggal Awal" type="text" class="form-control datepicker" aria-describedby="basic-addon1" name="tgl_awal">
           </div>
           <div class="form-group col-md-5">
-            <label>Tgl Akhir</label>
+            <label class="ml-2">Tgl Akhir</label>
               <!-- <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon2">
                   <i class="far fa-calendar-alt"></i>
