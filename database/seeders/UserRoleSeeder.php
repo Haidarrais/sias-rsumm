@@ -20,13 +20,15 @@ class UserRoleSeeder extends Seeder
         $pimpinan = Role::create(['name' => 'pimpinan']);
         $user_superadmin = User::create([
             'name' => 'Superadmin',
+            'username' => 'superadmin',
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('12345678'),
             'email_verified_at' => now()
         ]);
         $user_superadmin->assignRole($superadmin);
         $user_admin = User::create([
-            'name' => 'Admin',
+            'name' => 'Superadmin',
+            'username' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('12345678'),
             'email_verified_at' => now()
@@ -34,6 +36,7 @@ class UserRoleSeeder extends Seeder
         $user_admin->assignRole($admin);
         $user_pimpinan = User::create([
             'name' => 'Pimpinan',
+            'username' => 'pimpinan',
             'email' => 'pimpinan@gmail.com',
             'password' => bcrypt('12345678'),
             'email_verified_at' => now()
