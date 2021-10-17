@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\NotificationController;
 use App\Http\Controllers\Web\OutboxController;
 use App\Http\Controllers\Web\ReportController;
 use App\Http\Controllers\Web\TypeController;
+use App\Http\Controllers\Web\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('inbox', InboxController::class);
     Route::resource('outbox', OutboxController::class);
     Route::resource('type', TypeController::class);
+    Route::group(['role:superadmin'], function () {
+        Route::resource('user', UserController::class);
+    });
     Route::resource('disposition', DispositionController::class);
     Route::resource('division', DivisionController::class);
     Route::get('/notifMemo/{id?}', [NotificationController::class, 'memo'])->name('notif.memo');
