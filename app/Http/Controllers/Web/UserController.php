@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -39,7 +42,36 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Validator::make($request, [
+            'name' => ['required', 'string', 'max:255'],
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique(User::class),
+            ],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique(User::class),
+            ],
+            'password' => $this->passwordRules(),
+        ])->validate();
+
+        $user = User::create([
+            'name' => $request['name'],
+            'name' => $request['username'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+
+        $user->assignRole($request['roles']);
+
+        toast('User ' . $user->name . ' berhasil di dibuat' . ' dengan role ' . $user->roles, 'success');
+
+        return redirect()->back();
     }
 
     /**
