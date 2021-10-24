@@ -122,7 +122,7 @@ Manajemen User
                 </div>
                 <div class="form-group">
                     <label for="form_email">Email</label>
-                    <input type="email" class="form-control" id="form_email" placeholder="Enter email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}">
+                    <input type="email" id="form_email" placeholder="Enter email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}">
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
