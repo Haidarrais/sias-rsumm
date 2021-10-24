@@ -126,7 +126,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        $user->destroy();
+        $user->delete();
 
         return redirect()->back()->with('success', 'berhasil hapus user');
     }
