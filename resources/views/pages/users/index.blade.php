@@ -98,7 +98,7 @@ Manajemen User
             </button>
             </div>
             <div class="modal-body">
-                <form action="{{route('register')}}" id="form-edit-user" method="POST">
+                <form action="{{ route('register') }}" id="form-edit-user" method="POST">
                 <input type="text" name="_method" id="form_method" hidden>
                 @csrf
                 <div class="form-group">
@@ -106,12 +106,31 @@ Manajemen User
                     <input type="text" class="form-control" id="form_name" placeholder="Enter name" name="name">
                 </div>
                 <div class="form-group">
+                    <label for="form_name">Username</label>
+                    <input type="text" class="form-control" id="form_username" placeholder="Enter username" name="user">
+                </div>
+                <div class="form-group">
                     <label for="form_email">Email</label>
                     <input type="email" class="form-control" id="form_email" placeholder="Enter email" name="email">
                 </div>
-                <div class="form-group">
-                    <label for="form_password">Password</label>
-                    <input type="password" class="form-control" id="form_password" placeholder="Password" name="password">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="password" class="d-block">Password</label>
+                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror pwstrength" data-indicator="pwindicator" name="password">
+                        <div id="pwindicator" class="pwindicator">
+                            <div class="bar"></div>
+                            <div class="label"></div>
+                        </div>
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="password2" class="d-block">Password Confirmation</label>
+                        <input id="password2" type="password" class="form-control" name="password_confirmation">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="form_password">Role</label>
@@ -124,7 +143,7 @@ Manajemen User
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-primary">Save</button>
             </form>
             </div>
         </div>
@@ -150,6 +169,7 @@ Manajemen User
                 $("#modal_title").html('Modal Edit')
                 $("#form_method").val("PATCH")
                 $("#form_name").val(data.data.name)
+                $("#form_username").val(data.data.username)
                 $("#form_email").val(data.data.email)
                 $("#form_roles").val(data.data.roles[0].name)
                 var formAction = "{{route('user.update', ":id")}}";
