@@ -93,7 +93,7 @@ Manajemen User
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="modal_title"></h5>
+            <h5 class="modal-title" id="modal_title">Tambah User</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -168,6 +168,13 @@ Manajemen User
     </div>
 @endsection
 @section('script')
+@if(Session::has('errors'))
+<script>
+$(document).ready(function(){
+    $('#modal_tambah').modal({show: true});
+}
+</script>
+@endif
 <script>
     $('#adduser').on('click', () => {
         $('#modal_tambah').modal('show')
