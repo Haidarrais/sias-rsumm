@@ -45,8 +45,8 @@ class UserController extends Controller
         try {
             $input->validate([
                 'name' => 'required|string|max:255',
-                'username' => 'required|string|max:255|unique:user,username,except,id',
-                'email' => 'required|string|max:255|email|unique:user,email,except,id',
+                'username' => 'required|string|max:255|unique:users,username,except,id',
+                'email' => 'required|string|max:255|email|unique:users,email,except,id',
                 'password' => 'required|min:8|confirmed',
             ]);
 
