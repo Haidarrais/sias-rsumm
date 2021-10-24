@@ -136,6 +136,7 @@ Manajemen User
                 <div class="form-group">
                     <label for="form_password">Role</label>
                     <select name="roles" id="form_roles" class="form-control">
+                        <option value="" disabled selected></option>
                         @foreach ($roles as $role)
                             <option value="{{$role->name}}">{{$role->name}}</option>
                         @endforeach
