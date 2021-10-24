@@ -42,40 +42,45 @@ class UserController extends Controller
      */
     public function store(Request $input)
     {
-        Validator::make($input->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'username' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique(User::class),
-            ],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(User::class),
-            ],
-            'password' =>
-                'required',
-               ' min:6',
-                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
-                'confirmed',
-        ])->validate();
+        try {
+            Validator::make($input->all(), [
+                'name' => ['required', 'string', 'max:255'],
+                'username' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique(User::class),
+                ],
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    Rule::unique(User::class),
+                ],
+                'password' =>
+                    'required',
+                   ' min:6',
+                    'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+                    'confirmed',
+            ])->validate();
 
-        $user = User::create([
-            'name' => $input->name,
-            'username' => $input->username,
-            'email' => $input->email,
-            'password' => Hash::make($input->password),
-        ]);
+            $user = User::create([
+                'name' => $input->name,
+                'username' => $input->username,
+                'email' => $input->email,
+                'password' => Hash::make($input->password),
+            ]);
 
-        $user->assignRole($input->roles);
+            $user->assignRole($input->roles);
 
-        toast('User ' . $user->name . ' berhasil di dibuat' . ' dengan role ' . $user->roles, 'success');
+            toast('User ' . $user->name . ' berhasil di dibuat' . ' dengan role ' . $user->roles, 'success');
 
-        return redirect()->back();
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            return dd($th);
+        }
+
     }
 
     /**
