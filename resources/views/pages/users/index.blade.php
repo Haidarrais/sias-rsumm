@@ -27,7 +27,7 @@ Manajemen User
           <i class="fas fa-plus"></i>
           <span>Tambah User</span>
         </button>
-        <button type="button" class="btn btn-warning" onclick="setIndex({{Auth::id()}})">Self Edit<i class="far fa-edit"></i></button>
+        <button type="button" class="btn btn-warning" onclick="setIndex({{Auth::id()}})">Self Edit <i class="far fa-edit"></i></button>
         @endrole
       </div>
     </div>
