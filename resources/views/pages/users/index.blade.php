@@ -104,7 +104,7 @@ Manajemen User
                 @csrf
                 <div class="form-group">
                     <label for="form_name">Name</label>
-                    <input type="text" class="form-control" id="form_name" placeholder="Enter name" name="name">
+                    <input type="text" id="form_name" placeholder="Enter name" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autofocus>
                     @error('name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -113,7 +113,7 @@ Manajemen User
                 </div>
                 <div class="form-group">
                     <label for="form_name">Username</label>
-                    <input type="text" class="form-control" id="form_username" placeholder="Enter username" name="username">
+                    <input type="text" id="form_username" placeholder="Enter username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}">
                     @error('username')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -122,7 +122,7 @@ Manajemen User
                 </div>
                 <div class="form-group">
                     <label for="form_email">Email</label>
-                    <input type="email" class="form-control" id="form_email" placeholder="Enter email" name="email">
+                    <input type="email" class="form-control" id="form_email" placeholder="Enter email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}">
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
