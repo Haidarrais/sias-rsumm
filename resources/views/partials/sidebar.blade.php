@@ -4,7 +4,7 @@
       <a href="/">SIAS RSUMM</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-      <a href="index.html">St</a>
+      <a href="index.html">SIAS</a>
     </div>
     <ul class="sidebar-menu">
         <li class="active"><a class="nav-link" href="/"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
