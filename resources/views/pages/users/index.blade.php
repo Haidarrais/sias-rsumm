@@ -105,14 +105,29 @@ Manajemen User
                 <div class="form-group">
                     <label for="form_name">Name</label>
                     <input type="text" class="form-control" id="form_name" placeholder="Enter name" name="name">
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="form_name">Username</label>
                     <input type="text" class="form-control" id="form_username" placeholder="Enter username" name="username">
+                    @error('username')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="form_email">Email</label>
                     <input type="email" class="form-control" id="form_email" placeholder="Enter email" name="email">
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <div class="row">
                     <div class="form-group col-6">
@@ -142,11 +157,6 @@ Manajemen User
                         @endforeach
                     </select>
                 </div>
-                @if ($errors->any())
-                @foreach ($errors->all() as $error)
-                    <div class="alert alert-fanger">{{$error}}</div>
-                @endforeach
-            @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
