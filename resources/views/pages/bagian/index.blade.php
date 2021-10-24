@@ -37,7 +37,7 @@ Divisi
             <tr>
               <th>No</th>
               <th>Nama Unit</th>
-              <th>Kode Unik Unit</th>
+              <th>Kode</th>
               @role('admin')
               <th style="text-align: center">Action</th>
               @endrole
