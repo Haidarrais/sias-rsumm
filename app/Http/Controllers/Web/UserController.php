@@ -65,13 +65,13 @@ class UserController extends Controller
         ])->validate();
 
         $user = User::create([
-            'name' => $input['name'],
-            'username' => $input['username'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
+            'name' => $input->name,
+            'username' => $input->username,
+            'email' => $input->email,
+            'password' => Hash::make($input->password),
         ]);
 
-        $user->assignRole($input['roles']);
+        $user->assignRole($input->roles);
 
         toast('User ' . $user->name . ' berhasil di dibuat' . ' dengan role ' . $user->roles, 'success');
 
