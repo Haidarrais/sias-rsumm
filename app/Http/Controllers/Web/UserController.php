@@ -42,7 +42,7 @@ class UserController extends Controller
      */
     public function store(Request $input)
     {
-        Validator::make($input, [
+        Validator::make($input->all(), [
             'name' => ['required', 'string', 'max:255'],
             'username' => [
                 'required',
