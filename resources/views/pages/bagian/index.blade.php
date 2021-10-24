@@ -20,12 +20,12 @@ Divisi
 
   <div class="card">
     <div class="card-header">
-      <h4>Bagian / Divisi</h4>
+      <h4>Unit / Divisi</h4>
       <div class="card-header-action">
         @role('admin')
         <button class="btn btn-primary" id="addInbox">
           <i class="fas fa-plus"></i>
-          <span>Tambah Divisi</span>
+          <span>Tambah Unit</span>
         </button>
         @endrole
       </div>
@@ -36,8 +36,8 @@ Divisi
           <tbody>
             <tr>
               <th>No</th>
-              <th>Nama Bagian</th>
-              <th>Kepala</th>
+              <th>Nama Unit</th>
+              <th>Kode Unik Unit</th>
               @role('admin')
               <th style="text-align: center">Action</th>
               @endrole
