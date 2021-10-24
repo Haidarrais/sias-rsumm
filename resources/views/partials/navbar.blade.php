@@ -166,7 +166,7 @@
         <div class="d-sm-none d-lg-inline-block">Hi, {{Auth::user()->name}}!</div>
       </a>
       <div class="dropdown-menu dropdown-menu-right">
-        <div class="dropdown-title">Anda mempunyai role : {{Auth::user()->roles->pluck('name')}}</div>
+        <div class="dropdown-title">Anda mempunyai role : {{Auth::user()->roles->name}}</div>
         <div class="dropdown-divider"></div>
           <a href="#" onClick="event.preventDefault(); document.getElementById('form-logout').submit()" class="dropdown-item has-icon text-danger">
             <i class="fas fa-sign-out-alt"></i> Logout
