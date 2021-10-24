@@ -107,7 +107,7 @@ Manajemen User
                 </div>
                 <div class="form-group">
                     <label for="form_name">Username</label>
-                    <input type="text" class="form-control" id="form_username" placeholder="Enter username" name="user">
+                    <input type="text" class="form-control" id="form_username" placeholder="Enter username" name="username">
                 </div>
                 <div class="form-group">
                     <label for="form_email">Email</label>
