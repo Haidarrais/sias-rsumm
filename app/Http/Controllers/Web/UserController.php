@@ -58,10 +58,10 @@ class UserController extends Controller
                 Rule::unique(User::class),
             ],
             'password' =>
-                'required|
-                min:6|
-                regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/|
-                confirmed',
+                'required',
+               ' min:6',
+                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+                'confirmed',
         ])->validate();
 
         $user = User::create([
