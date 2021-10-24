@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\DispositionController;
@@ -33,6 +34,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('type', TypeController::class);
     Route::group(['role:superadmin'], function () {
         Route::resource('user', UserController::class);
+        Route::post('register', [CreateNewUser::class, 'create'])->name('create.user');
     });
     Route::resource('disposition', DispositionController::class);
     Route::resource('division', DivisionController::class);

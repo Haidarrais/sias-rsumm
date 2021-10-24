@@ -98,8 +98,8 @@ Manajemen User
             </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('register') }}" id="form-edit-user" method="POST">
-                <input type="text" name="_method" id="form_method" hidden>
+                <form action="{{ route('create.user') }}" id="form-edit-user" method="POST">
+                <input type="text" name="_method" id="form_method" value="POST" hidden>
                 @csrf
                 <div class="form-group">
                     <label for="form_name">Name</label>
