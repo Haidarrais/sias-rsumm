@@ -115,7 +115,7 @@ Manajemen User
                 </div>
                 <div class="form-group">
                     <label for="form_password">Role</label>
-                    <select name="roles" id="form_roles">
+                    <select name="roles" id="form_roles" class="form-control">
                         @foreach ($roles as $role)
                             <option value="{{$role->name}}">{{$role->name}}</option>
                         @endforeach
@@ -127,45 +127,6 @@ Manajemen User
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </form>
             </div>
-        </div>
-        </div>
-    </div>
-@endsection
-@section('modal')
-    <div class="modal fade" id="modal_tambah" tabindex="-1" role="dialog" aria-labelledby="modal_tambah" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="modal-set-resiLabel">Tambah User</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <form action="{{route('register')}}" method="POST" id="form-add-inbox-data" enctype="multipart/form-data">
-            @csrf
-            <div class="modal-body row">
-                <div class="form-group col-md-6">
-                    <label for="">Nama</label>
-                    <input type="text" class="form-control" name="name">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="">Username</label>
-                    <input type="text" class="form-control" name="username">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="">Email</label>
-                    <input type="email" class="form-control" name="email">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="">Password</label>
-                    <input type="password" class="form-control" name="password">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-            </form>
         </div>
         </div>
     </div>
