@@ -60,8 +60,7 @@ class UserController extends Controller
                 ],
                 'password' =>
                     'required',
-                   ' min:6',
-                    'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+                   ' min:8',
                     'confirmed',
             ])->validate();
 
