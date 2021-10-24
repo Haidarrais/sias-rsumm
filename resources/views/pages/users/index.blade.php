@@ -98,7 +98,7 @@ Manajemen User
             </button>
             </div>
             <div class="modal-body">
-                <form action="{{route('user.store')}}" id="form-edit-user" method="POST">
+                <form action="{{route('register')}}" id="form-edit-user" method="POST">
                 <input type="text" name="_method" id="form_method" hidden>
                 @csrf
                 <div class="form-group">
