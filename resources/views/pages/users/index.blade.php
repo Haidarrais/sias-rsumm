@@ -150,12 +150,17 @@ Manajemen User
                 </div>
                 <div class="form-group">
                     <label for="form_password">Role</label>
-                    <select name="roles" id="form_roles" class="form-control">
+                    <select id="form_roles" class="form-control @error('roles') is-invalid @enderror" name="roles" value="{{ old('roles') }}" autofocus>
                         <option value="" selected disabled>== Pilih salah satu Role dibawah ini ==</option>
                         @foreach ($roles as $role)
                             <option value="{{$role->name}}">{{$role->name}}</option>
                         @endforeach
                     </select>
+                    @error('roles')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
             </div>
             <div class="modal-footer">
