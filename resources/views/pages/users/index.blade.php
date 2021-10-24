@@ -142,6 +142,11 @@ Manajemen User
                         @endforeach
                     </select>
                 </div>
+                @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-fanger">{{$error}}</div>
+                @endforeach
+            @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

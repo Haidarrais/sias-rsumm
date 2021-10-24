@@ -42,31 +42,24 @@ class UserController extends Controller
      */
     public function store(Request $input)
     {
-        try {
-            $input->validate([
-                'name' => 'required|string|max:255',
-                'username' => 'required|string|max:255|unique:users,username,except,id',
-                'email' => 'required|string|max:255|email|unique:users,email,except,id',
-                'password' => 'required|min:8|confirmed',
-                'roles' => 'required',
-            ]);
+        $input->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,except,id',
+            'email' => 'required|string|max:255|email|unique:users,email,except,id',
+            'password' => 'required|min:8|confirmed',
+            'roles' => 'required',
+        ]);
 
-            $user = User::create([
-                'name' => $input->name,
-                'username' => $input->username,
-                'email' => $input->email,
-                'password' => Hash::make($input->password),
-            ]);
+        $user = User::create([
+            'name' => $input->name,
+            'username' => $input->username,
+            'email' => $input->email,
+            'password' => Hash::make($input->password),
+        ]);
 
-            $user->assignRole($input->roles);
+        $user->assignRole($input->roles);
 
-            toast('User ' . $user->name . ' berhasil di dibuat' . ' dengan role ' . $user->roles->name, 'success');
-
-            return redirect()->back();
-        } catch (\Throwable $th) {
-            return dd($th);
-        }
-
+        toast('User ' . $user->name . ' berhasil di dibuat' . ' dengan role ' . $user->roles->name, 'success');
     }
 
     /**
