@@ -168,11 +168,11 @@ Manajemen User
     </div>
 @endsection
 @section('script')
-@if(Session::has('errors'))
+@if($errors->any())
 <script>
-$(document).ready(function(){
-    $('#modal_tambah').modal({show: true});
-}
+    $(document).ready(function() {
+        $('#modal_tambah').modal('show');
+    });
 </script>
 @endif
 <script>
