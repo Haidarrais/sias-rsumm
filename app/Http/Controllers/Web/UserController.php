@@ -43,26 +43,12 @@ class UserController extends Controller
     public function store(Request $input)
     {
         try {
-            Validator::make($input->all(), [
-                'name' => ['required', 'string', 'max:255'],
-                'username' => [
-                    'required',
-                    'string',
-                    'max:255',
-                    Rule::unique(User::class),
-                ],
-                'email' => [
-                    'required',
-                    'string',
-                    'email',
-                    'max:255',
-                    Rule::unique(User::class),
-                ],
-                'password' =>
-                    'required',
-                   ' min:8',
-                    'confirmed',
-            ])->validate();
+            $input->validate([
+                'name' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:user,username,except,id',
+                'email' => 'required|string|max:255|email|unique:user,email,except,id',
+                'password' => 'required|min:8|confirmed',
+            ]);
 
             $user = User::create([
                 'name' => $input->name,
