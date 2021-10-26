@@ -12,7 +12,7 @@ Dashboard
 @endif
 @endsection
 @section('header')
-Surat Masuk
+Surat Keluar
 @endsection
 @section('content')
 <!-- Main Content -->
@@ -20,7 +20,7 @@ Surat Masuk
 
   <div class="card">
     <div class="card-header">
-      <h4>Data Surat Masuk</h4>
+      <h4>Data Surat Keluar</h4>
       <div class="card-header-action">
         @role('admin')
         <button class="btn btn-primary" id="addOutbox">
@@ -115,7 +115,7 @@ Surat Masuk
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Masuk</h5>
+        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Keluar</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -181,7 +181,7 @@ Surat Masuk
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Disposisi Surat Masuk</h5>
+        <h5 class="modal-title" id="modal-set-resiLabel">Disposisi Surat Keluar</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -221,7 +221,7 @@ Surat Masuk
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Masuk</h5>
+        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Keluar</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -262,7 +262,7 @@ Surat Masuk
             $exe = $splitName[count($splitName)-1];
             @endphp
             <label for="">Example file input</label>
-            <input type="file" class="form-control-file" name="uploadfile" value="{{ url('upload/surat-masuk/', $outbox->file) }}">
+            <input type="file" class="form-control-file" name="uploadfile" value="{{ url('upload/surat-keluar/', $outbox->file) }}">
             <span>{{substr($outbox->file, 0, 4). '~.' . $exe  }}</span>
           </div>
           <div class="form-group col-md-6">
@@ -303,7 +303,7 @@ Surat Masuk
           <div id="pdfview" class="col-md-12" style="height:100%;"></div>
           <script>
             if (PDFObject.supportsPDFs) {
-              PDFObject.embed("{{asset('upload/surat-masuk/' . $outbox->file)}}", "#pdfview", {
+              PDFObject.embed("{{asset('upload/surat-keluar/' . $outbox->file)}}", "#pdfview", {
                 height: "400px",
                 pdfOpenParams: {
                   view: 'FitV',
