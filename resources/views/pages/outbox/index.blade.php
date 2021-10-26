@@ -12,7 +12,7 @@ Dashboard
 @endif
 @endsection
 @section('header')
-Surat Keluar
+Surat Masuk
 @endsection
 @section('content')
 <!-- Main Content -->
@@ -20,10 +20,10 @@ Surat Keluar
 
   <div class="card">
     <div class="card-header">
-      <h4>Data Surat Keluar</h4>
+      <h4>Data Surat Masuk</h4>
       <div class="card-header-action">
         @role('admin')
-        <button class="btn btn-primary" id="addInbox">
+        <button class="btn btn-primary" id="addOutbox">
           <i class="fas fa-plus"></i>
           <span>Tambah Surat</span>
         </button>
@@ -52,9 +52,9 @@ Surat Keluar
               if ($outbox->status == 0) {
               $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
               }elseif ($outbox->status == 1) {
-              $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
-              }elseif ($outbox->status == 2) {
               $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
+              }elseif ($outbox->status == 2) {
+              $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
               }
               @endphp
               <td>{{$key+1}}</td>
@@ -64,17 +64,24 @@ Surat Keluar
               <td>{{$outbox->destination}}</td>
               <td>{{$outbox->regarding}}</td>
               <td>{{$outbox->entry_date}}</td>
-              <td>{{$outbox->type->name}}</td>
+              <td>{{$outbox->type->name ?? ''}}</td>
               <td>{!!$status!!}</td>
               <td>
-                <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('delete-inbox').submit();" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
-                <form id="delete-inbox" action="{{ route('inbox.destroy', $outbox->id) }}" method="POST" style="display: none;">
-                  @method('DELETE')
+                @role('pimpinan')
+                @if ($outbox->status != 2)
+                <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
+                @endif
+                @endrole
+                @role('admin')
+                <form action="{{ route('outbox.destroy', $outbox->id) }}" method="POST">
+                  <a href="#" class="btn btn-success" id="detailOutbox{{$key}}">Detail</a>
+                  <a href="#" class="btn btn-warning" id="editOutbox{{$key}}"><i class="far fa-edit"></i></a>
                   @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                 </form>
+                @endrole
                 {{-- modal_edit{{$key}} --}}
-                <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
                 {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
               </td>
             </tr>
@@ -108,14 +115,14 @@ Surat Keluar
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Keluar</h5>
+        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Masuk</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{route('inbox.store')}}" method="POST" id="form-add-inbox-data" enctype="multipart/form-data">
+      <form action="{{route('outbox.store')}}" method="POST" id="form-add-outbox-data" enctype="multipart/form-data">
         <input type="text" class="form-control" name="user_id" value="{{Auth::id()}}" hidden>
-        <input type="text" class="form-control" name="inbox_origin" value="{{Auth::user()->name}}" hidden>
+        <input type="text" class="form-control" name="outbox_origin" value="{{Auth::user()->name}}" hidden>
         @csrf
         <div class="modal-body row">
           <div class="form-group col-md-6">
@@ -124,7 +131,7 @@ Surat Keluar
           </div>
           <div class="form-group col-md-6">
             <label for="">Nomor Surat</label>
-            <input type="text" class="form-control" name="inbox_number">
+            <input type="text" class="form-control" name="outbox_number">
           </div>
           <div class="form-group col-md-6">
             <label for="">Sumber Surat</label>
@@ -170,18 +177,58 @@ Surat Keluar
 </div>
 
 @foreach ($outboxes as $key => $outbox)
-<div class="modal fade" id="modal_edit{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_edit{{$key}}" aria-hidden="true">
+<div class="modal fade" id="modal_disposition{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_disposition{{$key}}" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Keluar</h5>
+        <h5 class="modal-title" id="modal-set-resiLabel">Disposisi Surat Masuk</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('inbox.update', $outbox->id) }}" method="POST" id="form-add-inbox-data" enctype="multipart/form-data">
+      <form action="{{route('disposition.store')}}" method="POST" id="form-add-outbox-data" enctype="multipart/form-data">
+        <input type="text" class="form-control" name="surat_id" value="{{$outbox->id}}" hidden>
+        @csrf
+        <div class="modal-body row">
+            <!-- <input type="text" class="form-control" name="tujuan"> -->
+            <div class="form-group col-md-12">
+              <label for="">Disposisikan ke</label>
+              <!-- <label for="">Jenis Surat</label> -->
+              <select name="tujuan" id="" class="form-control">
+                <option value="" selected disabled>Pilih Divisi / Bagian</option>
+                @foreach ($divisions as $key => $division )
+                <option value="{{$division->id}}">{{$division->name}}</option>
+                @endforeach
+                </select>
+            </div>
+          <div class="form-group col-md-12">
+            <label for="">Catatan</label>
+            <textarea class="form-control" name="catatan"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endforeach
+
+@foreach ($outboxes as $key => $outbox)
+<div class="modal fade" id="modal_edit{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_edit{{$key}}" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Masuk</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{ route('outbox.update', $outbox->id) }}" method="POST" id="form-add-outbox-data" enctype="multipart/form-data">
         <input type="text" class="form-control" name="user_id" value="{{Auth::id()}}" hidden>
-        <input type="text" class="form-control" name="inbox_origin" value="{{Auth::user()->name}}" hidden>
+        <input type="text" class="form-control" name="outbox_origin" value="{{Auth::user()->name}}" hidden>
         @csrf
         @method("PATCH")
         <div class="modal-body row">
@@ -191,7 +238,7 @@ Surat Keluar
           </div>
           <div class="form-group col-md-6">
             <label for="">Nomor Surat</label>
-            <input type="text" class="form-control" name="inbox_number" value="{{$outbox->number}}">
+            <input type="text" class="form-control" name="outbox_number" value="{{$outbox->number}}">
           </div>
           <div class="form-group col-md-6">
             <label for="">Pengirim</label>
@@ -278,38 +325,29 @@ Surat Keluar
 @endsection
 @section('script')
 <script>
-  $('#addInbox').on('click', () => {
-    $('#modal_tambah').modal('show')
-  });
+  $('#addOutbox').on('click', () => {
+          $('#modal_tambah').modal('show')
+        });
 </script>
 @foreach ($outboxes as $key => $outbox)
 <script>
-  $('#editInbox' + {
-    {
-      $key
-    }
-  }).on('click', () => {
-    $('#modal_edit' + {
-      {
-        $key
-      }
-    }).modal('show')
-  });
+  $('#editOutbox'+ {{$key}}).on('click', () => {
+          $('#modal_edit'+ {{$key}}).modal('show')
+        });
 </script>
 @endforeach
 @foreach ($outboxes as $key => $outbox)
 <script>
-  $('#detailInbox' + {
-    {
-      $key
-    }
-  }).on('click', () => {
-    $('#modal_detail' + {
-      {
-        $key
-      }
-    }).modal('show')
-  });
+  $('#dispositionOutbox'+ {{$key}}).on('click', () => {
+          $('#modal_disposition'+ {{$key}}).modal('show')
+        });
+</script>
+@endforeach
+@foreach ($outboxes as $key => $outbox)
+<script>
+  $('#detailOutbox'+ {{$key}}).on('click', () => {
+          $('#modal_detail'+ {{$key}}).modal('show')
+        });
 </script>
 @endforeach
 @endsection

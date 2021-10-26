@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Division;
 use App\Models\Mail;
 use App\Models\Notification;
 use App\Models\Outbox;
@@ -24,8 +25,9 @@ class OutboxController extends Controller
     {
         $outboxes = Mail::where('mail_type', '=', '1')->get();
         $types = Type::all();
+        $divisions = Division::all();
 
-        return view('pages.outbox.index', compact('outboxes', 'types'));
+        return view('pages.outbox.index', compact('outboxes', 'types', 'divisions'));
     }
 
     /**
