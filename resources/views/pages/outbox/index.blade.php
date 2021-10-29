@@ -71,14 +71,14 @@ Surat Keluar
               <td>
                 @role('pimpinan')
                 @if ($outbox->status != 2)
-                  <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
-                  <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
+                    <a href="#" class="btn btn-success" onclick="detInbox({{$outbox->id}})">Detail</a>
+                    <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
                 @endif
                 @endrole
                 @role('admin')
                 <form action="{{ route('outbox.destroy', $outbox->id) }}" method="POST">
-                  <a href="#" class="btn btn-success" id="detailOutbox{{$key}}">Detail</a>
-                  <a href="#" class="btn btn-warning" id="editOutbox{{$key}}"><i class="far fa-edit"></i></a>
+                    <a href="#" class="btn btn-success" onclick="detInbox({{$outbox->id}})">Detail</a>
+                    <a href="#" class="btn btn-warning" onclick="editInbox({{$outbox->id}})"><i class="far fa-edit"></i></a>
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
@@ -97,71 +97,74 @@ Surat Keluar
 </div>
 @endsection
 @section('modal')
+{{-- START OF MODAL EDIT and ADD --}}
 <div class="modal fade" id="modal_tambah" tabindex="-1" role="dialog" aria-labelledby="modal_tambah" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Keluar</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal_title">Tambah Surat Masuk</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{route('outbox.store')}}" method="POST" id="form-add-outbox-data" enctype="multipart/form-data">
+            <input type="text" name="_method" id="form_method" value="POST" hidden>
+            <input type="text" class="form-control" name="user_id" value="{{Auth::id()}}" hidden>
+            <input type="text" class="form-control" name="outbox_origin" value="{{Auth::user()->name}}" hidden>
+          @csrf
+          <div class="modal-body row">
+            <div class="form-group col-md-6">
+              <label for="">Nomor Agenda</label>
+              <input type="text" class="form-control" id="form_journal_id" name="journal_id" autofocus>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="">Nomor Surat</label>
+              <input type="text" class="form-control" id="form_outbox_number" name="outbox_number">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="">Sumber Surat</label>
+              <input type="text" class="form-control" id="form_sender" name="sender">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="">Tujuan Surat</label>
+              <input type="text" class="form-control" id="form_destination" name="destination">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="">Perihal</label>
+              <input type="text" class="form-control" id="form_regarding" name="regarding">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="">Tanggal Surat Diterima</label>
+              <input type="date" class="form-control" id="form_entry_date" name="entry_date">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="">File Surat</label>
+              <input type="file" class="form-control-file" name="uploadfile">
+              <span id="form_issue_file"></span>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="">Jenis Surat</label>
+              <select name="type" id="type_add" class="form-control">
+                <option value="" selected disabled>Pilih Jenis Surat</option>
+                @foreach ($types as $key => $type )
+                <option value="{{$type->id}}">{{$type->name}}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group col-md-12">
+              <label for="">Notes</label>
+              <textarea class="form-control" name="notes" id="form_notes"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
       </div>
-      <form action="{{route('outbox.store')}}" method="POST" id="form-add-outbox-data" enctype="multipart/form-data">
-        <input type="text" class="form-control" name="user_id" value="{{Auth::id()}}" hidden>
-        <input type="text" class="form-control" name="outbox_origin" value="{{Auth::user()->name}}" hidden>
-        @csrf
-        <div class="modal-body row">
-          <div class="form-group col-md-6">
-            <label for="">Nomor Agenda</label>
-            <input type="text" class="form-control" name="journal_id" autofocus>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Nomor Surat</label>
-            <input type="text" class="form-control" name="outbox_number">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Sumber Surat</label>
-            <input type="text" class="form-control" name="sender">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Tujuan Surat</label>
-            <input type="text" class="form-control" name="destination">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Perihal</label>
-            <input type="text" class="form-control" name="regarding">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Tanggal Surat Diterima</label>
-            <input type="date" class="form-control" name="entry_date">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">File Surat</label>
-            <input type="file" class="form-control-file" name="uploadfile">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Jenis Surat</label>
-            <select name="type" id="type_add" class="form-control">
-              <option value="" selected disabled>Pilih Jenis Surat</option>
-              @foreach ($types as $key => $type )
-              <option value="{{$type->id}}">{{$type->name}}</option>
-              @endforeach
-            </select>
-          </div>
-          <div class="form-group col-md-12">
-            <label for="">Notes</label>
-            <textarea class="form-control" name="notes"></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
     </div>
-  </div>
 </div>
-
+{{-- END OF MODAL EDIT and ADD --}}
 @foreach ($outboxes as $key => $outbox)
 <div class="modal fade" id="modal_disposition{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_disposition{{$key}}" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -202,78 +205,6 @@ Surat Keluar
 </div>
 @endforeach
 
-@foreach ($outboxes as $key => $outbox)
-<div class="modal fade" id="modal_edit{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_edit{{$key}}" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Keluar</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="{{ route('outbox.update', $outbox->id) }}" method="POST" id="form-add-outbox-data" enctype="multipart/form-data">
-        <input type="text" class="form-control" name="user_id" value="{{Auth::id()}}" hidden>
-        <input type="text" class="form-control" name="outbox_origin" value="{{Auth::user()->name}}" hidden>
-        @csrf
-        @method("PATCH")
-        <div class="modal-body row">
-          <div class="form-group col-md-6">
-            <label for="">Nomor Agenda</label>
-            <input type="text" class="form-control" name="journal_id" value="{{$outbox->journal_id}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Nomor Surat</label>
-            <input type="text" class="form-control" name="outbox_number" value="{{$outbox->number}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Pengirim</label>
-            <input type="text" class="form-control" name="sender" value="{{$outbox->sender}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Tujuan Surat</label>
-            <input type="text" class="form-control" name="destination" value="{{$outbox->destination}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Perihal</label>
-            <input type="text" class="form-control" name="regarding" value="{{$outbox->regarding}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Tanggal Surat Diterima</label>
-            <input type="date" class="form-control" name="entry_date" value="{{$outbox->entry_date}}">
-          </div>
-          <div class="form-group col-md-6">
-            @php
-            $splitName = explode('.', $outbox->file );
-            $exe = $splitName[count($splitName)-1];
-            @endphp
-            <label for="">Example file input</label>
-            <input type="file" class="form-control-file" name="uploadfile" value="{{ url('upload/surat-keluar/', $outbox->file) }}">
-            <span>{{substr($outbox->file, 0, 4). '~.' . $exe  }}</span>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Jenis Surat</label>
-            <select name="type" id="type_add" class="form-control">
-              @foreach ($types as $key => $type )
-              <option value="{{$type->id}}" @if($type->id == $outbox->type_id) selected @endif>{{$type->name}}</option>
-              @endforeach
-            </select>
-          </div>
-          <div class="form-group col-md-12">
-            <label for="">Notes</label>
-            <textarea class="form-control" name="notes">{{$outbox->notes}}</textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-@endforeach
-
 <div class="modal fade" id="modal_detail" tabindex="" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
     <div class="modal-content" style="height: 80%;">
@@ -298,10 +229,10 @@ Surat Keluar
     $(document).ready(function() {
         $('.table').DataTable();
     } );
-    function setIndex(id) {
+    function detInbox(id) {
         //index = id;
         //console.log(index);
-        var url = "{{route('inbox.show', ":id ")}}";
+        var url = "{{route('outbox.show', ":id ")}}";
         url = url.replace(":id", id);
         $.ajax({
             type: 'GET',
@@ -310,7 +241,7 @@ Surat Keluar
                 console.log(data);
                 $('#modal_detail').modal('show')
                 if (PDFObject.supportsPDFs) {
-                PDFObject.embed(`{{asset('/upload/surat-masuk/')}}`+'/'+data.data.file, "#pdfview", {
+                PDFObject.embed(`{{asset('/upload/surat-keluar/')}}`+'/'+data.data.file, "#pdfview", {
                     height: "100%",
                     pdfOpenParams: {
                     view: 'FitV',
@@ -321,6 +252,38 @@ Surat Keluar
                 } else {
                 console.log("Boo, inline PDFs are not supported by this browser");
                 }
+            },
+        });
+    }
+    function editInbox(id) {
+        index = id;
+        console.log(index);
+        var url = "{{route('outbox.edit', ":id ")}}";
+        url = url.replace(":id", id);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(data) {
+                console.log(data);
+                $('#modal_tambah').modal('show')
+                $("#modal_title").html('Modal Edit')
+                $("#form_method").val("PATCH")
+                $("#form_journal_id").val(data.data.journal_id)
+                $("#form_outbox_number").val(data.data.number)
+                $("#form_sender").val(data.data.sender)
+                $("#form_destination").val(data.data.destination)
+                $("#form_regarding").val(data.data.regarding)
+                $("#form_entry_date").val(data.data.entry_date)
+                $("#type_add").val(data.data.type_id)
+                $("#form_issue_file").html(data.data.file)
+                $("#form_issue_file").each(function(){
+                    $(this).text($(this).text().substring(0,8)+"...pdf");
+                });
+                $("#form_notes").val(data.data.notes)
+                $("#form_entry_date").prop("disabled", true)
+                var formAction = "{{route('outbox.update', ":id")}}";
+                formAction = formAction.replace(':id', id);
+                $("#form-add-outbox-data").attr("action", formAction);
             },
         });
     }

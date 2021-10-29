@@ -94,6 +94,7 @@ Divisi
         </button>
       </div>
       <form action="{{route('division.store')}}" method="POST" id="form-add-division-data" enctype="multipart/form-data">
+        <input type="text" name="_method" id="form_method" value="POST" hidden>
         @csrf
         <div class="modal-body row">
           <div class="form-group col-md-6">

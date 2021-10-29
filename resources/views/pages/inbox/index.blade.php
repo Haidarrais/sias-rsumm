@@ -71,14 +71,14 @@ Surat Masuk
               <td>
                 @role('pimpinan')
                 @if ($inbox->status != 2)
-                  <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
+                  <a href="#" class="btn btn-success" onclick="detInbox({{$inbox->id}})">Detail</a>
                   <a href="#" class="btn btn-success" id="dispositionInbox{{$key}}">Disposisi</a>
                 @endif
                 @endrole
                 @role('admin')
                 <form action="{{ route('inbox.destroy', $inbox->id) }}" method="POST">
-                  <a href="#" class="btn btn-success" onclick="setIndex({{$inbox->id}})">Detail</a>
-                  <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
+                  <a href="#" class="btn btn-success" onclick="detInbox({{$inbox->id}})">Detail</a>
+                  <a href="#" class="btn btn-warning" onclick="editInbox({{$inbox->id}})"><i class="far fa-edit"></i></a>
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
@@ -97,47 +97,50 @@ Surat Masuk
 </div>
 @endsection
 @section('modal')
+{{-- START OF MODAL EDIT and ADD --}}
 <div class="modal fade" id="modal_tambah" tabindex="-1" role="dialog" aria-labelledby="modal_tambah" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Surat Masuk</h5>
+        <h5 class="modal-title" id="modal_title">Tambah Surat Masuk</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <form action="{{route('inbox.store')}}" method="POST" id="form-add-inbox-data" enctype="multipart/form-data">
         <input type="text" class="form-control" name="user_id" value="{{Auth::id()}}" hidden>
+        <input type="text" name="_method" id="form_method" value="POST" hidden>
         <input type="text" class="form-control" name="inbox_origin" value="{{Auth::user()->name}}" hidden>
         @csrf
         <div class="modal-body row">
           <div class="form-group col-md-6">
             <label for="">Nomor Agenda</label>
-            <input type="text" class="form-control" name="journal_id" autofocus>
+            <input type="text" class="form-control" id="form_journal_id" name="journal_id" autofocus>
           </div>
           <div class="form-group col-md-6">
             <label for="">Nomor Surat</label>
-            <input type="text" class="form-control" name="inbox_number">
+            <input type="text" class="form-control" id="form_inbox_number" name="inbox_number">
           </div>
           <div class="form-group col-md-6">
             <label for="">Sumber Surat</label>
-            <input type="text" class="form-control" name="sender">
+            <input type="text" class="form-control" id="form_sender" name="sender">
           </div>
           <div class="form-group col-md-6">
             <label for="">Tujuan Surat</label>
-            <input type="text" class="form-control" name="destination">
+            <input type="text" class="form-control" id="form_destination" name="destination">
           </div>
           <div class="form-group col-md-6">
             <label for="">Perihal</label>
-            <input type="text" class="form-control" name="regarding">
+            <input type="text" class="form-control" id="form_regarding" name="regarding">
           </div>
           <div class="form-group col-md-6">
             <label for="">Tanggal Surat Diterima</label>
-            <input type="date" class="form-control" name="entry_date">
+            <input type="date" class="form-control" id="form_entry_date" name="entry_date">
           </div>
           <div class="form-group col-md-6">
             <label for="">File Surat</label>
             <input type="file" class="form-control-file" name="uploadfile">
+            <span id="form_issue_file"></span>
           </div>
           <div class="form-group col-md-6">
             <label for="">Jenis Surat</label>
@@ -150,7 +153,7 @@ Surat Masuk
           </div>
           <div class="form-group col-md-12">
             <label for="">Notes</label>
-            <textarea class="form-control" name="notes"></textarea>
+            <textarea class="form-control" name="notes" id="form_notes"></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -161,7 +164,7 @@ Surat Masuk
     </div>
   </div>
 </div>
-
+{{-- END OF MODAL EDIT and ADD --}}
 @foreach ($inboxes as $key => $inbox)
 <div class="modal fade" id="modal_disposition{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_disposition{{$key}}" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -202,78 +205,7 @@ Surat Masuk
 </div>
 @endforeach
 
-@foreach ($inboxes as $key => $inbox)
-<div class="modal fade" id="modal_edit{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_edit{{$key}}" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Masuk</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="{{ route('inbox.update', $inbox->id) }}" method="POST" id="form-add-inbox-data" enctype="multipart/form-data">
-        <input type="text" class="form-control" name="user_id" value="{{Auth::id()}}" hidden>
-        <input type="text" class="form-control" name="inbox_origin" value="{{Auth::user()->name}}" hidden>
-        @csrf
-        @method("PATCH")
-        <div class="modal-body row">
-          <div class="form-group col-md-6">
-            <label for="">Nomor Agenda</label>
-            <input type="text" class="form-control" name="journal_id" value="{{$inbox->journal_id}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Nomor Surat</label>
-            <input type="text" class="form-control" name="inbox_number" value="{{$inbox->number}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Pengirim</label>
-            <input type="text" class="form-control" name="sender" value="{{$inbox->sender}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Tujuan Surat</label>
-            <input type="text" class="form-control" name="destination" value="{{$inbox->destination}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Perihal</label>
-            <input type="text" class="form-control" name="regarding" value="{{$inbox->regarding}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Tanggal Surat Diterima</label>
-            <input type="date" class="form-control" name="entry_date" value="{{$inbox->entry_date}}">
-          </div>
-          <div class="form-group col-md-6">
-            @php
-            $splitName = explode('.', $inbox->file );
-            $exe = $splitName[count($splitName)-1];
-            @endphp
-            <label for="">Example file input</label>
-            <input type="file" class="form-control-file" name="uploadfile" value="{{ url('upload/surat-masuk/', $inbox->file) }}">
-            <span>{{substr($inbox->file, 0, 4). '~.' . $exe  }}</span>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Jenis Surat</label>
-            <select name="type" id="type_add" class="form-control">
-              @foreach ($types as $key => $type )
-              <option value="{{$type->id}}" @if($type->id == $inbox->type_id) selected @endif>{{$type->name}}</option>
-              @endforeach
-            </select>
-          </div>
-          <div class="form-group col-md-12">
-            <label for="">Notes</label>
-            <textarea class="form-control" name="notes">{{$inbox->notes}}</textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-@endforeach
-
+{{-- START OF MODAL DETAIL PDF --}}
 <div class="modal fade" id="modal_detail" tabindex="-1" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
     <div class="modal-content" style="height: 80%;">
@@ -291,7 +223,7 @@ Surat Masuk
     </div>
   </div>
 </div>
-
+{{-- END OF MODAL DETAIL PDF --}}
 @endsection
 @section('script')
 <script>
@@ -303,7 +235,7 @@ Surat Masuk
     $('#addInbox').on('click', () => {
         $('#modal_tambah').modal('show')
     });
-    function setIndex(id) {
+    function detInbox(id) {
         //index = id;
         //console.log(index);
         var url = "{{route('inbox.show', ":id ")}}";
@@ -326,6 +258,38 @@ Surat Masuk
                 } else {
                 console.log("Boo, inline PDFs are not supported by this browser");
                 }
+            },
+        });
+    }
+    function editInbox(id) {
+        index = id;
+        console.log(index);
+        var url = "{{route('inbox.edit', ":id ")}}";
+        url = url.replace(":id", id);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(data) {
+                console.log(data);
+                $('#modal_tambah').modal('show')
+                $("#modal_title").html('Modal Edit')
+                $("#form_method").val("PATCH")
+                $("#form_journal_id").val(data.data.journal_id)
+                $("#form_inbox_number").val(data.data.number)
+                $("#form_sender").val(data.data.sender)
+                $("#form_destination").val(data.data.destination)
+                $("#form_regarding").val(data.data.regarding)
+                $("#form_entry_date").val(data.data.entry_date)
+                $("#type_add").val(data.data.type_id)
+                $("#form_issue_file").html(data.data.file)
+                $("#form_issue_file").each(function(){
+                    $(this).text($(this).text().substring(0,8)+"...pdf");
+                });
+                $("#form_notes").val(data.data.notes)
+                $("#form_entry_date").prop("disabled", true)
+                var formAction = "{{route('inbox.update', ":id")}}";
+                formAction = formAction.replace(':id', id);
+                $("#form-add-inbox-data").attr("action", formAction);
             },
         });
     }

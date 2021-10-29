@@ -48,7 +48,7 @@ class InboxController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'uploadfile' => 'required',
+            '*' => 'required'
         ]);
         $files = $request->file('uploadfile');
         $fileName = $files->hashName();
@@ -106,7 +106,11 @@ class InboxController extends Controller
      */
     public function edit($id)
     {
-
+        $inbox = Mail::find($id);
+        return response()->json([
+            'status'    => 1,
+            'data'      => $inbox
+        ]);
     }
 
     /**
@@ -118,33 +122,39 @@ class InboxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $inbox = Mail::where('id', $id)->first();
-        if ($request->file('uploadfile')) {
-            $file = $inbox->file;
-            $filename = $this->pathImage.'/' . $file;
-            File::delete($filename);
+        try {
+            $inbox = Mail::where('id', $id)->first();
+            if ($request->file('uploadfile')) {
+                $file = $inbox->file;
+                $filename = $this->pathImage.'/' . $file;
+                File::delete($filename);
 
-            $files = $request->file('uploadfile');
-            $fileName = $files->hashName();
-            $files->move($this->pathImage , $fileName);
+                $files = $request->file('uploadfile');
+                $fileName = $files->hashName();
+                $files->move($this->pathImage,$fileName);
+            }
+            $newInbox = [
+                'user_id' => $request->user_id,
+                'journal_id' => $request->journal_id,
+                'number' => $request->inbox_number,
+                'sender' => $request->sender,
+                'destination' => $request->destination,
+                'regarding' => $request->regarding,
+                'entry_date' => $inbox->entry_date,
+                'origin' => $request->inbox_origin,
+                'type_id' => $request->type,
+                'mail_type' => 0,
+                'notes' => $request->notes,
+                'status' => 0,
+                'file' =>  $request->file('uploadfile')?$fileName:$inbox->file
+            ];
+            $inbox->update($newInbox);
+            alert('Success','Edit data berhasil', 'success' );
+            return back();
+        } catch (\Throwable $th) {
+            alert('Gagal','Mohon hubungi admin IT', 'error' );
+            //throw $th;
         }
-        $newInbox = [
-            'user_id' => $request->user_id,
-            'journal_id' => $request->journal_id,
-            'number' => $request->inbox_number,
-            'sender' => $request->sender,
-            'destination' => $request->destination,
-            'regarding' => $request->regarding,
-            'entry_date' => $request->entry_date,
-            'origin' => $request->inbox_origin,
-            'type_id' => $request->type,
-            'mail_type' => 0,
-            'notes' => $request->notes,
-            'status' => 0,
-            'file' =>  $request->file('uploadfile')?$fileName:$inbox->file
-        ];
-        $inbox->update($newInbox);
-        return redirect('/inbox');
     }
 
     /**

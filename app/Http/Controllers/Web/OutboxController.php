@@ -92,11 +92,7 @@ class OutboxController extends Controller
      */
     public function show($id)
     {
-        $inbox = Mail::find($id);
-        return response()->json([
-            'status' => 1,
-            'data'  => $inbox
-        ]);
+
     }
 
     /**
@@ -107,7 +103,11 @@ class OutboxController extends Controller
      */
     public function edit($id)
     {
-
+        $outbox = Mail::find($id);
+        return response()->json([
+            'status' => 1,
+            'data'  => $outbox
+        ]);
     }
 
     /**
@@ -119,33 +119,40 @@ class OutboxController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $outbox = Mail::where('id', $id)->first();
-        if ($request->file('uploadfile')) {
-            $file = $outbox->file;
-            $filename = $this->pathImage.'/' . $file;
-            File::delete($filename);
+        try {
+            $outbox = Mail::where('id', $id)->first();
+            if ($request->file('uploadfile')) {
+                $file = $outbox->file;
+                $filename = $this->pathImage.'/' . $file;
+                File::delete($filename);
 
-            $files = $request->file('uploadfile');
-            $fileName = $files->hashName();
-            $files->move($this->pathImage , $fileName);
+                $files = $request->file('uploadfile');
+                $fileName = $files->hashName();
+                $files->move($this->pathImage,$fileName);
+            }
+            $newoutbox = [
+                'user_id' => $request->user_id,
+                'journal_id' => $request->journal_id,
+                'number' => $request->outbox_number,
+                'sender' => $request->sender,
+                'destination' => $request->destination,
+                'regarding' => $request->regarding,
+                'entry_date' => $outbox->entry_date,
+                'origin' => $request->outbox_origin,
+                'type_id' => $request->type,
+                'mail_type' => 1,
+                'notes' => $request->notes,
+                'status' => 0,
+                'file' =>  $request->file('uploadfile')?$fileName:$outbox->file
+            ];
+            $outbox->update($newoutbox);
+            alert('Success','Edit data berhasil', 'success' );
+            return back();
+        } catch (\Throwable $th) {
+            alert('Gagal','Mohon hubungi admin IT', 'error' );
+            //throw $th;
         }
-        $newoutbox = [
-            'user_id' => $request->user_id,
-            'journal_id' => $request->journal_id,
-            'number' => $request->outbox_number,
-            'sender' => $request->sender,
-            'destination' => $request->destination,
-            'regarding' => $request->regarding,
-            'entry_date' => $request->entry_date,
-            'origin' => $request->outbox_origin,
-            'type_id' => $request->type,
-            'mail_type' => 1,
-            'notes' => $request->notes,
-            'status' => 0,
-            'file' =>  $request->file('uploadfile')?$fileName:$outbox->file
-        ];
-        $outbox->update($newoutbox);
-        return redirect('/outbox');
+
     }
 
     /**
