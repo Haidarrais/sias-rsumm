@@ -288,16 +288,10 @@ Surat Masuk
           <div id="pdfview" class="col-md-12" style="height:100%;"></div>
           <script>
             if (PDFObject.supportsPDFs) {
-              PDFObject.embed("{{asset('upload/surat-masuk/' . $inbox->file)}}", "#pdfview", {
-                height: "400px",
-                pdfOpenParams: {
-                  view: 'FitV',
-                  page: '2'
-                }
-              });
-              console.log("Yay, this browser supports inline PDFs.");
+                PDFObject.embed("/upload/surat-masuk/" . $inbox->file, "#example" . $key);
+                console.log("Yay, this browser supports inline PDFs.");
             } else {
-              console.log("Boo, inline PDFs are not supported by this browser");
+                console.log("Boo, inline PDFs are not supported by this browser");
             }
           </script>
         </div>
