@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 class OutboxController extends Controller
 {
-    private $pathImage = "upload/surat-masuk";
+    private $pathImage = "upload/surat-keluar";
     /**
      * Display a listing of the resource.
      *

@@ -51,21 +51,23 @@ Laporan
         <!-- </div> -->
       </div>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-1">
       <div class="table-responsive">
         <table class="table table-striped table-md">
-          <tbody>
-            <tr>
-              <th>No</th>
-              <th>Agenda</th>
-              <th>No Surat</th>
-              <th>Sumber Surat</th>
-              <th>Tujuan Surat</th>
-              <th>Perihal</th>
-              <th>Tgl Terima</th>
-              <th>Jenis Surat</th>
-              <th>Status</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Agenda</th>
+                    <th>No Surat</th>
+                    <th>Sumber Surat</th>
+                    <th>Tujuan Surat</th>
+                    <th>Perihal</th>
+                    <th>Tgl Terima</th>
+                    <th>Jenis Surat</th>
+                    <th>Status</th>
+                  </tr>
+            </thead>
+            <tbody>
             @foreach ($mails as $key => $mail)
             <tr>
               @php
@@ -92,29 +94,17 @@ Laporan
         </table>
       </div>
     </div>
-    <div class="card-footer text-right" modal-part>
-      <nav class="d-inline-block">
-        <ul class="pagination mb-0">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">2</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-          </li>
-        </ul>
-      </nav>
-    </div>
   </div>
 </div>
 @endsection
 
 @section('script')
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    } );
+</script>
 <script id="he">
   $(document).ready(function() {
     $(".datepicker").datepicker({

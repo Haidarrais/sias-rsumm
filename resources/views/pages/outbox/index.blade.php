@@ -30,22 +30,24 @@ Surat Keluar
         @endrole
       </div>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-2">
       <div class="table-responsive">
         <table class="table table-striped table-md">
-          <tbody>
-            <tr>
-              <th>No</th>
-              <th>Agenda</th>
-              <th>No Surat</th>
-              <th>Sumber Surat</th>
-              <th>Tujuan Surat</th>
-              <th>Perihal</th>
-              <th>Tgl Terima</th>
-              <th>Jenis Surat</th>
-              <th>Status</th>
-              <th style="text-align: center">Action</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Agenda</th>
+                    <th>No Surat</th>
+                    <th>Sumber Surat</th>
+                    <th>Tujuan Surat</th>
+                    <th>Perihal</th>
+                    <th>Tgl Terima</th>
+                    <th>Jenis Surat</th>
+                    <th>Status</th>
+                    <th style="text-align: center">Action</th>
+                  </tr>
+            </thead>
+            <tbody>
             @foreach ($outboxes as $key => $outbox)
             <tr>
               @php
@@ -324,6 +326,11 @@ Surat Keluar
 
 @endsection
 @section('script')
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    } );
+</script>
 <script>
   $('#addOutbox').on('click', () => {
           $('#modal_tambah').modal('show')
