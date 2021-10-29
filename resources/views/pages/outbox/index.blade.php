@@ -306,7 +306,7 @@ Surat Keluar
           <script>
             if (PDFObject.supportsPDFs) {
               PDFObject.embed("{{asset('upload/surat-keluar/' . $outbox->file)}}", "#pdfview", {
-                height: "400px",
+                height: "100%",
                 pdfOpenParams: {
                   view: 'FitV',
                   page: '2'
