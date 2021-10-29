@@ -91,7 +91,11 @@ class InboxController extends Controller
      */
     public function show($id)
     {
-        //
+        $inbox = Mail::find($id);
+        return response()->json([
+            'status' => 1,
+            'data'  => $inbox
+        ]);
     }
 
     /**

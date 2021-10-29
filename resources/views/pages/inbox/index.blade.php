@@ -77,7 +77,7 @@ Surat Masuk
                 @endrole
                 @role('admin')
                 <form action="{{ route('inbox.destroy', $inbox->id) }}" method="POST">
-                  <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
+                  <a href="#" class="btn btn-success" onclick="setIndex({{$inbox->id}})">Detail</a>
                   <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
                   @csrf
                   @method('DELETE')
@@ -274,8 +274,7 @@ Surat Masuk
 </div>
 @endforeach
 
-@foreach ($inboxes as $key => $inbox)
-<div class="modal fade" id="modal_detail{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_detail{{$key}}" aria-hidden="true">
+<div class="modal fade" id="modal_detail" tabindex="-1" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
     <div class="modal-content" style="height: 80%;">
       <div class="modal-header">
@@ -287,26 +286,11 @@ Surat Masuk
       <div class="modal-body" style="height: calc(100% - 120px);">
         <div class="container-fluid" style="height:100%;">
           <div id="pdfview" class="col-md-12" style="height:100%;"></div>
-          <script>
-            if (PDFObject.supportsPDFs) {
-              PDFObject.embed("{{asset('/upload/surat-masuk/' . $inbox->file)}}", "#pdfview", {
-                height: "100%",
-                pdfOpenParams: {
-                  view: 'FitV',
-                  page: '2'
-                }
-              });
-              console.log("Yay, this browser supports inline PDFs.");
-            } else {
-              console.log("Boo, inline PDFs are not supported by this browser");
-            }
-          </script>
         </div>
       </div>
     </div>
   </div>
 </div>
-@endforeach
 
 @endsection
 @section('script')
@@ -316,9 +300,35 @@ Surat Masuk
     } );
 </script>
 <script>
-  $('#addInbox').on('click', () => {
-          $('#modal_tambah').modal('show')
+    $('#addInbox').on('click', () => {
+        $('#modal_tambah').modal('show')
+    });
+    function setIndex(id) {
+        //index = id;
+        //console.log(index);
+        var url = "{{route('inbox.show', ":id ")}}";
+        url = url.replace(":id", id);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(data) {
+                console.log(data);
+                $('#modal_detail').modal('show')
+                if (PDFObject.supportsPDFs) {
+                PDFObject.embed(`{{asset('/upload/surat-masuk/')}}`+'/'+data.data.file, "#pdfview", {
+                    height: "100%",
+                    pdfOpenParams: {
+                    view: 'FitV',
+                    page: '2'
+                    }
+                });
+                console.log("Yay, this browser supports inline PDFs.");
+                } else {
+                console.log("Boo, inline PDFs are not supported by this browser");
+                }
+            },
         });
+    }
 </script>
 @foreach ($inboxes as $key => $inbox)
 <script>

@@ -23,7 +23,7 @@ Divisi
       <h4>Unit / Divisi</h4>
       <div class="card-header-action">
         @role('admin')
-        <button class="btn btn-primary" id="addInbox">
+        <button class="btn btn-primary" id="addDivision">
           <i class="fas fa-plus"></i>
           <span>Tambah Unit</span>
         </button>
@@ -50,8 +50,7 @@ Divisi
               <td>
                 @role('admin')
                 <form action="{{ route('division.destroy', $division->id) }}" method="POST">
-                  <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
-                  <a href="#" class="btn btn-warning" id="editInbox{{$key}}"><i class="far fa-edit"></i></a>
+                  <a href="#" class="btn btn-warning" onclick="setIndex({{$division->id}})"><i class="far fa-edit"></i></a>
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
@@ -89,21 +88,21 @@ Divisi
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Tambah Divisi</h5>
+        <h5 class="modal-title" id="modal_title">Tambah Divisi</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{route('division.store')}}" method="POST" id="form-add-inbox-data" enctype="multipart/form-data">
+      <form action="{{route('division.store')}}" method="POST" id="form-add-division-data" enctype="multipart/form-data">
         @csrf
         <div class="modal-body row">
           <div class="form-group col-md-6">
-            <label for="">Nama bagian</label>
-            <input type="text" class="form-control" name="name" value="{{old('name')}}">
+            <label for="">Nama Unit</label>
+            <input type="text" class="form-control" name="name" value="{{old('name')}}" id="form_name">
           </div>
           <div class="form-group col-md-6">
-            <label for="">Pimpinan</label>
-            <input type="text" class="form-control" name="leader" value="{{old('leader')}}">
+            <label for="">Kode</label>
+            <input type="text" class="form-control" name="leader" value="{{old('leader')}}" id="form_leader">
           </div>
         </div>
         <div class="modal-footer">
@@ -115,66 +114,33 @@ Divisi
   </div>
 </div>
 
-@foreach ($divisions as $key => $division)
-<div class="modal fade" id="modal_edit{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_edit{{$key}}"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Edit Surat Masuk</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="{{ route('division.update', $division->id) }}" method="POST" id="form-add-inbox-data"
-        enctype="multipart/form-data">
-        @csrf
-        @method("PATCH")
-        <div class="modal-body row">
-          <div class="form-group col-md-6">
-            <label for="">Nama bagian</label>
-            <input type="text" class="form-control" name="name" value="{{$division->name}}">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="">Nomor Surat</label>
-            <input type="text" class="form-control" name="leader" value="{{$division->leader}}">
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-      </form>
-    </div>
-  </div>
-</div>
-@endforeach
-
 @endsection
 @section('script')
 <script>
-  $('#addInbox').on('click', () => {
-          $('#modal_tambah').modal('show')
+    $('#addDivision').on('click', () => {
+        $('#modal_tambah').modal('show')
+    });
+    function setIndex(id) {
+        //index = id;
+        //console.log(index);
+        var url = "{{route('division.edit', ":id ")}}";
+        url = url.replace(":id", id);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(data) {
+                console.log(data);
+                $('#modal_tambah').modal('show')
+                $("#modal_title").html('Modal Edit')
+                $("#form_method").val("PATCH")
+                $("#form_name").val(data.data.name)
+                $("#form_leader").val(data.data.leader)
+                var formAction = "{{route('division.update', ":id")}}";
+                formAction = formAction.replace(':id', id);
+                $("#form-add-division-data").attr("action", formAction);
+            },
         });
+    }
+
 </script>
-@foreach ($divisions as $key => $division)
-<script>
-  $('#editInbox'+ {{$key}}).on('click', () => {
-          $('#modal_edit'+ {{$key}}).modal('show')
-        });
-</script>
-@endforeach
-@foreach ($divisions as $key => $division)
-<script>
-  $('#dispositionInbox'+ {{$key}}).on('click', () => {
-          $('#modal_disposition'+ {{$key}}).modal('show')
-        });
-</script>
-@endforeach
-@foreach ($divisions as $key => $division)
-<script>
-  $('#detailInbox'+ {{$key}}).on('click', () => {
-          $('#modal_detail'+ {{$key}}).modal('show')
-        });
-</script>
-@endforeach
 @endsection

@@ -85,7 +85,11 @@ class DivisionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $division = Division::find($id);
+        return response()->json([
+            'status' => 1,
+            'data'   => $division,
+        ]);
     }
 
     /**
