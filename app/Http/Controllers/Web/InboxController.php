@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class InboxController extends Controller
 {
-    private $pathImage = "public/upload/surat-masuk";
+    private $pathImage = "upload/surat-masuk";
     /**
      * Display a listing of the resource.
      *

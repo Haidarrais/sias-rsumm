@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 class OutboxController extends Controller
 {
-    private $pathImage = "public/upload/surat-keluar";
+    private $pathImage = "upload/surat-keluar";
     /**
      * Display a listing of the resource.
      *
@@ -92,7 +92,11 @@ class OutboxController extends Controller
      */
     public function show($id)
     {
-        //
+        $inbox = Mail::find($id);
+        return response()->json([
+            'status' => 1,
+            'data'  => $inbox
+        ]);
     }
 
     /**

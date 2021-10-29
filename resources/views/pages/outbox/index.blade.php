@@ -274,12 +274,11 @@ Surat Keluar
 </div>
 @endforeach
 
-@foreach ($outboxes as $key => $outbox)
-<div class="modal fade" id="modal_detail{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_detail{{$key}}" aria-hidden="true">
+<div class="modal fade" id="modal_detail" tabindex="" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
     <div class="modal-content" style="height: 80%;">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Detail Surat</h5>
+        <h5 class="modal-title" id="modal_title">Detail Surat</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -287,26 +286,11 @@ Surat Keluar
       <div class="modal-body" style="height: calc(100% - 120px);">
         <div class="container-fluid" style="height:100%;">
           <div id="pdfview" class="col-md-12" style="height:100%;"></div>
-          <script>
-            if (PDFObject.supportsPDFs) {
-              PDFObject.embed("{{asset('upload/surat-keluar/' . $outbox->file)}}", "#pdfview", {
-                height: "100%",
-                pdfOpenParams: {
-                  view: 'FitV',
-                  page: '2'
-                }
-              });
-              console.log("Yay, this browser supports inline PDFs.");
-            } else {
-              console.log("Boo, inline PDFs are not supported by this browser");
-            }
-          </script>
         </div>
       </div>
     </div>
   </div>
 </div>
-@endforeach
 
 @endsection
 @section('script')
@@ -314,6 +298,32 @@ Surat Keluar
     $(document).ready(function() {
         $('.table').DataTable();
     } );
+    function setIndex(id) {
+        //index = id;
+        //console.log(index);
+        var url = "{{route('inbox.show', ":id ")}}";
+        url = url.replace(":id", id);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(data) {
+                console.log(data);
+                $('#modal_detail').modal('show')
+                if (PDFObject.supportsPDFs) {
+                PDFObject.embed(`{{asset('/upload/surat-masuk/')}}`+'/'+data.data.file, "#pdfview", {
+                    height: "100%",
+                    pdfOpenParams: {
+                    view: 'FitV',
+                    page: '2'
+                    }
+                });
+                console.log("Yay, this browser supports inline PDFs.");
+                } else {
+                console.log("Boo, inline PDFs are not supported by this browser");
+                }
+            },
+        });
+    }
 </script>
 <script>
   $('#addOutbox').on('click', () => {
