@@ -71,7 +71,8 @@ Surat Masuk
               <td>
                 @role('pimpinan')
                 @if ($inbox->status != 2)
-                <a href="#" class="btn btn-success" id="dispositionInbox{{$key}}">Disposisi</a>
+                  <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
+                  <a href="#" class="btn btn-success" id="dispositionInbox{{$key}}">Disposisi</a>
                 @endif
                 @endrole
                 @role('admin')

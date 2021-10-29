@@ -71,7 +71,8 @@ Surat Keluar
               <td>
                 @role('pimpinan')
                 @if ($outbox->status != 2)
-                <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
+                  <a href="#" class="btn btn-success" id="detailInbox{{$key}}">Detail</a>
+                  <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
                 @endif
                 @endrole
                 @role('admin')
