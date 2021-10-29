@@ -288,7 +288,7 @@ Surat Masuk
           <div id="pdfview" class="col-md-12" style="height:100%;"></div>
           <script>
             if (PDFObject.supportsPDFs) {
-              PDFObject.embed("{{asset('/surat-masuk/' . $inbox->file)}}", "#pdfview", {
+              PDFObject.embed("{{asset('/upload/surat-masuk/' . $inbox->file)}}", "#pdfview", {
                 height: "400px",
                 pdfOpenParams: {
                   view: 'FitV',
