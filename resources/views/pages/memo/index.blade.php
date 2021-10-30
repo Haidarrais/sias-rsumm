@@ -23,19 +23,21 @@ Memo
       <h4>Memo</h4>
 
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-1>
       <div class="table-responsive">
         <table class="table table-striped table-md">
-          <tbody>
-            <tr>
-              <th>No</th>
-              <th>Tanggal Terima / No Agenda</th>
-              <th>Sumber</th>
-              <th>Perihal</th>
-              <th>Tanggal Disposisi</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal Terima / No Agenda</th>
+                    <th>Sumber</th>
+                    <th>Perihal</th>
+                    <th>Tanggal Disposisi</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                    </tr>
+            </thead>
+            <tbody>
             @forelse ($dispositions as $key => $disposition)
             <tr>
                 <td>{{$key+1}}</td>
@@ -65,23 +67,7 @@ Memo
         </table>
       </div>
     </div>
-    <div class="card-footer text-right" modal-part>
-      <nav class="d-inline-block">
-        <ul class="pagination mb-0">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">2</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-          </li>
-        </ul>
-      </nav>
-    </div>
+
   </div>
 </div>
 @endsection

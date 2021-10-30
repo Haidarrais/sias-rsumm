@@ -25,16 +25,18 @@ Jenis Surat
         </button>
       </div>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-2">
         <div class="table-responsive">
           <table class="table table-striped table-md">
-            <tbody>
+            <thead>
               <tr>
                 <th>No</th>
                 <th>Jenis Surat</th>
                 <th style="text-align: center">Action</th>
               </tr>
               @foreach ($types as $key => $type)
+            </thead>
+            <tbody>
               <tr>
                     <td>{{$key+1}}</td>
                     <td>{{$type->name}}</td>
@@ -46,8 +48,8 @@ Jenis Surat
                         </form>
                     </td>
               </tr>
-              @endforeach
             </tbody>
+              @endforeach
           </table>
         </div>
       </div>

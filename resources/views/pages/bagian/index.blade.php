@@ -30,18 +30,20 @@ Unit / Divisi
         @endrole
       </div>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-2">
       <div class="table-responsive">
         <table class="table table-striped table-md">
-          <tbody>
-            <tr>
-              <th>No</th>
-              <th>Nama Unit</th>
-              <th>Kode</th>
-              @role('admin')
-              <th style="text-align: center">Action</th>
-              @endrole
-            </tr>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Unit</th>
+                    <th>Kode</th>
+                    @role('admin')
+                    <th style="text-align: center">Action</th>
+                    @endrole
+                </tr>
+                <tbody>
+            </thead>
             @foreach ($divisions as $key => $division)
             <tr>
               <td>{{$key+1}}</td>
@@ -65,23 +67,7 @@ Unit / Divisi
         </table>
       </div>
     </div>
-    <div class="card-footer text-right" modal-part>
-      <nav class="d-inline-block">
-        <ul class="pagination mb-0">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">2</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-          </li>
-        </ul>
-      </nav>
-    </div>
+
   </div>
 </div>
 @endsection
