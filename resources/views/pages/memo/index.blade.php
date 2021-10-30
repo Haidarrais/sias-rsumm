@@ -51,7 +51,7 @@ Memo
                     @endif
                 </td>
                 <td>
-                    <button class="btn btn-success p-1" onclick="detDisp({{$disposition->id}})">File Disposisi</button>
+                    <button class="btn btn-success p-1" onclick="detDisp({{$disposition->id}})">Detail Disposisi</button>
                     <a class="btn btn-info p-1" href="{{ route('update.status.disposisi', ['id'=>$disposition->id]) }}">Ubah Status</a>
                 </td>
                     {{-- modal_edit{{$key}} --}}
