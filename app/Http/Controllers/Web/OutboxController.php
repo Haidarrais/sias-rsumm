@@ -92,7 +92,11 @@ class OutboxController extends Controller
      */
     public function show($id)
     {
-
+        $outbox = Mail::find($id);
+        return response()->json([
+            'status' => 1,
+            'data'  => $outbox
+        ]);
     }
 
     /**

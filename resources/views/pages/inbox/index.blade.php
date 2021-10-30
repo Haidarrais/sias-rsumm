@@ -69,21 +69,26 @@ Surat Masuk
               <td>{{$inbox->type->name ?? ''}}</td>
               <td>{!!$status!!}</td>
               <td>
-                @role('pimpinan')
-                @if ($inbox->status != 2)
-                  <a href="#" class="btn btn-success" onclick="detInbox({{$inbox->id}})">Detail</a>
-                  <a href="#" class="btn btn-success" id="dispositionInbox{{$key}}">Disposisi</a>
-                @endif
-                @endrole
-                @role('admin')
-                <form action="{{ route('inbox.destroy', $inbox->id) }}" method="POST">
-                  <a href="#" class="btn btn-success" onclick="detInbox({{$inbox->id}})">Detail</a>
-                  <a href="#" class="btn btn-warning" onclick="editInbox({{$inbox->id}})"><i class="far fa-edit"></i></a>
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                </form>
-                @endrole
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    @role('pimpinan')
+                    @if ($inbox->status != 2)
+                        <button type="button" class="btn btn-primary" onclick="detInbox({{$inbox->id}})">Detail</button>
+                        <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
+                    @endif
+                    @endrole
+                    @role('admin')
+                    <form action="{{ route('inbox.destroy', $inbox->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-info" onclick="detInbox({{$inbox->id}})"><i class="fas fa-file-pdf"></i></button>
+                            <button type="button" class="btn btn-warning" onclick="editInbox({{$inbox->id}})"><i class="far fa-edit"></i></button>
+                            <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                        </div>
+
+                    </form>
+                    @endrole
+                </div>
                 {{-- modal_edit{{$key}} --}}
                 {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
               </td>

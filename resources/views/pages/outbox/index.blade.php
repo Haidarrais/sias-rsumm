@@ -69,21 +69,27 @@ Surat Keluar
               <td>{{$outbox->type->name ?? ''}}</td>
               <td>{!!$status!!}</td>
               <td>
-                @role('pimpinan')
-                @if ($outbox->status != 2)
-                    <a href="#" class="btn btn-success" onclick="detInbox({{$outbox->id}})">Detail</a>
-                    <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
-                @endif
-                @endrole
-                @role('admin')
-                <form action="{{ route('outbox.destroy', $outbox->id) }}" method="POST">
-                    <a href="#" class="btn btn-success" onclick="detInbox({{$outbox->id}})">Detail</a>
-                    <a href="#" class="btn btn-warning" onclick="editInbox({{$outbox->id}})"><i class="far fa-edit"></i></a>
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                </form>
-                @endrole
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        @role('pimpinan')
+                        @if ($outbox->status != 2)
+                            <button type="button" class="btn btn-primary" onclick="detInbox({{$outbox->id}})">Detail</button>
+                            <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
+                        @endif
+                        @endrole
+                        @role('admin')
+                        <form action="{{ route('outbox.destroy', $outbox->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-info" onclick="detInbox({{$outbox->id}})"><i class="fas fa-file-pdf"></i></button>
+                                <button type="button" class="btn btn-warning" onclick="editInbox({{$outbox->id}})"><i class="far fa-edit"></i></button>
+                                <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                            </div>
+
+                        </form>
+                        @endrole
+                    </div>
+
                 {{-- modal_edit{{$key}} --}}
                 {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
               </td>
@@ -238,8 +244,8 @@ Surat Keluar
             type: 'GET',
             url: url,
             success: function(data) {
-                console.log(data);
-                $('#modal_detail').modal('show')
+                // console.log(data);
+                $('#modal_detail').modal('show');
                 if (PDFObject.supportsPDFs) {
                 PDFObject.embed(`{{asset('/upload/surat-keluar/')}}`+'/'+data.data.file, "#pdfview", {
                     height: "100%",

@@ -12,7 +12,7 @@ Dashboard
 @endif
 @endsection
 @section('header')
-Divisi
+Unit / Divisi
 @endsection
 @section('content')
 <!-- Main Content -->
@@ -47,13 +47,15 @@ Divisi
               <td>{{$key+1}}</td>
               <td>{{$division->name}}</td>
               <td>{{$division->leader}}</td>
-              <td>
+              <td class="text-center">
                 @role('admin')
                 <form action="{{ route('division.destroy', $division->id) }}" method="POST">
-                  <a href="#" class="btn btn-warning" onclick="setIndex({{$division->id}})"><i class="far fa-edit"></i></a>
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                    @csrf
+                    @method('DELETE')
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-warning" onclick="setIndex({{$division->id}})"><i class="far fa-edit"></i></button>
+                        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                    </div>
                 </form>
                 @endrole
               </td>
