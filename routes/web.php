@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('user', UserController::class);
     });
     Route::resource('disposition', DispositionController::class);
+    Route::get('disposition/status/{id}', [DispositionController::class, 'updateStatus'])->name('update.status.disposisi');
     Route::resource('division', DivisionController::class);
     Route::get('/notifMemo/{id?}', [NotificationController::class, 'memo'])->name('notif.memo');
     Route::get('/notifInbox/{id}', [NotificationController::class, 'inbox'])->name('notif.inbox');

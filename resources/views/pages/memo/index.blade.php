@@ -21,7 +21,7 @@ Memo
   <div class="card">
     <div class="card-header">
       <h4>Memo</h4>
-   
+
     </div>
     <div class="card-body p-0">
       <div class="table-responsive">
@@ -33,6 +33,7 @@ Memo
               <th>Sumber</th>
               <th>Perihal</th>
               <th>Tanggal Disposisi</th>
+              <th>Aksi</th>
             </tr>
             @forelse ($dispositions as $key => $disposition)
             <tr>
@@ -41,12 +42,15 @@ Memo
               <td>{{$disposition->mail->sender??""}}</td>
               <td>{{$disposition->mail->regarding??''}}</td>
               <td>{{$disposition->created_at->format('d M Y')}}</td>
+              <td>
+                  <a class="btn btn-info" href="{{ route('update.status.disposisi', ['id'=>$disposition->id]) }}"></a>
+              </td>
                 {{-- modal_edit{{$key}} --}}
                 {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
             </tr>
-                
+
             @empty
-                
+
             @endforelse
           </tbody>
         </table>
@@ -71,4 +75,11 @@ Memo
     </div>
   </div>
 </div>
+@endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    } );
+</script>
 @endsection

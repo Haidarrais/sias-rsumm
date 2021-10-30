@@ -13,6 +13,8 @@ class Disposition extends Model
         'mail_id',
         'division_id',
         'catatan',
+        'status',
+        'file',
         'created_at',
         'updated_at',
     ];

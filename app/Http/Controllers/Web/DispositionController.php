@@ -95,7 +95,35 @@ class DispositionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $disposition = Disposition::find($id);
+        $disposition->status = $request->status;
+        $disposition->save();
+
+        toast('sukses update status disposisi', 'success', 'center');
+        return back();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatus($id)
+    {
+        $disposition = Disposition::find($id);
+        if ($disposition->status == 0) {
+            $disposition->status = 1;
+            $disposition->save();
+            toast('sukses status disposisi menjadi sudah terkonfirmasi', 'success', 'center');
+        }else{
+            $disposition->status = 0;
+            $disposition->save();
+            toast('sukses status disposisi menjadi belum terkonfirmasi', 'info', 'center');
+        }
+
+        return back();
     }
 
     /**

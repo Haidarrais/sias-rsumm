@@ -104,4 +104,9 @@ Jenis Surat
           $('#modal_tambah').modal('show')
         });
 </script>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    } );
+</script>
 @endsection

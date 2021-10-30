@@ -44,7 +44,6 @@ Manajemen User
             </tr>
             @foreach ($users as $key => $user)
             <tr>
-                @if ($user->roles[0]->name != 'superadmin')
                 <td>{{$key+1}}</td>
                 <td>{{$user->name}}</td>
                 <td>{{$user->email}}</td>
@@ -61,7 +60,6 @@ Manajemen User
                     {{-- modal_edit{{$key}} --}}
                     {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
                 </td>
-                @endif
             </tr>
             @endforeach
           </tbody>
@@ -178,6 +176,11 @@ Manajemen User
     $(document).ready(function() {
         $('#modal_tambah').modal('show');
     });
+</script>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    } );
 </script>
 @endif
 <script>

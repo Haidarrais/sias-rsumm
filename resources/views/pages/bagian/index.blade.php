@@ -120,6 +120,11 @@ Unit / Divisi
 @endsection
 @section('script')
 <script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    } );
+</script>
+<script>
     $('#addDivision').on('click', () => {
         $('#modal_tambah').modal('show')
     });
