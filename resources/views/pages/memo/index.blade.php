@@ -51,7 +51,10 @@ Memo
                     @endif
                 </td>
                 <td>
-                    <a class="btn btn-info" href="{{ route('update.status.disposisi', ['id'=>$disposition->id]) }}">Ubah Status</a>
+                    @if ($disposition->file)
+                        <button class="btn btn-success p-1" onclick="detDisp({{$disposition->id}})">File Disposisi</button>
+                    @endif
+                    <a class="btn btn-info p-1" href="{{ route('update.status.disposisi', ['id'=>$disposition->id]) }}">Ubah Status</a>
                 </td>
                     {{-- modal_edit{{$key}} --}}
                     {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
@@ -84,10 +87,55 @@ Memo
   </div>
 </div>
 @endsection
+@section('modal')
+<div class="modal fade" id="modal_detail" tabindex="" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
+      <div class="modal-content" style="height: 80%;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal_title">Detail Surat</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="height: calc(100% - 120px);">
+          <div class="container-fluid" style="height:100%;">
+            <div id="pdfview" class="col-md-12" style="height:100%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection
 @section('script')
 <script>
     $(document).ready(function() {
         $('.table').DataTable();
     } );
+    function detDisp(id) {
+        //index = id;
+        //console.log(index);
+        var url = "{{route('disposition.show', ":id ")}}";
+        url = url.replace(":id", id);
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(data) {
+                console.log(data);
+                $('#modal_detail').modal('show')
+                if (PDFObject.supportsPDFs) {
+                PDFObject.embed(`{{asset('/upload/disposisi/')}}`+'/'+data.data.file, "#pdfview", {
+                    height: "100%",
+                    pdfOpenParams: {
+                    view: 'FitV',
+                    page: '2'
+                    }
+                });
+                console.log("Yay, this browser supports inline PDFs.");
+                } else {
+                console.log("Boo, inline PDFs are not supported by this browser");
+                }
+            },
+        });
+    }
 </script>
 @endsection

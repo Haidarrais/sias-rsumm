@@ -14,8 +14,8 @@ class AddStatusToDispositionTable extends Migration
     public function up()
     {
         Schema::table('disposition', function (Blueprint $table) {
-            $table->integer('status');
-            $table->string('file');
+            $table->integer('status')->default(0);
+            $table->string('file')->nullable();
         });
     }
 
@@ -27,8 +27,8 @@ class AddStatusToDispositionTable extends Migration
     public function down()
     {
         Schema::table('disposition', function (Blueprint $table) {
-            $table->integer('status');
-            $table->string('file');
+            $table->dropColumn('status');
+            $table->dropColumn('file');
         });
     }
 }

@@ -73,7 +73,7 @@ Surat Masuk
                     @role('pimpinan')
                     @if ($inbox->status != 2)
                         <button type="button" class="btn btn-primary" onclick="detInbox({{$inbox->id}})">Detail</button>
-                        <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
+                        <button type="button" class="btn btn-success" onclick="disInbox({{$inbox->id}})">Disposisi</button>
                     @endif
                     @endrole
                     @role('admin')
@@ -170,45 +170,47 @@ Surat Masuk
   </div>
 </div>
 {{-- END OF MODAL EDIT and ADD --}}
-@foreach ($inboxes as $key => $inbox)
-<div class="modal fade" id="modal_disposition{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_disposition{{$key}}" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-set-resiLabel">Disposisi Surat Masuk</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="{{route('disposition.store')}}" method="POST" id="form-add-inbox-data" enctype="multipart/form-data">
-        <input type="text" class="form-control" name="surat_id" value="{{$inbox->id}}" hidden>
-        @csrf
-        <div class="modal-body row">
-            <!-- <input type="text" class="form-control" name="tujuan"> -->
+<div class="modal fade" id="modal_disposition" tabindex="-1" role="dialog" aria-labelledby="modal_disposition" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-set-resiLabel">Disposisi Surat Keluar</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{route('disposition.store')}}" method="POST" id="form-add-outbox-data" enctype="multipart/form-data">
+          <input type="text" class="form-control" name="surat_id" id="form_mail_id" hidden>
+          @csrf
+          <div class="modal-body row">
+              <!-- <input type="text" class="form-control" name="tujuan"> -->
+              <div class="form-group col-md-12">
+                <label for="">Disposisikan ke</label>
+                <!-- <label for="">Jenis Surat</label> -->
+                <select name="tujuan" id="" class="form-control">
+                  <option value="" selected disabled>Pilih Divisi / Bagian</option>
+                  @foreach ($divisions as $key => $division )
+                  <option value="{{$division->id}}">{{$division->name}}</option>
+                  @endforeach
+                  </select>
+              </div>
             <div class="form-group col-md-12">
-              <label for="">Disposisikan ke</label>
-              <!-- <label for="">Jenis Surat</label> -->
-              <select name="tujuan" id="" class="form-control">
-                <option value="" selected disabled>Pilih Divisi / Bagian</option>
-                @foreach ($divisions as $key => $division )
-                <option value="{{$division->id}}">{{$division->name}}</option>
-                @endforeach
-                </select>
+              <label for="">Catatan</label>
+              <textarea class="form-control" name="catatan"></textarea>
             </div>
-          <div class="form-group col-md-12">
-            <label for="">Catatan</label>
-            <textarea class="form-control" name="catatan"></textarea>
+            <div class="form-group col-md-12">
+              <label for="file">File Disposisi</label>
+              <input type="file" name="file" id="form_file">
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-@endforeach
 
 {{-- START OF MODAL DETAIL PDF --}}
 <div class="modal fade" id="modal_detail" tabindex="-1" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
@@ -297,6 +299,10 @@ Surat Masuk
                 $("#form-add-inbox-data").attr("action", formAction);
             },
         });
+    }
+    function disInbox(id) {
+        $('#modal_disposition').modal('show')
+        $("#form_mail_id").val(id)
     }
 </script>
 @foreach ($inboxes as $key => $inbox)

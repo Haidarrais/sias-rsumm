@@ -72,8 +72,8 @@ Surat Keluar
                     <div class="btn-group" role="group" aria-label="Basic example">
                         @role('pimpinan')
                         @if ($outbox->status != 2)
-                            <button type="button" class="btn btn-primary" onclick="detInbox({{$outbox->id}})">Detail</button>
-                            <a href="#" class="btn btn-success" id="dispositionOutbox{{$key}}">Disposisi</a>
+                            <button type="button" class="btn btn-primary" onclick="detOutbox({{$outbox->id}})">Detail</button>
+                            <button type="button" class="btn btn-success" onclick="disOutbox({{$outbox->id}})">Disposisi</button>
                         @endif
                         @endrole
                         @role('admin')
@@ -81,8 +81,8 @@ Surat Keluar
                             @csrf
                             @method('DELETE')
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-info" onclick="detInbox({{$outbox->id}})"><i class="fas fa-file-pdf"></i></button>
-                                <button type="button" class="btn btn-warning" onclick="editInbox({{$outbox->id}})"><i class="far fa-edit"></i></button>
+                                <button type="button" class="btn btn-info" onclick="detOutbox({{$outbox->id}})"><i class="fas fa-file-pdf"></i></button>
+                                <button type="button" class="btn btn-warning" onclick="editOutbox({{$outbox->id}})"><i class="far fa-edit"></i></button>
                                 <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                             </div>
 
@@ -171,8 +171,7 @@ Surat Keluar
     </div>
 </div>
 {{-- END OF MODAL EDIT and ADD --}}
-@foreach ($outboxes as $key => $outbox)
-<div class="modal fade" id="modal_disposition{{$key}}" tabindex="{{$key}}" role="dialog" aria-labelledby="modal_disposition{{$key}}" aria-hidden="true">
+<div class="modal fade" id="modal_disposition" tabindex="-1" role="dialog" aria-labelledby="modal_disposition" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -182,7 +181,7 @@ Surat Keluar
         </button>
       </div>
       <form action="{{route('disposition.store')}}" method="POST" id="form-add-outbox-data" enctype="multipart/form-data">
-        <input type="text" class="form-control" name="surat_id" value="{{$outbox->id}}" hidden>
+        <input type="text" class="form-control" name="surat_id" id="form_mail_id" hidden>
         @csrf
         <div class="modal-body row">
             <!-- <input type="text" class="form-control" name="tujuan"> -->
@@ -200,6 +199,10 @@ Surat Keluar
             <label for="">Catatan</label>
             <textarea class="form-control" name="catatan"></textarea>
           </div>
+          <div class="form-group col-md-12">
+            <label for="file">File Disposisi</label>
+            <input type="file" name="file" id="form_file">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -209,7 +212,6 @@ Surat Keluar
     </div>
   </div>
 </div>
-@endforeach
 
 <div class="modal fade" id="modal_detail" tabindex="" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
@@ -235,7 +237,7 @@ Surat Keluar
     $(document).ready(function() {
         $('.table').DataTable();
     } );
-    function detInbox(id) {
+    function detOutbox(id) {
         //index = id;
         //console.log(index);
         var url = "{{route('outbox.show', ":id ")}}";
@@ -261,7 +263,7 @@ Surat Keluar
             },
         });
     }
-    function editInbox(id) {
+    function editOutbox(id) {
         index = id;
         console.log(index);
         var url = "{{route('outbox.edit', ":id ")}}";
@@ -292,6 +294,10 @@ Surat Keluar
                 $("#form-add-outbox-data").attr("action", formAction);
             },
         });
+    }
+    function disOutbox(id) {
+        $('#modal_disposition').modal('show')
+        $("#form_mail_id").val(id)
     }
 </script>
 <script>

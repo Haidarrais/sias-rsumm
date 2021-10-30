@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 class DispositionController extends Controller
 {
+    public $pathImage = 'upload/disposisi';
     /**
      * Display a listing of the resource.
      *
@@ -40,9 +41,16 @@ class DispositionController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->file('file')) {
+            $files = $request->file('file');
+            $fileName = $files->hashName();
+            $files->move($this->pathImage,$fileName);
+        }
         Disposition::create([
             'mail_id' => $request->surat_id,
             'division_id' => $request->tujuan,
+            'status' => 0,
+            'file' => $fileName ?? '',
             'catatan' => $request->catatan,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -72,7 +80,11 @@ class DispositionController extends Controller
      */
     public function show($id)
     {
-        //
+        $disp = Disposition::find($id);
+        return response()->json([
+            'status' => 1,
+            'data'  => $disp
+        ]);
     }
 
     /**
