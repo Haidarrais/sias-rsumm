@@ -33,20 +33,28 @@ Memo
               <th>Sumber</th>
               <th>Perihal</th>
               <th>Tanggal Disposisi</th>
+              <th>Status</th>
               <th>Aksi</th>
             </tr>
             @forelse ($dispositions as $key => $disposition)
             <tr>
-              <td>{{$key+1}}</td>
-              <td>{{$disposition->mail->entry_date??''}} / {{$disposition->mail->number??''}}</td>
-              <td>{{$disposition->mail->sender??""}}</td>
-              <td>{{$disposition->mail->regarding??''}}</td>
-              <td>{{$disposition->created_at->format('d M Y')}}</td>
-              <td>
-                  <a class="btn btn-info" href="{{ route('update.status.disposisi', ['id'=>$disposition->id]) }}"></a>
-              </td>
-                {{-- modal_edit{{$key}} --}}
-                {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
+                <td>{{$key+1}}</td>
+                <td>{{$disposition->mail->entry_date??''}} / {{$disposition->mail->number??''}}</td>
+                <td>{{$disposition->mail->sender??""}}</td>
+                <td>{{$disposition->mail->regarding??''}}</td>
+                <td>{{$disposition->created_at->format('d M Y')}}</td>
+                <td>
+                    @if ($disposition->status == 0)
+                        <span class="badge badge-secondary">Belum Terkonfirmasi</span>
+                    @else
+                        <span class="badge badge-success">Terkonfirmasi</span>
+                    @endif
+                </td>
+                <td>
+                    <a class="btn btn-info" href="{{ route('update.status.disposisi', ['id'=>$disposition->id]) }}">Ubah Status</a>
+                </td>
+                    {{-- modal_edit{{$key}} --}}
+                    {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}
             </tr>
 
             @empty
