@@ -51,9 +51,7 @@ Memo
                     @endif
                 </td>
                 <td>
-                    @if ($disposition->file)
-                        <button class="btn btn-success p-1" onclick="detDisp({{$disposition->id}})">File Disposisi</button>
-                    @endif
+                    <button class="btn btn-success p-1" onclick="detDisp({{$disposition->id}})">File Disposisi</button>
                     <a class="btn btn-info p-1" href="{{ route('update.status.disposisi', ['id'=>$disposition->id]) }}">Ubah Status</a>
                 </td>
                     {{-- modal_edit{{$key}} --}}
@@ -89,8 +87,8 @@ Memo
 @endsection
 @section('modal')
 <div class="modal fade" id="modal_detail" tabindex="" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
-      <div class="modal-content" style="height: 80%;">
+    <div class="modal-dialog modal-lg" role="document" style="height: 100%;">
+      <div class="modal-content" style="height: 100%;">
         <div class="modal-header">
           <h5 class="modal-title" id="modal_title">Detail Surat</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -99,6 +97,10 @@ Memo
         </div>
         <div class="modal-body" style="height: calc(100% - 120px);">
           <div class="container-fluid" style="height:100%;">
+            <div class="p-2">
+                <h4>Pesan Memo</h4>
+                <p id="pesan_memo"></p>
+            </div>
             <div id="pdfview" class="col-md-12" style="height:100%;"></div>
           </div>
         </div>
@@ -122,17 +124,20 @@ Memo
             success: function(data) {
                 console.log(data);
                 $('#modal_detail').modal('show')
+                $('#pesan_memo').html(data.data.catatan)
+                if(data.data.file){
                 if (PDFObject.supportsPDFs) {
-                PDFObject.embed(`{{asset('/upload/disposisi/')}}`+'/'+data.data.file, "#pdfview", {
-                    height: "100%",
-                    pdfOpenParams: {
-                    view: 'FitV',
-                    page: '2'
+                    PDFObject.embed(`{{asset('/upload/disposisi/')}}`+'/'+data.data.file, "#pdfview", {
+                        height: "80%",
+                        pdfOpenParams: {
+                        view: 'FitV',
+                        page: '2'
+                        }
+                    });
+                    console.log("Yay, this browser supports inline PDFs.");
+                    } else {
+                    console.log("Boo, inline PDFs are not supported by this browser");
                     }
-                });
-                console.log("Yay, this browser supports inline PDFs.");
-                } else {
-                console.log("Boo, inline PDFs are not supported by this browser");
                 }
             },
         });
