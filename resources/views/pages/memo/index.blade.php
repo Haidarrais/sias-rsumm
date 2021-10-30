@@ -76,7 +76,7 @@ Memo
     <div class="modal-dialog modal-lg" role="document" style="height: 100%;">
       <div class="modal-content" style="height: 100%;">
         <div class="modal-header">
-          <h5 class="modal-title" id="modal_title">Detail Surat</h5>
+          <h5 class="modal-title" id="modal_title">Detail Disposisi</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -84,7 +84,7 @@ Memo
         <div class="modal-body" style="height: calc(100% - 120px);">
           <div class="container-fluid" style="height:100%;">
             <div class="p-2">
-                <h4>Pesan Memo</h4>
+                <h4>Catatan</h4>
                 <p id="pesan_memo"></p>
             </div>
             <div id="pdfview" class="col-md-12" style="height:100%;"></div>
