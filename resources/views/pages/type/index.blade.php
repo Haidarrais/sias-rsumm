@@ -34,9 +34,9 @@ Jenis Surat
                 <th>Jenis Surat</th>
                 <th style="text-align: center">Action</th>
               </tr>
-              @foreach ($types as $key => $type)
             </thead>
             <tbody>
+            @foreach ($types as $key => $type)
               <tr>
                     <td>{{$key+1}}</td>
                     <td>{{$type->name}}</td>
