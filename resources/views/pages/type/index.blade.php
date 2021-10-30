@@ -48,8 +48,8 @@ Jenis Surat
                         </form>
                     </td>
               </tr>
-            </tbody>
               @endforeach
+            </tbody>
           </table>
         </div>
       </div>
