@@ -60,6 +60,7 @@ class UserController extends Controller
         $user->assignRole($input->roles);
 
         toast('User ' . $input->name . ' berhasil di dibuat' . ' dengan role ' . $input->roles, 'success');
+        return back();
     }
 
     /**
