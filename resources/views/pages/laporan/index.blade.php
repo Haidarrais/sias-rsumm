@@ -18,6 +18,14 @@ Laporan
 <!-- Main Content -->
 <div class="section-body">
   <div class="card">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="inbox-tab" data-toggle="tab" href="#inbox" role="tab" aria-controls="inbox" aria-selected="true">Surat Masuk</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="outbox-tab" data-toggle="tab" href="#outbox" role="tab" aria-controls="outbox" aria-selected="false">Surat Keluar</a>
+        </li>
+      </ul>
     <div class="card-header">
       <h4>Laporan</h4>
       <div class="card-header-action">
@@ -51,48 +59,93 @@ Laporan
         <!-- </div> -->
       </div>
     </div>
-    <div class="card-body p-1">
-      <div class="table-responsive">
-        <table class="table table-striped table-md">
-            <thead>
+    <div class="tab-content" id="myTabContent">
+        <div class="card-body p-1 tab-pane fade show active" id="inbox" role="tabpanel" aria-labelledby="inbox-tab">
+            <div class="table-responsive">
+                <table class="table table-striped table-md">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Agenda</th>
+                            <th>No Surat</th>
+                            <th>Sumber Surat</th>
+                            <th>Tujuan Surat</th>
+                            <th>Perihal</th>
+                            <th>Tgl Terima</th>
+                            <th>Jenis Surat</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($inboxes as $key => $inbox)
+                    <tr>
+                    @php
+                    if ($inbox->status == 0) {
+                    $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
+                    }elseif ($inbox->status == 1) {
+                    $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
+                    }elseif ($inbox->status == 2) {
+                    $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
+                    }
+                    @endphp
+                    <td>{{$key+1}}</td>
+                    <td>{{$inbox->journal_id}}</td>
+                    <td>{{$inbox->number}}</td>
+                    <td>{{$inbox->sender}}</td>
+                    <td>{{$inbox->destination}}</td>
+                    <td>{{$inbox->regarding}}</td>
+                    <td>{{$inbox->entry_date}}</td>
+                    <td>{{$inbox->type->name ?? ''}}</td>
+                    <td>{!!$status!!}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-body p-1 tab-pane fade" id="outbox" role="tabpanel" aria-labelledby="outbox-tab">
+            <div class="table-responsive">
+            <table class="table table-striped table-md">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Agenda</th>
+                        <th>No Surat</th>
+                        <th>Sumber Surat</th>
+                        <th>Tujuan Surat</th>
+                        <th>Perihal</th>
+                        <th>Tgl Terima</th>
+                        <th>Jenis Surat</th>
+                        <th>Status</th>
+                        </tr>
+                </thead>
+                <tbody>
+                @foreach ($outboxes as $key => $outbox)
                 <tr>
-                    <th>No</th>
-                    <th>Agenda</th>
-                    <th>No Surat</th>
-                    <th>Sumber Surat</th>
-                    <th>Tujuan Surat</th>
-                    <th>Perihal</th>
-                    <th>Tgl Terima</th>
-                    <th>Jenis Surat</th>
-                    <th>Status</th>
-                  </tr>
-            </thead>
-            <tbody>
-            @foreach ($mails as $key => $mail)
-            <tr>
-              @php
-              if ($mail->status == 0) {
-              $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
-              }elseif ($mail->status == 1) {
-              $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
-              }elseif ($mail->status == 2) {
-              $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
-              }
-              @endphp
-              <td>{{$key+1}}</td>
-              <td>{{$mail->journal_id}}</td>
-              <td>{{$mail->number}}</td>
-              <td>{{$mail->sender}}</td>
-              <td>{{$mail->destination}}</td>
-              <td>{{$mail->regarding}}</td>
-              <td>{{$mail->entry_date}}</td>
-              <td>{{$mail->type->name ?? ''}}</td>
-              <td>{!!$status!!}</td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
-      </div>
+                    @php
+                    if ($outbox->status == 0) {
+                    $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top" title="Pending" style="color:#ffa426;font-size:20px"></i>';
+                    }elseif ($outbox->status == 1) {
+                    $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top" title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
+                    }elseif ($outbox->status == 2) {
+                    $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Diterima" style="color:#47c363;font-size:20px"></i>';
+                    }
+                    @endphp
+                    <td>{{$key+1}}</td>
+                    <td>{{$outbox->journal_id}}</td>
+                    <td>{{$outbox->number}}</td>
+                    <td>{{$outbox->sender}}</td>
+                    <td>{{$outbox->destination}}</td>
+                    <td>{{$outbox->regarding}}</td>
+                    <td>{{$outbox->entry_date}}</td>
+                    <td>{{$outbox->type->name ?? ''}}</td>
+                    <td>{!!$status!!}</td>
+                </tr>
+                @endforeach
+                </tbody>
+            </table>
+            </div>
+        </div>
     </div>
   </div>
 </div>

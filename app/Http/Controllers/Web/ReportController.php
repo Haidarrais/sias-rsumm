@@ -10,7 +10,9 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $mails = Mail::all();
-        return view('pages.laporan.index', compact('mails'));
+        $inboxes = Mail::where('mail_type', '=', '0')->get();
+        $outboxes = Mail::where('mail_type', '=', '1')->get();
+
+        return view('pages.laporan.index', compact('inboxes','outboxes'));
     }
 }
