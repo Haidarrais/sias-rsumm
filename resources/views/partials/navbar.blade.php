@@ -8,7 +8,7 @@
   </form>
   <ul class="navbar-nav navbar-right">
     {{-- <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a> --}}
-      <div class="dropdown-menu dropdown-list dropdown-menu-right">
+      {{-- <div class="dropdown-menu dropdown-list dropdown-menu-right">
         <div class="dropdown-header">Messages
           <div class="float-right">
             <a href="#">Mark All As Read</a>
@@ -72,7 +72,7 @@
           <a href="#">View All <i class="fas fa-chevron-right"></i></a>
         </div>
       </div>
-    </li>
+    </li> --}}
     <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg @if(count($notifications)>0)beep @endif"><i class="far fa-bell"></i></a>
       <div class="dropdown-menu dropdown-list dropdown-menu-right">
         <div class="dropdown-header">Notifications
@@ -109,25 +109,25 @@
               </div>
             </a>
           @empty
-         <a href="#" class="dropdown-item">
-                    <div class="dropdown-item-icon bg-success text-white">
-                      <i class="fas fa-check"></i>
+            <a href="#" class="dropdown-item">
+                <div class="dropdown-item-icon bg-success text-white">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="dropdown-item-desc">
+                    Belum ada notifikasi
+                    <div class="time">{{\Carbon\Carbon::now()}}</div>
+                </div>
+            </a>
+          @endforelse
+          <!--  <a href="#" class="dropdown-item">
+                    <div class="dropdown-item-icon bg-info text-white">
+                        <i class="far fa-user"></i>
                     </div>
                     <div class="dropdown-item-desc">
-                      Belum ada notifikasi
-                      <div class="time">{{\Carbon\Carbon::now()}}</div>
+                        <b>You</b> and <b>Dedik Sugiharto</b> are now friends
+                        <div class="time">10 Hours Ago</div>
                     </div>
-                  </a>
-          @endforelse
-          <!-- <a href="#" class="dropdown-item">
-            <div class="dropdown-item-icon bg-info text-white">
-              <i class="far fa-user"></i>
-            </div>
-            <div class="dropdown-item-desc">
-              <b>You</b> and <b>Dedik Sugiharto</b> are now friends
-              <div class="time">10 Hours Ago</div>
-            </div>
-          </a>
+                </a>
           <a href="#" class="dropdown-item">
             <div class="dropdown-item-icon bg-success text-white">
               <i class="fas fa-check"></i>
@@ -154,11 +154,11 @@
               Welcome to Stisla template!
               <div class="time">Yesterday</div>
             </div>
-          </a>
-        </div> -->
-        {{-- <div class="dropdown-footer text-center">
-          <a href="#">View All <i class="fas fa-chevron-right"></i></a>
-        </div> --}}
+          </a>-->
+        </div>
+        <div class="dropdown-footer text-center">
+          <a href="#"><i class="fas fa-chevron-left"></i> END <i class="fas fa-chevron-right"></i></a>
+        </div>
       </div>
     </li>
     <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
