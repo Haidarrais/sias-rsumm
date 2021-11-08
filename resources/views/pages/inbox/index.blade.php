@@ -121,30 +121,65 @@ Surat Masuk
           <div class="form-group col-md-6">
             <label for="">Nomor Agenda</label>
             <input type="text" class="form-control" id="form_journal_id" name="journal_id" autofocus>
+            @error('journal_id')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
           <div class="form-group col-md-6">
             <label for="">Nomor Surat</label>
             <input type="text" class="form-control" id="form_inbox_number" name="inbox_number">
+            @error('inbox_number')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
           <div class="form-group col-md-6">
             <label for="">Sumber Surat</label>
             <input type="text" class="form-control" id="form_sender" name="sender">
+            @error('sender')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
           <div class="form-group col-md-6">
             <label for="">Tujuan Surat</label>
             <input type="text" class="form-control" id="form_destination" name="destination">
+            @error('destination')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
           <div class="form-group col-md-6">
             <label for="">Perihal</label>
             <input type="text" class="form-control" id="form_regarding" name="regarding">
+            @error('regarding')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
           <div class="form-group col-md-6">
             <label for="">Tanggal Surat Diterima</label>
             <input type="date" class="form-control" id="form_entry_date" name="entry_date">
+            @error('entry_date')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
           <div class="form-group col-md-6">
-            <label for="">File Surat</label>
+            <label for="">File Surat (.pdf)</label>
             <input type="file" class="form-control-file" name="uploadfile">
+            @error('uploadfile')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
             <span id="form_issue_file"></span>
           </div>
           <div class="form-group col-md-6">
@@ -155,10 +190,20 @@ Surat Masuk
               <option value="{{$type->id}}">{{$type->name}}</option>
               @endforeach
             </select>
+            @error('type')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
           <div class="form-group col-md-12">
             <label for="">Notes</label>
             <textarea class="form-control" name="notes" id="form_notes"></textarea>
+            @error('notes')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
         </div>
         <div class="modal-footer">
@@ -233,6 +278,13 @@ Surat Masuk
 {{-- END OF MODAL DETAIL PDF --}}
 @endsection
 @section('script')
+@if($errors->any())
+<script>
+    $(document).ready(function() {
+        $('#modal_tambah').modal('show');
+    });
+</script>
+@endif
 <script>
     $(document).ready(function() {
         $('.table').DataTable();

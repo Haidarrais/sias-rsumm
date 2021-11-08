@@ -49,7 +49,7 @@ class OutboxController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'uploadfile' => 'required',
+            '*' => 'required'
         ]);
         $files = $request->file('uploadfile');
         $fileName = $files->hashName();

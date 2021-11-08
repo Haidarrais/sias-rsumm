@@ -163,12 +163,12 @@ Manajemen User
         $('#modal_tambah').modal('show');
     });
 </script>
+@endif
 <script>
     $(document).ready(function() {
         $('.table').DataTable();
     } );
 </script>
-@endif
 <script>
     $('#adduser').on('click', () => {
         $('#modal_tambah').modal('show')

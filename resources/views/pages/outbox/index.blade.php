@@ -120,46 +120,91 @@ Surat Keluar
           @csrf
           <div class="modal-body row">
             <div class="form-group col-md-6">
-              <label for="">Nomor Agenda</label>
-              <input type="text" class="form-control" id="form_journal_id" name="journal_id" autofocus>
+                <label for="">Nomor Agenda</label>
+                <input type="text" class="form-control" id="form_journal_id" name="journal_id" autofocus>
+                @error('journal_id')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
-              <label for="">Nomor Surat</label>
-              <input type="text" class="form-control" id="form_outbox_number" name="outbox_number">
+                <label for="">Nomor Surat</label>
+                <input type="text" class="form-control" id="form_outbox_number" name="outbox_number">
+                @error('outbox_number')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
-              <label for="">Sumber Surat</label>
-              <input type="text" class="form-control" id="form_sender" name="sender">
+                <label for="">Sumber Surat</label>
+                <input type="text" class="form-control" id="form_sender" name="sender">
+                @error('sender')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
-              <label for="">Tujuan Surat</label>
-              <input type="text" class="form-control" id="form_destination" name="destination">
+                <label for="">Tujuan Surat</label>
+                <input type="text" class="form-control" id="form_destination" name="destination">
+                @error('destination')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
-              <label for="">Perihal</label>
-              <input type="text" class="form-control" id="form_regarding" name="regarding">
+                <label for="">Perihal</label>
+                <input type="text" class="form-control" id="form_regarding" name="regarding">
+                @error('regarding')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
-              <label for="">Tanggal Surat Diterima</label>
-              <input type="date" class="form-control" id="form_entry_date" name="entry_date">
+                <label for="">Tanggal Surat Diterima</label>
+                <input type="date" class="form-control" id="form_entry_date" name="entry_date">
+                @error('entry_date')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
             <div class="form-group col-md-6">
-              <label for="">File Surat</label>
-              <input type="file" class="form-control-file" name="uploadfile">
-              <span id="form_issue_file"></span>
+                <label for="">File Surat</label>
+                <input type="file" class="form-control-file" name="uploadfile">
+                @error('uploadfile')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+                <span id="form_issue_file"></span>
             </div>
             <div class="form-group col-md-6">
-              <label for="">Jenis Surat</label>
-              <select name="type" id="type_add" class="form-control">
-                <option value="" selected disabled>Pilih Jenis Surat</option>
-                @foreach ($types as $key => $type )
-                <option value="{{$type->id}}">{{$type->name}}</option>
-                @endforeach
-              </select>
+                <label for="">Jenis Surat</label>
+                <select name="type" id="type_add" class="form-control">
+                    <option value="" selected disabled>Pilih Jenis Surat</option>
+                    @foreach ($types as $key => $type )
+                    <option value="{{$type->id}}">{{$type->name}}</option>
+                    @endforeach
+                </select>
+                @error('type')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
             <div class="form-group col-md-12">
-              <label for="">Notes</label>
-              <textarea class="form-control" name="notes" id="form_notes"></textarea>
+                <label for="">Notes</label>
+                <textarea class="form-control" name="notes" id="form_notes"></textarea>
+                @error('notes')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
           </div>
           <div class="modal-footer">
@@ -233,6 +278,13 @@ Surat Keluar
 
 @endsection
 @section('script')
+@if($errors->any())
+<script>
+    $(document).ready(function() {
+        $('#modal_tambah').modal('show');
+    });
+</script>
+@endif
 <script>
     $(document).ready(function() {
         $('.table').DataTable();
