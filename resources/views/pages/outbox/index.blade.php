@@ -120,91 +120,91 @@ Surat Keluar
           @csrf
           <div class="modal-body row">
             <div class="form-group col-md-6">
-                <label for="">Nomor Agenda</label>
-                <input type="text" class="form-control" id="form_journal_id" name="journal_id" autofocus>
-                @error('journal_id')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                  <label for="">Nomor Agenda</label>
+                  <input type="text" class="form-control @error('journal_id') is-invalid @enderror" value="{{ old('journal_id') }}" id="form_journal_id" name="journal_id" autofocus>
+                  @error('journal_id')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="">Nomor Surat</label>
-                <input type="text" class="form-control" id="form_outbox_number" name="outbox_number">
-                @error('outbox_number')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                  <label for="">Nomor Surat</label>
+                  <input type="text" class="form-control @error('outbox_number') is-invalid @enderror" value="{{ old('outbox_number') }}" id="form_outbox_number" name="outbox_number">
+                  @error('outbox_number')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="">Sumber Surat</label>
-                <input type="text" class="form-control" id="form_sender" name="sender">
-                @error('sender')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                  <label for="">Sumber Surat</label>
+                  <input type="text" class="form-control @error('sender') is-invalid @enderror" value="{{ old('sender') }}" id="form_sender" name="sender">
+                  @error('sender')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="">Tujuan Surat</label>
-                <input type="text" class="form-control" id="form_destination" name="destination">
-                @error('destination')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                  <label for="">Tujuan Surat</label>
+                  <input type="text" class="form-control @error('destination') is-invalid @enderror" value="{{ old('destination') }}" id="form_destination" name="destination">
+                  @error('destination')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="">Perihal</label>
-                <input type="text" class="form-control" id="form_regarding" name="regarding">
-                @error('regarding')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                  <label for="">Perihal</label>
+                  <input type="text" class="form-control @error('regarding') is-invalid @enderror" value="{{ old('regarding') }}" id="form_regarding" name="regarding">
+                  @error('regarding')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="">Tanggal Surat Diterima</label>
-                <input type="date" class="form-control" id="form_entry_date" name="entry_date">
-                @error('entry_date')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                  <label for="">Tanggal Surat Diterima</label>
+                  <input type="date" class="form-control @error('entry_date') is-invalid @enderror" value="{{ old('entry_date') }}" id="form_entry_date" name="entry_date">
+                  @error('entry_date')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="">File Surat</label>
-                <input type="file" class="form-control-file" name="uploadfile">
-                @error('uploadfile')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-                <span id="form_issue_file"></span>
+                  <label for="">File Surat (.pdf)</label>
+                  <input type="file" class="form-control-file @error('uploadfile') is-invalid @enderror" value="{{ old('uploadfile') }}"  name="uploadfile">
+                  @error('uploadfile')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                  <span id="form_issue_file"></span>
             </div>
             <div class="form-group col-md-6">
-                <label for="">Jenis Surat</label>
-                <select name="type" id="type_add" class="form-control">
-                    <option value="" selected disabled>Pilih Jenis Surat</option>
-                    @foreach ($types as $key => $type )
-                    <option value="{{$type->id}}">{{$type->name}}</option>
-                    @endforeach
-                </select>
-                @error('type')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                  <label for="">Jenis Surat</label>
+                  <select name="type" id="type_add" class="form-control @error('type') is-invalid @enderror" value="{{ old('type') }}">
+                  <option value="" selected disabled>Pilih Jenis Surat</option>
+                  @foreach ($types as $key => $type )
+                  <option value="{{$type->id}}">{{$type->name}}</option>
+                  @endforeach
+                  </select>
+                  @error('type')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
             </div>
             <div class="form-group col-md-12">
-                <label for="">Notes</label>
-                <textarea class="form-control" name="notes" id="form_notes"></textarea>
-                @error('notes')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                  <label for="">Notes</label>
+                  <textarea class="form-control @error('notes') is-invalid @enderror" value="{{ old('notes') }}" name="notes" id="form_notes"></textarea>
+                  @error('notes')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
             </div>
           </div>
           <div class="modal-footer">
