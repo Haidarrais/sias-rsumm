@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class InboxController extends Controller
 {
@@ -22,11 +23,33 @@ class InboxController extends Controller
      */
     public function index()
     {
-        $inboxes = Mail::where('mail_type', '=', '0')->get();
+
+        $wadir = 'wadir'. Auth::user()->id .'wadir';
+        $kabid = 'kabid'. Auth::user()->id . 'kabid';
+        $query = Mail::query();
+        $query->where('mail_type', '=', '0');
+        if (Auth::user()->roles[0]->name == 'wakilpimpinan') {
+            $query->whereHas('disposition',function($q) use($wadir){
+                $q->where("tujuan", "LIKE", "%$wadir%");
+            });
+        }
+        if (Auth::user()->roles[0]->name == 'kabid') {
+            $query->whereHas('disposition',function($q) use($kabid){
+                $q->where("tujuan", "LIKE", "%$kabid%");
+            });
+        }
+        $inboxes = $query->get();
+        // dd(explode(',',$inboxes->disposition->tujuan));
         $types = Type::all();
         $divisions = Division::all();
+        $wadirs = User::whereHas('roles', function($q){
+            $q->where('name', '=', 'wakilpimpinan');
+        })->get();
+        $kabids = User::whereHas('roles', function($q){
+            $q->where('name', '=', 'kabid');
+        })->get();
 
-        return view('pages.inbox.index', compact('inboxes', 'types', 'divisions'));
+        return view('pages.inbox.index', compact('inboxes', 'types', 'divisions', 'kabids', 'wadirs'));
     }
 
     /**

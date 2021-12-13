@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class OutboxController extends Controller
 {
@@ -23,11 +24,31 @@ class OutboxController extends Controller
      */
     public function index()
     {
-        $outboxes = Mail::where('mail_type', '=', '1')->get();
+        $wadir = 'wadir'. Auth::user()->id .'wadir';
+        $kabid = 'kabid'. Auth::user()->id . 'kabid';
+        $query = Mail::query();
+        $query->where('mail_type', '=', '1');
+        if (Auth::user()->roles[0]->name == 'wakilpimpinan') {
+            $query->whereHas('disposition',function($q) use($wadir){
+                $q->where("tujuan", "LIKE", "%$wadir%");
+            });
+        }
+        if (Auth::user()->roles[0]->name == 'kabid') {
+            $query->whereHas('disposition',function($q) use($kabid){
+                $q->where("tujuan", "LIKE", "%$kabid%");
+            });
+        }
+        $outboxes = $query->get();
         $types = Type::all();
         $divisions = Division::all();
+        $wadirs = User::whereHas('roles', function($q){
+            $q->where('name', '=', 'wakilpimpinan');
+        })->get();
+        $kabids = User::whereHas('roles', function($q){
+            $q->where('name', '=', 'kabid');
+        })->get();
 
-        return view('pages.outbox.index', compact('outboxes', 'types', 'divisions'));
+        return view('pages.outbox.index', compact('outboxes', 'types', 'divisions', 'kabids', 'wadirs'));
     }
 
     /**

@@ -13,11 +13,10 @@ class RenameColumnTujuanToDivisionIdAtDispositionTable extends Migration
      */
     public function up()
     {
-        if (Schema::hasColumns('disposition', ['tujuan','surat_id'])) {
-            Schema::dropColumns('disposition',[ 'tujuan', 'surat_id']);
+        if (Schema::hasColumns('disposition', ['surat_id'])) {
+            Schema::dropColumns('disposition',['surat_id']);
             Schema::table('disposition', function (Blueprint $table) {
                 $table->bigInteger('mail_id')->after('id');
-                $table->bigInteger('division_id')->after('mail_id');
             });
         }
     }
@@ -29,7 +28,9 @@ class RenameColumnTujuanToDivisionIdAtDispositionTable extends Migration
      */
     public function down()
     {
-        if (Schema::hasColumns('disposition', ['tujuan', 'surat_id'])) {
-            Schema::dropColumns('disposition',[ 'tujuan', 'surat_id']);
-    }}
+        Schema::dropColumns('disposition',['mail_id']);
+        Schema::table('disposition', function (Blueprint $table) {
+            $table->integer('surat_id');
+        });
+    }
 }

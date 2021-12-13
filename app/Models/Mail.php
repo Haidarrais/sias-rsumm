@@ -29,6 +29,6 @@ class Mail extends Model
         return $this->belongsTo(Type::class);
     }
     public function disposition(){
-        return $this->hasOne(Disposition::class);
+        return $this->hasOne(Disposition::class, 'mail_id', 'id');
     }
 }

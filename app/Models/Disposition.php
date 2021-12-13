@@ -11,7 +11,7 @@ class Disposition extends Model
     use HasFactory;
     protected $fillable = [
         'mail_id',
-        'division_id',
+        'tujuan',
         'catatan',
         'status',
         'file',

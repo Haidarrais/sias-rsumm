@@ -9,6 +9,7 @@ use App\Models\Notification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DispositionController extends Controller
 {
@@ -46,17 +47,26 @@ class DispositionController extends Controller
             $fileName = $files->hashName();
             $files->move($this->pathImage,$fileName);
         }
+        // $tujuans = json_decode($request->tujuan);
+        // dd($request->tujuans);
+        if (Auth::user()->roles[0]->name == 'pimpinan') {
+            $status = 3;
+        }else if (Auth::user()->roles[0]->name == 'wakilpimpinan') {
+            $status = 4;
+        }else if (Auth::user()->roles[0]->name == 'kabid') {
+            $status = 2;
+        }
         Disposition::create([
             'mail_id' => $request->surat_id,
-            'division_id' => $request->tujuan,
+            'tujuan' => $request->tujuans,
             'status' => 0,
             'file' => $fileName ?? '',
-            'catatan' => $request->catatan,
+            'catatan' => $request->catatan?? '-',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         $inbox = Mail::where('id', '=', $request->surat_id)->first();
-        $inbox->status = 2;
+        $inbox->status = $status;
         $inbox->save();
         $users = User::whereHas('roles', function ($query) {
             $query->where('name', '!=', 'superadmin')->where('name','!=', 'pimpinan');
