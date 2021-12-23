@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/notifMemo/{id?}', [NotificationController::class, 'memo'])->name('notif.memo');
     Route::get('/notifInbox/{id}', [NotificationController::class, 'inbox'])->name('notif.inbox');
     Route::get('/notifOutbox/{id}', [NotificationController::class, 'outbox'])->name('notif.outbox');
+    Route::get('/disp/print', [DispositionController::class, 'fileDisposisi'])->name('disp.print');
 });
 
 

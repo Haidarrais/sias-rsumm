@@ -282,17 +282,17 @@ Surat Masuk
                             data-placeholder="Pilih tujuan disposisi" data-allow-clear="true">
                             @role('pimpinan')
                             @foreach ($wadirs as $key => $wadir )
-                            <option value="{{'wadir' . $wadir->id . 'wadir'}}">{{$wadir->name}}</option>
+                            <option value="{{$wadir->id}}">{{$wadir->name}}</option>
                             @endforeach
                             @endrole
                             @role('wakilpimpinan')
                             @foreach ($kabids as $key => $kabid )
-                            <option value="{{'kabid' . $kabid->id . 'kabid'}}">{{$kabid->name}}</option>
+                            <option value="{{$kabid->id}}">{{$kabid->name}}</option>
                             @endforeach
                             @endrole
                             @role('kabid')
-                            @foreach ($divisions as $key => $division )
-                            <option value="{{'divisi' . $division->id . 'divisi'}}">{{$division->name}}</option>
+                            @foreach ($employees as $key => $employee )
+                            <option value="{{$employee->id}}">{{$employee->name}}</option>
                             @endforeach
                             @endrole
                         </select>
@@ -303,8 +303,13 @@ Surat Masuk
                         <textarea class="form-control" name="catatan"></textarea>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="file">File Disposisi</label>
-                        <input type="file" name="file" id="form_file">
+                        <label for="urgency">Urgensi Disposisi</label>
+                        <select name="urgency" class="form-control" id="urgency">
+                            <option value="1">Penting</option>
+                            <option value="2">Rahasia</option>
+                            <option value="3">Segera</option>
+                            <option value="4">Biasa</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -14,6 +14,7 @@ class Disposition extends Model
         'tujuan',
         'catatan',
         'status',
+        'urgency',
         'file',
         'created_at',
         'updated_at',
