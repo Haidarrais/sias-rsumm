@@ -42,4 +42,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function disposition(){
+        return $this->hasMany(Disposition::class, 'mail_id', 'id');
+    }
 }

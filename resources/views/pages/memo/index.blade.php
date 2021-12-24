@@ -54,7 +54,9 @@ Memo
                 </td>
                 <td>
                     <button class="btn btn-success p-1" onclick="detDisp({{$disposition->id}})">Detail Disposisi</button>
+                    @role('admin')
                     <a class="btn btn-info p-1" href="{{ route('update.status.disposisi', ['id'=>$disposition->id]) }}">Ubah Status</a>
+                    @endrole
                 </td>
                     {{-- modal_edit{{$key}} --}}
                     {{-- <button onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i class="far fa-edit"></i></button> --}}

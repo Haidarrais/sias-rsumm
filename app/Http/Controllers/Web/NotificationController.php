@@ -15,29 +15,15 @@ class NotificationController extends Controller
         if ($id) {
             $this->updateStatus($id);
         }
-        $keyword = '"'. Auth::user()->id . '"';
         switch (Auth::user()->roles[0]->name) {
-            case 'wakilpimpinan':
-                $q = Disposition::query();
-                $q->where("tujuan", "LIKE", "%$keyword%");
-                $dispositions = $q->get();
-                break;
-            case 'kabid':
-                $q = Disposition::query();
-                $q->where("tujuan", "LIKE", "%$keyword%");
-                $dispositions = $q->get();
-                break;
-            case 'karyawan':
-                $q = Disposition::query();
-                $q->where("tujuan", "LIKE", "%$keyword%");
-                $dispositions = $q->get();
-                break;
             case 'pimpinan':
                 $dispositions = Disposition::all();
                 break;
-
-            default:
+            case 'admin':
                 $dispositions = Disposition::all();
+                break;
+            default:
+                $dispositions = Disposition::where('user_id', Auth::user()->id)->get();
                 break;
         }
        return view('pages.memo.index', compact('dispositions'));

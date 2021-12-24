@@ -24,22 +24,13 @@ class InboxController extends Controller
     public function index()
     {
 
-        $keyword = '"'. Auth::user()->id . '"';
+        $keyword = Auth::user()->id;
         $query = Mail::query();
         $query->where('mail_type', '=', '0');
-        if (Auth::user()->roles[0]->name == 'wakilpimpinan') {
+        if (Auth::user()->roles[0]->name != 'admin' && Auth::user()->roles[0]->name != 'pimpinan') {
+            # code...
             $query->whereHas('disposition',function($q) use($keyword){
-                $q->where("tujuan", "LIKE", "%$keyword%");
-            });
-        }
-        if (Auth::user()->roles[0]->name == 'kabid') {
-            $query->whereHas('disposition',function($q) use($keyword){
-                $q->where("tujuan", "LIKE", "%$keyword%");
-            });
-        }
-        if (Auth::user()->roles[0]->name == 'karyawan') {
-            $query->whereHas('disposition',function($q) use($keyword){
-                $q->where("tujuan", "LIKE", "%$keyword%");
+                $q->where("user_id", $keyword);
             });
         }
         $inboxes = $query->get();

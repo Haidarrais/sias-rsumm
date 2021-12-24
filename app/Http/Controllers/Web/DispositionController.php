@@ -54,15 +54,13 @@ class DispositionController extends Controller
         $fileName = hash('haval160,4', $request->surat_id . 'surat ke' . $request->tujuans);
         // $tujuans = json_decode($request->tujuan);
         // dd($request->tujuans);
+        $status= null;
         if (Auth::user()->roles[0]->name == 'pimpinan') {
             $status = 3;
-            $dispositionType = 3;
         }else if (Auth::user()->roles[0]->name == 'wakilpimpinan') {
             $status = 4;
-            $dispositionType = 4;
         }else if (Auth::user()->roles[0]->name == 'kabid') {
             $status = 2;
-            $dispositionType = 5;
         }
         // $data =  json_decode($request->tujuans);
         $tujuan = explode(',', $request->tujuans);
@@ -76,21 +74,24 @@ class DispositionController extends Controller
         //     // $value = implode(',', $value);
         //     array_push($tujuans, $value);
         // }
-        $disp = Disposition::create([
-            'mail_id' => $request->surat_id,
-            'tujuan' => json_encode($tujuan),
-            'status' => 0,
-            'urgency' => $request->urgency??4,
-            'file' => $fileName ?? '',
-            'type' => $dispositionType,
-            'catatan' => $request->catatan?? '-',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
+        foreach ($tujuan as $key => $value) {
+            $disp = Disposition::create([
+                'mail_id' => $request->surat_id,
+                'user_id' => $value,
+                'status' => 0,
+                'urgency' => $request->urgency??4,
+                'file' => $fileName ?? '',
+                'catatan' => $request->catatan?? '-',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+            $this->fileDisposisi($disp);
+        }
         $mail = Mail::where('id', '=', $request->surat_id)->first();
-        $mail->status = $status;
-        $mail->save();
-        $this->fileDisposisi($disp, $mail);
+        if ($status) {
+            $mail->status = $status;
+            $mail->save();
+        }
         $users = User::whereIn('id', $notifFor)->with('roles')->get();
         foreach ($users as $key => $value) {
             Notification::create([
@@ -188,13 +189,12 @@ class DispositionController extends Controller
         }
         return $randomString;
     }
-    private function fileDisposisi($disp, $mail)
+    private function fileDisposisi($disp)
     {
-        $disps = json_decode($disp->tujuan);
         // $disps = explode(',',$dis);
         // $allfile[] = '';
-        foreach ($disps as $value) {
-            $tujuan = User::find($value);
+            $mail = Mail::where('id', '=', $disp->mail_id)->first();
+            $tujuan = User::find($disp->user_id);
             // dd($value);
             $templateProcessor = new TemplateProcessor(public_path('templates/disp.docx'));
             $templateProcessor->setValues([
@@ -219,22 +219,13 @@ class DispositionController extends Controller
                     'File' => 'upload/disposisi/disp.docx',
                 ], 'doc'
             );
-            $fileName = "upload/disposisi/disposisi". $this->generateRandomString(10) . $tujuan->name . ".pdf";
-            $result->saveFiles($fileName);
-            $allfile[] = $fileName;
-        }
-        // dd($allfile);
-        // ConvertApi::setApiSecret('nuTySpNzhyDylwUl');
-        $result = ConvertApi::convert('merge', [
-                'Files' => $allfile,
-            ], 'pdf'
-        );
-        $path = "upload/disposisi/";
-        $fileNameFinal = 'disposisi-' . $this->generateRandomString(10) . "-final.pdf";
-        $result->saveFiles($path . $fileNameFinal);
-        $disposition = Disposition::find($disp->id);
-        $disposition->file = $fileNameFinal;
-        $disposition->save();
+            $path = "upload/disposisi/";
+            $fileName = "disposisi" . $this->generateRandomString(10) . $tujuan->name . ".pdf";
+            $result->saveFiles($path . $fileName);
+            $disposition = Disposition::find($disp->id);
+            $disposition->file = $fileName;
+            $disposition->save();
+
         // $domPdfPath = base_path('vendor/dompdf/dompdf');
         // Settings::setPdfRendererPath($domPdfPath);
         // Settings::setPdfRendererName('DomPDF');

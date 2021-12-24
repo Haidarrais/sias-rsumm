@@ -16,7 +16,7 @@ class CreateDispositionTable extends Migration
         Schema::create('disposition', function (Blueprint $table) {
             $table->id();
             $table->integer('surat_id');
-            $table->string('tujuan');
+            $table->integer('user_id');
             $table->string('catatan');
             $table->timestamps();
         });
