@@ -43,6 +43,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public function disposition(){
-        return $this->hasMany(Disposition::class, 'mail_id', 'id');
+        return $this->hasMany(Disposition::class, 'user_id', 'id');
     }
 }
