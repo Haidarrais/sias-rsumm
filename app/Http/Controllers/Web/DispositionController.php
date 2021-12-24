@@ -56,13 +56,17 @@ class DispositionController extends Controller
         // dd($request->tujuans);
         if (Auth::user()->roles[0]->name == 'pimpinan') {
             $status = 3;
+            $dispositionType = 3;
         }else if (Auth::user()->roles[0]->name == 'wakilpimpinan') {
             $status = 4;
+            $dispositionType = 4;
         }else if (Auth::user()->roles[0]->name == 'kabid') {
             $status = 2;
+            $dispositionType = 5;
         }
         // $data =  json_decode($request->tujuans);
         $tujuan = explode(',', $request->tujuans);
+        $notifFor = explode(',', $request->tujuans);
         // dd($tujuan);
         // $tujuans = [];
         // foreach ($tujuan as $value) {
@@ -78,6 +82,7 @@ class DispositionController extends Controller
             'status' => 0,
             'urgency' => $request->urgency??4,
             'file' => $fileName ?? '',
+            'type' => $dispositionType,
             'catatan' => $request->catatan?? '-',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -86,9 +91,7 @@ class DispositionController extends Controller
         $mail->status = $status;
         $mail->save();
         $this->fileDisposisi($disp, $mail);
-        $users = User::whereHas('roles', function ($query) {
-            $query->where('name', '!=', 'superadmin')->where('name','!=', 'pimpinan');
-        })->with('roles')->get();
+        $users = User::whereIn('id', $notifFor)->with('roles')->get();
         foreach ($users as $key => $value) {
             Notification::create([
                 'user_id' => $value->id,

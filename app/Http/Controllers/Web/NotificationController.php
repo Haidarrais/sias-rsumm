@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Disposition;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -14,7 +15,31 @@ class NotificationController extends Controller
         if ($id) {
             $this->updateStatus($id);
         }
-       $dispositions = Disposition::all();
+        $keyword = '"'. Auth::user()->id . '"';
+        switch (Auth::user()->roles[0]->name) {
+            case 'wakilpimpinan':
+                $q = Disposition::query();
+                $q->where("tujuan", "LIKE", "%$keyword%");
+                $dispositions = $q->get();
+                break;
+            case 'kabid':
+                $q = Disposition::query();
+                $q->where("tujuan", "LIKE", "%$keyword%");
+                $dispositions = $q->get();
+                break;
+            case 'karyawan':
+                $q = Disposition::query();
+                $q->where("tujuan", "LIKE", "%$keyword%");
+                $dispositions = $q->get();
+                break;
+            case 'pimpinan':
+                $dispositions = Disposition::all();
+                break;
+
+            default:
+                $dispositions = Disposition::all();
+                break;
+        }
        return view('pages.memo.index', compact('dispositions'));
     }
     public function inbox($id)
