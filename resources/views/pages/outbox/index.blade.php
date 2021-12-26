@@ -394,7 +394,7 @@ Surat Masuk
             success: function(data) {
                 console.log(data);
                 $('#modal_detail').modal('show')
-                $('#pesan_surat').html(data.data.catatan)
+                $('#pesan_surat').html(data.data.notes)
                 if (PDFObject.supportsPDFs) {
                 PDFObject.embed(`{{asset('/upload/surat-masuk/')}}`+'/'+data.data.file, "#pdfview", {
                     height: "100%",
