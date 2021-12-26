@@ -339,8 +339,8 @@ Surat Masuk
 
 {{-- START OF MODAL DETAIL PDF --}}
 <div class="modal fade" id="modal_detail" tabindex="-1" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
-        <div class="modal-content" style="height: 80%;">
+    <div class="modal-dialog modal-lg" role="document" style="height: 100%;">
+        <div class="modal-content" style="height: 100%;">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal-set-resiLabel">Detail Surat</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
