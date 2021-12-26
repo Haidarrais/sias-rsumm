@@ -51,8 +51,14 @@ Surat Masuk
                         @foreach ($inboxes as $key => $inbox)
                         <tr>
                             @php
-                            $dispStatus = $inbox->disposition->where('user_id', Auth::user()->id)->where('is_disposition', 1)->first();
-                            $dispStatusNA = $inbox->disposition->where('user_id', Auth::user()->id)->where('is_disposition', 0)->first();
+                            if ($inbox->disposition) {
+                                $dispStatus = $inbox->disposition->where('user_id', Auth::user()->id)->where('is_disposition', 1)->first();
+                                # code...
+                                $dispStatusNA = $inbox->disposition->where('user_id', Auth::user()->id)->where('is_disposition', 0)->first();
+                            }else{
+                                $dispStatus = false;
+                                $dispStatusNA = false;
+                            }
                             if ($inbox->status == 0) {
                             $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top"
                                 title="Pending(dalam peninjauan direktur)" style="color:#ffa426;font-size:20px"></i>';
