@@ -126,7 +126,7 @@ class DispositionController extends Controller
         foreach ($users as $key => $value) {
             Notification::create([
                 'user_id' => $value->id,
-                'description' => "Disposisi dari $user->name Ref : $mail->journal)id" ,
+                'description' => "Disposisi dari $user->name Ref : $mail->journal_id" ,
                 'type' => 3,
                 'status' => 0
             ]);
