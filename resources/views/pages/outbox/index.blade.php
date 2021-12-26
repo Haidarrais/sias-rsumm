@@ -349,13 +349,13 @@ Surat Masuk
             </div>
             <div class="modal-body" style="height: calc(100% - 120px);">
                 <div class="container-fluid" style="height:100%;">
-                    <div class="p-2">
-                        <h4>Catatan</h4>
-                        <p id="pesan_surat"></p>
-                    </div>
-                    <div id="pdfview" class="col-md-12" style="height:100%;"></div>
+                  <div class="p-2">
+                      <h4>Catatan</h4>
+                      <p id="pesan_surat"></p>
+                  </div>
+                  <div id="pdfview" class="col-md-12" style="height:100%;"></div>
                 </div>
-            </div>
+              </div>
         </div>
     </div>
 </div>
