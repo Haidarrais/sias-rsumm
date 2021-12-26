@@ -348,6 +348,10 @@ Surat Masuk
                 </button>
             </div>
             <div class="modal-body" style="height: calc(100% - 120px);">
+                <div class="p-2">
+                    <h4>Catatan</h4>
+                    <p id="pesan_surat"></p>
+                </div>
                 <div class="container-fluid" style="height:100%;">
                     <div id="pdfview" class="col-md-12" style="height:100%;"></div>
                 </div>
@@ -390,6 +394,7 @@ Surat Masuk
             success: function(data) {
                 console.log(data);
                 $('#modal_detail').modal('show')
+                $('#pesan_surat').html(data.data.catatan)
                 if (PDFObject.supportsPDFs) {
                 PDFObject.embed(`{{asset('/upload/surat-masuk/')}}`+'/'+data.data.file, "#pdfview", {
                     height: "100%",
