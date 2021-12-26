@@ -91,14 +91,14 @@ class OutboxController extends Controller
             'file' => $fileName
         ]);
         $users = User::whereHas('roles', function ($query) {
-            $query->where('name', '!=', 'superadmin')->where('name','!=','admin');
-        })->with('roles')->get();
+            $query->where('name','pimpinan');
+        })->get();
         foreach ($users as $key => $value) {
             Notification::create([
                 'user_id' => $value->id,
-                'description' => 'Surat Keluar ' .$mail->notes,
-                'type' => 2,
-                'status'=>0
+                'description' => "Surat Keluar dari $mail->sender Ref : $mail->journal_id",
+                'type' => 1,
+                'status' => 0
             ]);
         }
         return redirect('/outbox');

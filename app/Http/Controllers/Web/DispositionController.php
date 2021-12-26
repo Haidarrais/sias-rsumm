@@ -122,10 +122,11 @@ class DispositionController extends Controller
             }
         }
         $users = User::whereIn('id', $notifFor)->with('roles')->get();
+        $user = Auth::user();
         foreach ($users as $key => $value) {
             Notification::create([
                 'user_id' => $value->id,
-                'description' => 'Disposisi '.$mail->notes,
+                'description' => "Disposisi dari $user->name Ref : $mail->journal)id" ,
                 'type' => 3,
                 'status' => 0
             ]);

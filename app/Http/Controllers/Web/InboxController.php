@@ -91,12 +91,12 @@ class InboxController extends Controller
             'file' => $fileName
         ]);
         $users = User::whereHas('roles', function ($query) {
-            $query->where('name', '!=', 'admin')->where('name', '!=', 'superadmin');
+            $query->where('name','pimpinan');
         })->get();
         foreach ($users as $key => $value) {
             Notification::create([
                 'user_id' => $value->id,
-                'description' => 'Surat Masuk '.$mail->notes,
+                'description' => "Surat Masuk dari $mail->sender Ref : $mail->journal_id",
                 'type' => 1,
                 'status' => 0
             ]);
