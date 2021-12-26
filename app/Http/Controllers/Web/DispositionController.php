@@ -78,9 +78,10 @@ class DispositionController extends Controller
             // }
             $mail = Mail::where('id', '=', $request->surat_id)->first();
             foreach ($tujuan as $key => $value) {
-                $disp = Disposition::create([
+                $disp = Disposition::updateOrCreate([
                     'mail_id' => $request->surat_id,
                     'user_id' => $value,
+                ],[
                     'status' => 0,
                     'mail_status' => $mail->status,
                     'urgency' => $request->urgency??4,
