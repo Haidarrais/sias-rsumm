@@ -23,7 +23,7 @@ Memo
       <h4>Memo</h4>
 
     </div>
-    <div class="card-body p-1>
+    <div class="card-body p-1">
       <div class="table-responsive">
         <table class="table table-striped table-md">
             <thead>
@@ -41,7 +41,7 @@ Memo
             @forelse ($dispositions as $key => $disposition)
             <tr>
                 <td>{{$key+1}}</td>
-                <td>{{$disposition->mail->entry_date??''}} / {{$disposition->mail->number??''}}</td>
+                <td>{{$disposition->mail->entry_date??''}} / {{$disposition->mail->jurnal_id??''}}</td>
                 <td>{{$disposition->mail->sender??""}}</td>
                 <td>{{$disposition->mail->regarding??''}}</td>
                 <td>{{$disposition->created_at->format('d M Y')}}</td>

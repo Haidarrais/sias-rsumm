@@ -15,7 +15,7 @@
         @unlessrole('superadmin')
         <li><a class="nav-link" href="/inbox"><i class="fas fa-inbox"></i> <span>Surat Masuk</span></a></li>
         <li><a class="nav-link" href="/outbox"><i class="fas fa-paper-plane"></i> <span>Surat Keluar</span></a></li>
-        @hasanyrole('pimpinan|admin|karyawan|kabid|wakilpimpinan')
+        @hasanyrole('admin|karyawan|kabid|wakilpimpinan')
         <li><a class="nav-link" href="/notifMemo"><i class="fas fa-comments"></i> <span>Memo</span>
         @if(count($notifications)>0)<span class="badge badge-light">{{count($notifications)}}</span>@endif</a></li>
         @endhasanyrole
