@@ -347,7 +347,7 @@ Surat Masuk
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" style="height: calc(100% - 120px);">
+        <div class="modal-body" style="height: 80%;">
           <div class="container-fluid" style="height:100%;">
             <div class="p-2">
                 <h4>Catatan</h4>
