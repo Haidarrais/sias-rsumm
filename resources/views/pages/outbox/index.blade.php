@@ -12,7 +12,7 @@ Dashboard
 @endif
 @endsection
 @section('header')
-Surat Keluar
+Surat Masuk
 @endsection
 @section('content')
 <!-- Main Content -->
@@ -20,7 +20,7 @@ Surat Keluar
 
     <div class="card">
         <div class="card-header">
-            <h4>Data Surat Keluar</h4>
+            <h4>Data Surat Masuk</h4>
             <div class="card-header-action">
                 @role('admin')
                 <button class="btn btn-primary" id="addOutbox">
@@ -51,19 +51,20 @@ Surat Keluar
                         @foreach ($outboxes as $key => $outbox)
                         <tr>
                             @php
-                            if ($inbox->status == 0) {
+                            $dispStatus = $outbox->disposition->where('user_id', Auth::user()->id)->where('is_disposition', 1)->first();
+                            if ($outbox->status == 0) {
                             $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top"
                                 title="Pending(dalam peninjauan direktur)" style="color:#ffa426;font-size:20px"></i>';
-                            }elseif ($inbox->status == 1) {
+                            }elseif ($outbox->status == 1) {
                             $status = '<i class="fas fa-times-circle" data-toggle="tooltip" data-placement="top"
                                 title="Ditolak" style="color:#fc544b;font-size:20px"></i>';
-                            }elseif ($inbox->status == 2) {
+                            }elseif ($outbox->status == 2) {
                             $status = '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="top"
                                 title="Diterima" style="color:#47c363;font-size:20px"></i>';
-                            }elseif ($inbox->status == 3) {
+                            }elseif ($outbox->status == 3) {
                                 $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top"
                                 title="Pending(dalam peninjauan wakil direktur)" style="color:#ffa426;font-size:20px"></i>';
-                            }elseif ($inbox->status == 4) {
+                            }elseif ($outbox->status == 4) {
                                 $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top"
                                 title="Pending(dalam peninjauan kabid)" style="color:#ffa426;font-size:20px"></i>';
                             }
@@ -78,29 +79,44 @@ Surat Keluar
                             <td>{{$outbox->type->name ?? ''}}</td>
                             <td>{!!$status!!}</td>
                             <td>
+                                @role('pimpinan')
+                                @if ($outbox->status == 0)
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    @role('pimpinan')
-                                    @if ($inbox->status == 0)
                                     <button type="button" class="btn btn-primary"
-                                        onclick="detInbox({{$inbox->id}})">Detail</button>
+                                        onclick="detOutbox({{$outbox->id}})">Detail</button>
                                     <button type="button" class="btn btn-success"
-                                        onclick="disInbox({{$inbox->id}})">Disposisi</button>
+                                        onclick="disOutbox({{$outbox->id}})">Disposisi</button>
+                                </div>
+                                    @else
+                                    <span class="badge badge-success">Anda Sudah Melakukan Disposisi</span>
                                     @endif
                                     @endrole
                                     @role('wakilpimpinan')
-                                    @if ($inbox->status == 3)
-                                    <button type="button" class="btn btn-primary"
-                                        onclick="detInbox({{$inbox->id}})">Detail</button>
-                                    <button type="button" class="btn btn-success"
-                                        onclick="disInbox({{$inbox->id}})">Disposisi</button>
+                                    @if ($outbox->status == 3 && !$dispStatus)
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+
+                                        <button type="button" class="btn btn-primary"
+                                        onclick="detOutbox({{$outbox->id}})">Detail</button>
+                                        <button type="button" class="btn btn-success"
+                                        onclick="disOutbox({{$outbox->id}})">Disposisi</button>
+                                    </div>
+
+                                    @elseif ($dispStatus)
+                                    <span class="badge badge-success">Anda Sudah Melakukan Disposisi</span>
                                     @endif
                                     @endrole
                                     @role('kabid')
-                                    @if ($inbox->status == 4)
-                                    <button type="button" class="btn btn-primary"
-                                        onclick="detInbox({{$inbox->id}})">Detail</button>
-                                    <button type="button" class="btn btn-success"
-                                        onclick="disInbox({{$inbox->id}})">Disposisi</button>
+                                    @if ($outbox->status == 4 && !$dispStatus)
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+
+                                        <button type="button" class="btn btn-primary"
+                                        onclick="detOutbox({{$outbox->id}})">Detail</button>
+                                        <button type="button" class="btn btn-success"
+                                        onclick="disOutbox({{$outbox->id}})">Disposisi</button>
+                                    </div>
+
+                                    @elseif ($dispStatus)
+                                    <span class="badge badge-success">Anda Sudah Melakukan Disposisi</span>
                                     @endif
                                     @endrole
                                     @role('admin')
@@ -112,16 +128,13 @@ Surat Keluar
                                                 onclick="detOutbox({{$outbox->id}})"><i
                                                     class="fas fa-file-pdf"></i></button>
                                             <button type="button" class="btn btn-warning"
-                                                onclick="editOutbox({{$outbox->id}})"><i
-                                                    class="far fa-edit"></i></button>
+                                                onclick="editOutbox({{$outbox->id}})"><i class="far fa-edit"></i></button>
                                             <button type="submit" class="btn btn-danger"><i
                                                     class="far fa-trash-alt"></i></button>
                                         </div>
 
                                     </form>
                                     @endrole
-                                </div>
-
                                 {{-- modal_edit{{$key}} --}}
                                 {{-- <button
                                     onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i
@@ -149,8 +162,8 @@ Surat Keluar
             </div>
             <form action="{{route('outbox.store')}}" method="POST" id="form-add-outbox-data"
                 enctype="multipart/form-data">
-                <input type="text" name="_method" id="form_method" value="POST" hidden>
                 <input type="text" class="form-control" name="user_id" value="{{Auth::id()}}" hidden>
+                <input type="text" name="_method" id="form_method" value="POST" hidden>
                 <input type="text" class="form-control" name="outbox_origin" value="{{Auth::user()->name}}" hidden>
                 @csrf
                 <div class="modal-body row">
@@ -284,17 +297,17 @@ Surat Keluar
                             data-placeholder="Pilih tujuan disposisi" data-allow-clear="true">
                             @role('pimpinan')
                             @foreach ($wadirs as $key => $wadir )
-                            <option value="{{'wadir' . $wadir->id . 'wadir'}}">{{$wadir->name}}</option>
+                            <option value="{{$wadir->id}}">{{$wadir->name}}</option>
                             @endforeach
                             @endrole
                             @role('wakilpimpinan')
                             @foreach ($kabids as $key => $kabid )
-                            <option value="{{'kabid' . $kabid->id . 'kabid'}}">{{$kabid->name}}</option>
+                            <option value="{{$kabid->id}}">{{$kabid->name}}</option>
                             @endforeach
                             @endrole
                             @role('kabid')
-                            @foreach ($divisions as $key => $division )
-                            <option value="{{'divisi' . $division->id . 'divisi'}}">{{$division->name}}</option>
+                            @foreach ($employees as $key => $employee )
+                            <option value="{{$employee->id}}">{{$employee->name}}</option>
                             @endforeach
                             @endrole
                         </select>
@@ -305,8 +318,13 @@ Surat Keluar
                         <textarea class="form-control" name="catatan"></textarea>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="file">File Disposisi</label>
-                        <input type="file" name="file" id="form_file">
+                        <label for="urgency">Urgensi Disposisi</label>
+                        <select name="urgency" class="form-control" id="urgency">
+                            <option value="1">Penting</option>
+                            <option value="2">Rahasia</option>
+                            <option value="3">Segera</option>
+                            <option value="4">Biasa</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -318,11 +336,12 @@ Surat Keluar
     </div>
 </div>
 
-<div class="modal fade" id="modal_detail" tabindex="" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
+{{-- START OF MODAL DETAIL PDF --}}
+<div class="modal fade" id="modal_detail" tabindex="-1" role="dialog" aria-labelledby="modal_detail" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document" style="height: 80%;">
         <div class="modal-content" style="height: 80%;">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal_title">Detail Surat</h5>
+                <h5 class="modal-title" id="modal-set-resiLabel">Detail Surat</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -335,7 +354,7 @@ Surat Keluar
         </div>
     </div>
 </div>
-
+{{-- END OF MODAL DETAIL PDF --}}
 @endsection
 @section('script')
 @if($errors->any())
@@ -349,6 +368,16 @@ Surat Keluar
     $(document).ready(function() {
         $('.table').DataTable();
     } );
+</script>
+<script>
+    $('#addOutbox').on('click', () => {
+        $('#modal_tambah').modal('show')
+    });
+    $(document).ready(function(){
+        $('#select_tujuan').on('change', function(){
+            $('#value_tujuan').val($(this).val());
+        })
+    })
     function detOutbox(id) {
         //index = id;
         //console.log(index);
@@ -358,10 +387,10 @@ Surat Keluar
             type: 'GET',
             url: url,
             success: function(data) {
-                // console.log(data);
-                $('#modal_detail').modal('show');
+                console.log(data);
+                $('#modal_detail').modal('show')
                 if (PDFObject.supportsPDFs) {
-                PDFObject.embed(`{{asset('/upload/surat-keluar/')}}`+'/'+data.data.file, "#pdfview", {
+                PDFObject.embed(`{{asset('/upload/surat-masuk/')}}`+'/'+data.data.file, "#pdfview", {
                     height: "100%",
                     pdfOpenParams: {
                     view: 'FitV',
@@ -411,11 +440,6 @@ Surat Keluar
         $('#modal_disposition').modal('show')
         $("#form_mail_id").val(id)
     }
-</script>
-<script>
-    $('#addOutbox').on('click', () => {
-          $('#modal_tambah').modal('show')
-        });
 </script>
 @foreach ($outboxes as $key => $outbox)
 <script>

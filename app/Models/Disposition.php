@@ -14,6 +14,8 @@ class Disposition extends Model
         'user_id',
         'catatan',
         'status',
+        'mail_status',
+        'is_disposition',
         'urgency',
         'file',
         'type',

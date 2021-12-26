@@ -24,21 +24,17 @@ class OutboxController extends Controller
      */
     public function index()
     {
-        $wadir = 'wadir'. Auth::user()->id .'wadir';
-        $kabid = 'kabid'. Auth::user()->id . 'kabid';
+        $keyword = Auth::user()->id;
         $query = Mail::query();
-        $query->where('mail_type', '=', '1');
-        if (Auth::user()->roles[0]->name == 'wakilpimpinan') {
-            $query->whereHas('disposition',function($q) use($wadir){
-                $q->where("tujuan", "LIKE", "%$wadir%");
-            });
-        }
-        if (Auth::user()->roles[0]->name == 'kabid') {
-            $query->whereHas('disposition',function($q) use($kabid){
-                $q->where("tujuan", "LIKE", "%$kabid%");
+        $query->where('mail_type', '=', '0');
+        if (Auth::user()->roles[0]->name != 'admin' && Auth::user()->roles[0]->name != 'pimpinan') {
+            # code...
+            $query->whereHas('disposition',function($q) use($keyword){
+                $q->where("user_id", $keyword);
             });
         }
         $outboxes = $query->get();
+        // dd(explode(',',$outboxes->disposition->tujuan));
         $types = Type::all();
         $divisions = Division::all();
         $wadirs = User::whereHas('roles', function($q){
@@ -47,8 +43,11 @@ class OutboxController extends Controller
         $kabids = User::whereHas('roles', function($q){
             $q->where('name', '=', 'kabid');
         })->get();
+        $employees = User::whereHas('roles', function($q){
+            $q->where('name', '=', 'karyawan');
+        })->get();
 
-        return view('pages.outbox.index', compact('outboxes', 'types', 'divisions', 'kabids', 'wadirs'));
+        return view('pages.outbox.index', compact('outboxes', 'types', 'divisions', 'kabids', 'wadirs', 'employees'));
     }
 
     /**

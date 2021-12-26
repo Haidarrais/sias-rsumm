@@ -51,6 +51,7 @@ Surat Masuk
                         @foreach ($inboxes as $key => $inbox)
                         <tr>
                             @php
+                            $dispStatus = $inbox->disposition->where('user_id', Auth::user()->id)->where('is_disposition', 1)->first();
                             if ($inbox->status == 0) {
                             $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top"
                                 title="Pending(dalam peninjauan direktur)" style="color:#ffa426;font-size:20px"></i>';
@@ -78,29 +79,44 @@ Surat Masuk
                             <td>{{$inbox->type->name ?? ''}}</td>
                             <td>{!!$status!!}</td>
                             <td>
+                                @role('pimpinan')
+                                @if ($inbox->status == 0)
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    @role('pimpinan')
-                                    @if ($inbox->status == 0)
                                     <button type="button" class="btn btn-primary"
                                         onclick="detInbox({{$inbox->id}})">Detail</button>
                                     <button type="button" class="btn btn-success"
                                         onclick="disInbox({{$inbox->id}})">Disposisi</button>
+                                </div>
+                                    @else
+                                    <span class="badge badge-success">Anda Sudah Melakukan Disposisi</span>
                                     @endif
                                     @endrole
                                     @role('wakilpimpinan')
-                                    @if ($inbox->status == 3)
-                                    <button type="button" class="btn btn-primary"
+                                    @if ($inbox->status == 3 && !$dispStatus)
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+
+                                        <button type="button" class="btn btn-primary"
                                         onclick="detInbox({{$inbox->id}})">Detail</button>
-                                    <button type="button" class="btn btn-success"
+                                        <button type="button" class="btn btn-success"
                                         onclick="disInbox({{$inbox->id}})">Disposisi</button>
+                                    </div>
+
+                                    @elseif ($dispStatus)
+                                    <span class="badge badge-success">Anda Sudah Melakukan Disposisi</span>
                                     @endif
                                     @endrole
                                     @role('kabid')
-                                    @if ($inbox->status == 4)
-                                    <button type="button" class="btn btn-primary"
+                                    @if ($inbox->status == 4 && !$dispStatus)
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+
+                                        <button type="button" class="btn btn-primary"
                                         onclick="detInbox({{$inbox->id}})">Detail</button>
-                                    <button type="button" class="btn btn-success"
+                                        <button type="button" class="btn btn-success"
                                         onclick="disInbox({{$inbox->id}})">Disposisi</button>
+                                    </div>
+
+                                    @elseif ($dispStatus)
+                                    <span class="badge badge-success">Anda Sudah Melakukan Disposisi</span>
                                     @endif
                                     @endrole
                                     @role('admin')
@@ -119,7 +135,6 @@ Surat Masuk
 
                                     </form>
                                     @endrole
-                                </div>
                                 {{-- modal_edit{{$key}} --}}
                                 {{-- <button
                                     onclick="alert('modal_edit{{$key}}'); document.getElementById('modal_edit{{$key}}').classList.toggle('show')"><i

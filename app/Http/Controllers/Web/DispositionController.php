@@ -57,40 +57,60 @@ class DispositionController extends Controller
         $status= null;
         if (Auth::user()->roles[0]->name == 'pimpinan') {
             $status = 3;
-        }else if (Auth::user()->roles[0]->name == 'wakilpimpinan') {
-            $status = 4;
-        }else if (Auth::user()->roles[0]->name == 'kabid') {
-            $status = 2;
         }
+        $disposition = Disposition::where('user_id', Auth::user()->id)->where('mail_id', $request->surat_id)->first();
+        if ($disposition) {
+            $disposition->is_disposition = 1;
+            $disposition->save();
+        }
+        // dd($request->surat_id);
         // $data =  json_decode($request->tujuans);
         $tujuan = explode(',', $request->tujuans);
         $notifFor = explode(',', $request->tujuans);
         // dd($tujuan);
         // $tujuans = [];
         // foreach ($tujuan as $value) {
-        //     # code...
-        //     $value = json_decode($value);
-        //     $value = (array) $value;
-        //     // $value = implode(',', $value);
-        //     array_push($tujuans, $value);
-        // }
-        foreach ($tujuan as $key => $value) {
-            $disp = Disposition::create([
-                'mail_id' => $request->surat_id,
-                'user_id' => $value,
-                'status' => 0,
-                'urgency' => $request->urgency??4,
-                'file' => $fileName ?? '',
-                'catatan' => $request->catatan?? '-',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
-            $this->fileDisposisi($disp);
-        }
-        $mail = Mail::where('id', '=', $request->surat_id)->first();
-        if ($status) {
-            $mail->status = $status;
-            $mail->save();
+            //     # code...
+            //     $value = json_decode($value);
+            //     $value = (array) $value;
+            //     // $value = implode(',', $value);
+            //     array_push($tujuans, $value);
+            // }
+            $mail = Mail::where('id', '=', $request->surat_id)->first();
+            foreach ($tujuan as $key => $value) {
+                $disp = Disposition::create([
+                    'mail_id' => $request->surat_id,
+                    'user_id' => $value,
+                    'status' => 0,
+                    'mail_status' => $mail->status,
+                    'urgency' => $request->urgency??4,
+                    'file' => $fileName ?? '',
+                    'catatan' => $request->catatan?? '-',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+                $this->fileDisposisi($disp);
+            }
+            if ($status) {
+                $mail->status = $status;
+                $mail->save();
+            }
+            // dd($mail->status);
+        $dispositionStat = Disposition::where('mail_status', $mail->status)->first();
+        $dispositionInc = Disposition::where('mail_status', $mail->status)->where('is_disposition', 0)->first();
+        if ($dispositionStat && !$dispositionInc) {
+            switch ($mail->status) {
+                case 3:
+                    $mail->status = 4;
+                    $mail->save();
+                    break;
+                case 4:
+                    $mail->status = 2;
+                    $mail->save();
+                    break;
+                default:
+                    break;
+            }
         }
         $users = User::whereIn('id', $notifFor)->with('roles')->get();
         foreach ($users as $key => $value) {
