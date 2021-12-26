@@ -26,7 +26,7 @@ class OutboxController extends Controller
     {
         $keyword = Auth::user()->id;
         $query = Mail::query();
-        $query->where('mail_type', '=', '0');
+        $query->where('mail_type', '=', '1');
         if (Auth::user()->roles[0]->name != 'admin' && Auth::user()->roles[0]->name != 'pimpinan') {
             # code...
             $query->whereHas('disposition',function($q) use($keyword){
