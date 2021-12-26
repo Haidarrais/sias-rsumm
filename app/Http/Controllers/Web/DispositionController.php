@@ -96,15 +96,23 @@ class DispositionController extends Controller
                 $mail->save();
             }
             // dd($mail->status);
-        $dispositionStat = Disposition::where('mail_status', $mail->status)->first();
-        $dispositionInc = Disposition::where('mail_status', $mail->status)->where('is_disposition', 0)->first();
+        switch ($mail->status) {
+            case 3:
+                $search = 0;
+                break;
+            case 4:
+                $search = 3;
+                break;
+        }
+        $dispositionStat = Disposition::where('mail_status', $search)->first();
+        $dispositionInc = Disposition::where('mail_status', $search)->where('is_disposition', 0)->first();
         if ($dispositionStat && !$dispositionInc) {
-            switch ($mail->status) {
-                case 3:
+            switch ($search) {
+                case 0:
                     $mail->status = 4;
                     $mail->save();
                     break;
-                case 4:
+                case 3:
                     $mail->status = 2;
                     $mail->save();
                     break;
