@@ -52,6 +52,7 @@ Surat Masuk
                         <tr>
                             @php
                             $dispStatus = $inbox->disposition->where('user_id', Auth::user()->id)->where('is_disposition', 1)->first();
+                            $dispStatusNA = $inbox->disposition->where('user_id', Auth::user()->id)->where('is_disposition', 0)->first();
                             if ($inbox->status == 0) {
                             $status = '<i class="fas fa-clock" data-toggle="tooltip" data-placement="top"
                                 title="Pending(dalam peninjauan direktur)" style="color:#ffa426;font-size:20px"></i>';
@@ -92,7 +93,7 @@ Surat Masuk
                                     @endif
                                     @endrole
                                     @role('wakilpimpinan')
-                                    @if ($inbox->status == 3 && !$dispStatus)
+                                    @if ($dispStatusNa && !$dispStatus)
                                     <div class="btn-group" role="group" aria-label="Basic example">
 
                                         <button type="button" class="btn btn-primary"
@@ -106,7 +107,7 @@ Surat Masuk
                                     @endif
                                     @endrole
                                     @role('kabid')
-                                    @if ($inbox->status == 4 && !$dispStatus)
+                                    @if ($dispStatusNa && !$dispStatus)
                                     <div class="btn-group" role="group" aria-label="Basic example">
 
                                         <button type="button" class="btn btn-primary"
