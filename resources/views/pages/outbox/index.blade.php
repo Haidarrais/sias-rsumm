@@ -39,7 +39,7 @@ Surat Masuk
                             <th>Agenda</th>
                             <th>No Surat</th>
                             <th>Sumber Surat</th>
-                            <th>Tujuan Surat</th>
+                            <th>destination Surat</th>
                             <th>Perihal</th>
                             <th>Tgl Terima</th>
                             <th>Jenis Surat</th>
@@ -199,7 +199,7 @@ Surat Masuk
                         @enderror
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="">Tujuan Surat</label>
+                        <label for="">destination Surat</label>
                         <input type="text" class="form-control @error('destination') is-invalid @enderror"
                             value="{{ old('destination') }}" id="form_destination" name="destination">
                         @error('destination')
@@ -290,12 +290,12 @@ Surat Masuk
                 <input type="text" class="form-control" name="surat_id" id="form_mail_id" hidden>
                 @csrf
                 <div class="modal-body row">
-                    <!-- <input type="text" class="form-control" name="tujuan"> -->
+                    <!-- <input type="text" class="form-control" name="destination"> -->
                     <div class="form-group col-md-12">
                         <label for="">Disposisikan ke</label>
                         <!-- <label for="">Jenis Surat</label> -->
-                        <select name="tujuan[]" id="select_tujuan" class="form-control js-example-basic-single" multiple="multiple"
-                            data-placeholder="Pilih tujuan disposisi" data-allow-clear="true">
+                        <select name="destination[]" id="select_destination" class="form-control js-example-basic-single" multiple="multiple"
+                            data-placeholder="Pilih destination disposisi" data-allow-clear="true">
                             @role('pimpinan')
                             @foreach ($wadirs as $key => $wadir )
                             <option value="{{$wadir->id}}">{{$wadir->name}}</option>
@@ -312,7 +312,7 @@ Surat Masuk
                             @endforeach
                             @endrole
                         </select>
-                        <input type="text" name="tujuans" id="value_tujuan" hidden>
+                        <input type="text" name="destinations" id="value_destination" hidden>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Catatan</label>
@@ -379,8 +379,8 @@ Surat Masuk
         $('#modal_tambah').modal('show')
     });
     $(document).ready(function(){
-        $('#select_tujuan').on('change', function(){
-            $('#value_tujuan').val($(this).val());
+        $('#select_destination').on('change', function(){
+            $('#value_destination').val($(this).val());
         })
     })
     function detOutbox(id) {

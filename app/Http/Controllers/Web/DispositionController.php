@@ -64,9 +64,9 @@ class DispositionController extends Controller
             alert("Error", $concatenatedMessage, 'error');
             return back();
         }
-        $fileName = hash('haval160,4', $request->surat_id . 'surat ke' . $request->tujuans);
-        // $tujuans = json_decode($request->tujuan);
-        // dd($request->tujuans);
+        $fileName = hash('haval160,4', $request->surat_id . 'surat ke' . $request->destinations);
+        // $destinations = json_decode($request->destination);
+        // dd($request->destinations);
         $status = null;
         if (Auth::user()->roles[0]->name == 'pimpinan') {
             $status = 3;
@@ -77,20 +77,20 @@ class DispositionController extends Controller
             $disposition->save();
         }
         // dd($request->surat_id);
-        // $data =  json_decode($request->tujuans);
-        $tujuan = explode(',', $request->tujuans);
-        $notifFor = explode(',', $request->tujuans);
-        // dd($tujuan);
-        // $tujuans = [];
-        // foreach ($tujuan as $value) {
+        // $data =  json_decode($request->destinations);
+        $destination = explode(',', $request->destinations);
+        $notifFor = explode(',', $request->destinations);
+        // dd($destination);
+        // $destinations = [];
+        // foreach ($destination as $value) {
         //     # code...
         //     $value = json_decode($value);
         //     $value = (array) $value;
         //     // $value = implode(',', $value);
-        //     array_push($tujuans, $value);
+        //     array_push($destinations, $value);
         // }
         $mail = Mail::where('id', '=', $request->surat_id)->first();
-        foreach ($tujuan as $key => $value) {
+        foreach ($destination as $key => $value) {
             $disp = Disposition::updateOrCreate([
                 'mail_id' => $request->surat_id,
                 'user_id' => $value,
@@ -238,7 +238,7 @@ class DispositionController extends Controller
         // $disps = explode(',',$dis);
         // $allfile[] = '';
         $mail = Mail::where('id', '=', $disp->mail_id)->first();
-        $tujuan = User::find($disp->user_id);
+        $destination = User::find($disp->user_id);
         // dd($value);
         $templateProcessor = new TemplateProcessor(public_path('templates/disp.docx'));
         $templateProcessor->setValues([
@@ -248,7 +248,7 @@ class DispositionController extends Controller
             'mailnumber' => $mail->number,
             'perihal' => $mail->regarding,
             'catatan' => $disp->catatan,
-            'to_person' => $tujuan->name,
+            'to_person' => $destination->name,
             'from_person' => $mail->sender,
             's1' => $disp->urgency == 1 ? '_*_' : '___',
             's2' => $disp->urgency == 2 ? '_*_' : '___',
@@ -267,7 +267,7 @@ class DispositionController extends Controller
             'doc'
         );
         $path = "upload/disposisi/";
-        $fileName = "disposisi" . $this->generateRandomString(10) . $tujuan->name . ".pdf";
+        $fileName = "disposisi" . $this->generateRandomString(10) . $destination->name . ".pdf";
         $result->saveFiles($path . $fileName);
         $disposition = Disposition::find($disp->id);
         $disposition->file = $fileName;
