@@ -99,7 +99,7 @@ class DispositionController extends Controller
                 'mail_status' => $mail->status,
                 'urgency' => $request->urgency ?? 4,
                 'file' => $fileName ?? '',
-                'catatan' => $request->catatan ?? '-',
+                'catatan' => $request->notes ?? '-',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

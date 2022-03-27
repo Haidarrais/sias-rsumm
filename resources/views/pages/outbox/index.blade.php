@@ -316,7 +316,7 @@ Surat Masuk
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Catatan</label>
-                        <textarea class="form-control" name="catatan"></textarea>
+                        <textarea class="form-control" name="notes"></textarea>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="urgency">Urgensi Disposisi</label>
