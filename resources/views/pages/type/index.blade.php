@@ -17,7 +17,7 @@ Jenis Surat
 @section('content')
 <div class="card">
     <div class="card-header">
-      <h4>Data Surat Masuk</h4>
+      <h4>Data Jenis Surat</h4>
       <div class="card-header-action">
         <button class="btn btn-primary" id="addType">
           <i class="fas fa-plus"></i>
@@ -42,6 +42,7 @@ Jenis Surat
                     <td>{{$type->name}}</td>
                     <td>
                         <form action="{{ route('type.destroy', $type->id) }}" method="POST">
+                        <button type="button" class="btn btn-warning"><i class="far fa-edit"></i></button>
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
