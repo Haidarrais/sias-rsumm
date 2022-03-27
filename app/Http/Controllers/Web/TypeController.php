@@ -38,6 +38,9 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required'
+        ]);
         Type::create([
             'name' => $request->name,
             'created_at' => Carbon::now(),

@@ -39,31 +39,35 @@ class DivisionController extends Controller
      */
     public function store(Request $request)
     {
-       try {
+    //    try {
         //    $validator = $request->validate([
         //        'name'=>'required|unique:divisions'
         //    ]);
-            $validator = Validator::make($request->all(), [
+            $request->validate([
                 'name' => 'required|unique:divisions',
                 'leader' => 'required'
             ]);
+            // $validator = Validator::make($request->all(), [
+            //     'name' => 'required|unique:divisions',
+            //     'leader' => 'required'
+            // ]);
             // dd($validator);
-           if ($validator->fails()) {
-               $concatenatedMessage = '';
-               $messages = $validator->messages()->get('*');
-               foreach ($messages as $key => $value) {
-                    $concatenatedMessage = $concatenatedMessage .$value[0]. "\r\n";
-               }
-              alert("Error", $concatenatedMessage, 'error');
-              return back();
-           }
+        //    if ($validator->fails()) {
+        //        $concatenatedMessage = '';
+        //        $messages = $validator->messages()->get('*');
+        //        foreach ($messages as $key => $value) {
+        //             $concatenatedMessage = $concatenatedMessage .$value[0]. "\r\n";
+        //        }
+        //       alert("Error", $concatenatedMessage, 'error');
+        //       return back();
+        //    }
            Division::create($request->all());
             alert('Success','Data berhasil ditambahkan', 'success' );
             return back();
-       } catch (\Throwable $th) {
-           alert('Error', $th->getMessage(), 'error');
-        return back();
-       }
+    //    } catch (\Throwable $th) {
+        //    alert('Error', $th->getMessage(), 'error');
+        // return back();
+    //    }
     }
 
     /**

@@ -17,76 +17,88 @@ Jenis Surat
 @section('content')
 <div class="card">
     <div class="card-header">
-      <h4>Data Jenis Surat</h4>
-      <div class="card-header-action">
-        <button class="btn btn-primary" id="addType">
-          <i class="fas fa-plus"></i>
-          <span>Tambah Jenis Surat</span>
-        </button>
-      </div>
+        <h4>Data Jenis Surat</h4>
+        <div class="card-header-action">
+            <button class="btn btn-primary" id="addType">
+                <i class="fas fa-plus"></i>
+                <span>Tambah Jenis Surat</span>
+            </button>
+        </div>
     </div>
     <div class="card-body p-2">
         <div class="table-responsive">
-          <table class="table table-striped table-md">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Jenis Surat</th>
-                <th style="text-align: center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-            @foreach ($types as $key => $type)
-              <tr>
-                    <td>{{$key+1}}</td>
-                    <td>{{$type->name}}</td>
-                    <td>
-                        <form action="{{ route('type.destroy', $type->id) }}" method="POST">
-                        <button type="button" class="btn btn-warning"><i class="far fa-edit"></i></button>
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                        </form>
-                    </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
+            <table class="table table-striped table-md">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Jenis Surat</th>
+                        <th style="text-align: center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($types as $key => $type)
+                    <tr>
+                        <td>{{$key+1}}</td>
+                        <td>{{$type->name}}</td>
+                        <td>
+                            <form action="{{ route('type.destroy', $type->id) }}" method="POST">
+                                <button type="button" class="btn btn-warning"><i class="far fa-edit"></i></button>
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+</div>
 @endsection
 @section('modal')
 <div class="modal fade" id="modal_tambah" tabindex="-1" role="dialog" aria-labelledby="modal_tambah" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modal-set-resiLabel">Tambah Jenis Surat Baru</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="{{route('type.store')}}" method="POST" id="form-add-type-data" enctype="multipart/form-data">
-          @csrf
-          <div class="modal-body row">
-            <div class="form-group col-md-12">
-              <label for="">Nama Jenis Surat</label>
-              <input type="text" class="form-control" name="name">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-set-resiLabel">Tambah Jenis Surat Baru</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-        </form>
-      </div>
+            <form action="{{route('type.store')}}" method="POST" id="form-add-type-data" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body row">
+                    <div class="form-group col-md-12">
+                        <label for="">Nama Jenis Surat</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name">
+                        @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
+</div>
 @endsection
 @section('script')
+@if($errors->any())
 <script>
-  $('#addType').on('click', () => {
+    $(document).ready(function() {
+        $('#modal_tambah').modal('show');
+    });
+</script>
+@endif
+<script>
+    $('#addType').on('click', () => {
           $('#modal_tambah').modal('show')
         });
 </script>
